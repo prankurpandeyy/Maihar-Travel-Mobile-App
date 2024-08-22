@@ -8,6 +8,7 @@ const SimpleTable = ({tableHead, tableData}) => {
       <Table borderStyle={styles.tableBorder}>
         <Row data={tableHead} style={styles.head} textStyle={styles.headText} />
         <Rows data={tableData} style={styles.row} textStyle={styles.text} />
+      
       </Table>
     </View>
   );

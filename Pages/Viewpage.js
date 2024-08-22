@@ -1,14 +1,10 @@
-import {
-  Chip,
-  React,
-  SafeAreaView,
-  ScrollView,
-} from 'react-native';
+import {Chip, React, SafeAreaView, ScrollView} from 'react-native';
 import Viewpagesearchbar from '../Components/Viewpagesearchbar';
 import Viewpagecard from '../Components/Viewpagecard';
 import Viewpagefilters from '../Components/Viewpagefilters';
 import {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
+import {API_URL, PROJECT_ID} from '@env';
 
 const Viewpage = ({navigation}) => {
   const [hotelData, setHotelData] = useState([]);
@@ -17,16 +13,13 @@ const Viewpage = ({navigation}) => {
 
   const fetchHotelData = async () => {
     try {
-      const response = await fetch(
-        'https://cloud.appwrite.io/v1/databases/66b259c60016ac264278/collections/66b2e5f30005a3f43af5/documents',
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Appwrite-Project': '66b258b500353050426f', // Your Project ID
-          },
+      const response = await fetch(API_URL, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Appwrite-Project': PROJECT_ID, // Your Project ID
         },
-      );
+      });
 
       if (!response.ok) {
         throw new Error('Failed to fetch hotel data');

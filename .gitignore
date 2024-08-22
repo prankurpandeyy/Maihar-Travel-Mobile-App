@@ -3,6 +3,8 @@
 .DS_Store
 
 # Xcode
+#env
+/.env
 #
 build/
 *.pbxuser

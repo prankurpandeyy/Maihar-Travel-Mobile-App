@@ -24,9 +24,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingTop: 50,
     height: '100%',
-    margin: 5,
   },
 });
 
 export default Homepage;
-

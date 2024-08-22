@@ -12,6 +12,8 @@ import {
   Text,
   Title,
 } from 'react-native-paper';
+import {API_URL, PROJECT_ID} from '@env';
+console.log('🚀 ~ API_URL:', PROJECT_ID);
 
 const Detailsview = () => {
   const [hotelData, setHotelData] = useState([]);
@@ -22,17 +24,14 @@ const Detailsview = () => {
 
   const fetchHotelById = async hotelId => {
     try {
-      const response = await fetch(
-        `https://cloud.appwrite.io/v1/databases/66b259c60016ac264278/collections/66b2e5f30005a3f43af5/documents/${hotelId}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Appwrite-Project': '66b258b500353050426f',
-            // Use your API key if required
-          },
+      const response = await fetch(API_URL + '/' + hotelId, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Appwrite-Project': PROJECT_ID,
+          // Use your API key if required
         },
-      );
+      });
 
       if (!response.ok) {
         throw new Error('Failed to fetch hotel data');
