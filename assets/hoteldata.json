@@ -1,0 +1,1143 @@
+[
+  {
+    "HotelName": "Krishna Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 800 ",
+    "HotelRentMax": "1500",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "SBI chawk railway station road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.258652,80.762290",
+    "HotelContact": "7000282300",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Sargam Hotel",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 0",
+    "HotelRentMax": "0",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Mai ki rasoi railway station road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.259311,80.762094",
+    "HotelContact": "6232451111",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Siddharth inn Hotel",
+    "HotelRoomType": "AC",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "2000",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Ghantaghar chawk maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.261179,80.761472",
+    "HotelContact": "9898862687",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Omkar Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1500",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Infront of baba talab satna road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.274561,80.763636",
+    "HotelContact": "9131352685",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Radha Rani Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 300 ",
+    "HotelRentMax": "800",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Near of HP gas agency katni road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.250990,80.753356",
+    "HotelContact": "9752856106",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Sun Shine Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Near of HP gas agency katni road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.252688,80.753630",
+    "HotelContact": "7415609069",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Akriti Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "2000",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Katni road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.255776,80.755635",
+    "HotelContact": "7024153677",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Oberoi Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "2000",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Katni road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.256926,80.756427",
+    "HotelContact": "7000691087",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Royal residency Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "1500",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Katni road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.257125,80.756299",
+    "HotelContact": "6265137666",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Kadambari Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1500",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Katni road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.257373,80.756401",
+    "HotelContact": "9770478662",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Indian coffee house",
+    "HotelRoomType": "AC",
+
+    "HotelRentMin": " 1600 ",
+    "HotelRentMax": "3000",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Katni road bypass maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.247401,80.752372",
+    "HotelContact": "9993649197",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Kanha Hotel",
+    "HotelRoomType": "AC",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "Yes",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265298,80.748237",
+    "HotelContact": "7415928965",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Nilakshi Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1500",
+    "HotelType": "Yes",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265335,80.748115",
+    "HotelContact": "8718000324",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Kasturi Hotel",
+    "HotelRoomType": "AC",
+
+    "HotelRentMin": " 1500 ",
+    "HotelRentMax": "3000",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265369,80.747906",
+    "HotelContact": "7771860653",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Sarswati Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 800 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265598,80.747991",
+    "HotelContact": "9522411402",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Om Jay Jagdish Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 800 ",
+    "HotelRentMax": "1500",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265782,80.747878",
+    "HotelContact": "9685359610",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Sawariya Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265861,80.748040",
+    "HotelContact": "8120865796",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "The Anandam Hotel",
+    "HotelRoomType": "AC",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "2000",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.266049,80.748379",
+    "HotelContact": "8224989911",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Ashutosh Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 700 ",
+    "HotelRentMax": "1500",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265427,80.746515",
+    "HotelContact": "7489211414",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Maa Hanshvahini Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265156,80.746593",
+    "HotelContact": "7898066417",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Shiv Shakti Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.264860,80.746378",
+    "HotelContact": "8839141600",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Anshika Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265940,80.745193",
+    "HotelContact": "9981405982",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Krishnam Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "1500",
+    "HotelType": "Yes",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265388,80.745213",
+    "HotelContact": "9907619180",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Shiv Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265180,80.747359",
+    "HotelContact": "9993883478",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Panchwati Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "2000",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.264813,80.747519",
+    "HotelContact": "9303714568",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Kanak Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.264746,80.749198",
+    "HotelContact": "9752111213",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Grand inn Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 800 ",
+    "HotelRentMax": "1400",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Near of Stadium agrasen chawk maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.264899,80.752275",
+    "HotelContact": "9752288580",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Surbahar Hotel MPT",
+    "HotelRoomType": "AC",
+
+    "HotelRentMin": " 2200 ",
+    "HotelRentMax": "4400",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Police chauli ke bagal me Devi ji maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.264642,80.722210",
+    "HotelContact": "7880108591",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Prayagraj Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Rewa road katiya maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.259057,80.772396",
+    "HotelContact": "7987608271",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Jagmani Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1500",
+    "HotelType": "Yes",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "SBI chawk rewa road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.260074,80.762595",
+    "HotelContact": "7674232510",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Vrinda Hotel",
+    "HotelRoomType": "AC",
+
+    "HotelRentMin": " 2000 ",
+    "HotelRentMax": "4400",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Near Ram mandir katni road podi maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.229139,80.743209",
+    "HotelContact": "9685575860",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Kashni Hotel",
+    "HotelRoomType": "AC",
+
+    "HotelRentMin": " 2200 ",
+    "HotelRentMax": "4400",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Near of HP gas agency katni road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.251546,80.753054",
+    "HotelContact": "7583860202",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Narayana Hotel",
+    "HotelRoomType": "AC",
+
+    "HotelRentMin": " 2000 ",
+    "HotelRentMax": "3000",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Harnampur railway station platform no. 03",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.255936,80.764839",
+    "HotelContact": "9425173081",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Ashirwad Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "NH-30 bypass road rewa road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.259652,80.783868",
+    "HotelContact": "7065206543",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "R Galaxy Hotel",
+    "HotelRoomType": "AC",
+
+    "HotelRentMin": " 3000 ",
+    "HotelRentMax": "4000",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Rewa road katiya maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.259445,80.783511",
+    "HotelContact": "9424740283",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Maihar inn Hotel",
+    "HotelRoomType": "AC",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "2500",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Rewa road katiya maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.259936,80.781472",
+    "HotelContact": "6268386464",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Halloween Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "1500",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Near of HP gas agency katni road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.252242,80.753485",
+    "HotelContact": "9119859681",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Shubhkaran Hotel",
+    "HotelRoomType": "AC",
+
+    "HotelRentMin": " 2400 ",
+    "HotelRentMax": "4800",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Infront ofIndian coffee house katni road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.248147,80.752024",
+    "HotelContact": "9301444722",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Mithas Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 800 ",
+    "HotelRentMax": "1500",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Rewa road katiya maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.259396,80.776510",
+    "HotelContact": "7898999194",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Prince Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 300 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "SBI chawk railway station road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.258033,80.763152",
+    "HotelContact": "9329707172",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Padmini Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "1500",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Katni mod ke paas rewa road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.259767,80.759316",
+    "HotelContact": "7000643518",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Ashirwad 2 Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 600 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "SBI chawk kali mata mandir ke samne  maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.260120,80.762238",
+    "HotelContact": "9424319725",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Abhinandan Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1500",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "SBI chawk railway station road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.258751,80.762718",
+    "HotelContact": "9340100053",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Sakshi and Sajan Hotel",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "2000",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Katni road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.248619,80.752237",
+    "HotelContact": "9713502816",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Deep Palace",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 700 ",
+    "HotelRentMax": "2000",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Infront of railway station maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.257469,80.763162",
+    "HotelContact": "9425174229",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "City Palace",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1500",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "SBI chawk railway station road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.258625,80.762570",
+    "HotelContact": "7223084254",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "S.K. Palace",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Railway station road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.257433,80.763360",
+    "HotelContact": "6261866992",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Dev shri Palace",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "1500",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.266326,80.746651",
+    "HotelContact": "7748807751",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Siddhi Palace",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Bada akhada road devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.264069,80.746501",
+    "HotelContact": "9752166886",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Baijanti Palace",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 800 ",
+    "HotelRentMax": "2000",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Alauddin chawk devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.263375,80.757634",
+    "HotelContact": "9340154695",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Yash Palace",
+    "HotelRoomType": "AC",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "1500",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Harnampur railway station platform no. 03",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.256184,80.764847",
+    "HotelContact": "9009527447",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Tamas Bhavan",
+    "HotelRoomType": "Non-AC",
+    "HotelRentMin": " 400 ",
+    "HotelRentMax": "800",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Police chauli ke bagal me Devi ji maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.264461,80.730832",
+    "HotelContact": "8319192828",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Maa sharda residency",
+    "HotelRoomType": "AC",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "1500",
+    "HotelType": "Yes",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265296,80.748541",
+    "HotelContact": "6266184785",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Radhika residency",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "1500",
+    "HotelType": "Yes",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265249,80.748601",
+    "HotelContact": "9755410265",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Satguru Lodge",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Sindhi colony ke bagal me railway station road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.257640,80.763316",
+    "HotelContact": "9301818387",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Satkar Lodge",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "SBI chawk railway station road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.257639,80.763115",
+    "HotelContact": "9425869311",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Darshini Lodge",
+    "HotelRoomType": "Non-AC",
+    "HotelRentMin": " 300 ",
+    "HotelRentMax": "500",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "SBI chawk railway station road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.259638,80.762191",
+    "HotelContact": "7354909711",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Pooja Lodge",
+    "HotelRoomType": "Non-AC",
+    "HotelRentMin": " 300 ",
+    "HotelRentMax": "500",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "SBI chawk railway station road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.259587,80.762196",
+    "HotelContact": "9752506429",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Ramkrishna Lodge",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 1000 ",
+    "HotelRentMax": "1500",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265025,80.748681",
+    "HotelContact": "9893579058",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Sanskar Lodge",
+    "HotelRoomType": "Non-AC",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1400",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265385,80.751092",
+    "HotelContact": "9713229284",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Suman Lodge",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 700 ",
+    "HotelRentMax": "1200",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Purani sabji mandi ke samane deviji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.262584,80.759373",
+    "HotelContact": "7679448839",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Madhur Lodge",
+    "HotelRoomType": "Non-AC",
+    "HotelRentMin": " 300 ",
+    "HotelRentMax": "700",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Railway station road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.258153,80.763173",
+    "HotelContact": "8962356211",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Gulab Lodge",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 400 ",
+    "HotelRentMax": "900",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Infront of rest house SBI Chawk maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.259756,80.761159",
+    "HotelContact": "9425173272",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Agrawal Lodge",
+    "HotelRoomType": "Non-AC",
+    "HotelRentMin": " 300 ",
+    "HotelRentMax": "500",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Purani abakari road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.260723,80.763189",
+    "HotelContact": "9179824605",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Shri Dham Yatri Niwas",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1500",
+    "HotelType": "Yes",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265268,80.748311",
+    "HotelContact": "6263392065",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Maa Yatri Niwas",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "Yes",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265306,80.748203",
+    "HotelContact": "9340579918",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Adarsh Yatri Niwas",
+    "HotelRoomType": "Both",
+
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Golamath mandir road hanuman tola maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.266924,80.747838",
+    "HotelContact": "7566702202",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Amar Yatri Niwas",
+    "HotelRoomType": "Non-AC",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "500",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Golamath mandir road hanuman tola maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.266551,80.747325",
+    "HotelContact": "7415101980",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Shubh Labh Yatri Niwas",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "500",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Golamath mandir road hanuman tola maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.266244,80.747535",
+    "HotelContact": "8839037534",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Shri Ram Yatri Niwas",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 800 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265219,80.747193",
+    "HotelContact": "9981107312",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Shri Yatri Niwas",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 700 ",
+    "HotelRentMax": "500",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Bada akhada road devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265093,80.747553",
+    "HotelContact": "9425160629",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Lucky Yatri Niwas",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1200",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Bada akhada road devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265029,80.747591",
+    "HotelContact": "9981469732",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Sankat mochan Yatri Niwas",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.264966,80.748532",
+    "HotelContact": "8817932423",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Trimurti Yatri Niwas",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 300 ",
+    "HotelRentMax": "1200",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.264745,80.749044",
+    "HotelContact": "9589783915",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Mateshwari Yatri Niwas",
+    "HotelRoomType": "Non-AC",
+    "HotelRentMin": " 300 ",
+    "HotelRentMax": "500",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.264917,80.748929",
+    "HotelContact": "9993915339",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Jay shri Yatri Niwas",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.264831,80.749197",
+    "HotelContact": "9630216799",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Maa sharda Yatri Niwas",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1200",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265995,80.752972",
+    "HotelContact": "8989515855",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Astha Yatri Niwas",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "500",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265618,80.751207",
+    "HotelContact": "9516644593",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Bala ji  Yatri Niwas",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 600 ",
+    "HotelRentMax": "1500",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Hanuman tola devi ji road maihar",
+    "HotelLocation": "https://www.google.com/maps?q=24.54808,80.752409",
+    "HotelContact": "9407016810",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Agrasen Yatri Niwas",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1200",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Infront of agrasen chawk",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.263548,80.757374",
+    "HotelContact": "7999382651",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Sacho Sant Ram Yatri Niwas",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "1000",
+    "HotelType": "No",
+    "HotelFeatures": ["No"],
+    "HotelAddress": "Sindhi colony ke bagal me railway station road maihar",
+    "HotelLocation": "https://www.google.com/maps?q=24.258595,80763091",
+    "HotelContact": "9301122950",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Yatri Kramank 01",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 500 ",
+    "HotelRentMax": "800",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Lal gate ke bagal me devi ji  maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.263641,80.730007",
+    "HotelContact": "8319192828",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Yatri Kramank 02",
+    "HotelRoomType": "Both",
+    "HotelRentMin": " 400 ",
+    "HotelRentMax": "800",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Ropway road me devi ji maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.265350,80.729262",
+    "HotelContact": "8319192828",
+    "HotelDetails": ""
+  },
+  {
+    "HotelName": "Yatri Kramank 03",
+    "HotelRoomType": "Non-AC",
+    "HotelRentMin": " 400 ",
+    "HotelRentMax": "800",
+    "HotelType": "No",
+    "HotelFeatures": ["Yes"],
+    "HotelAddress": "Bandha barrier kr paas devi ji maihar",
+
+    "HotelLocation": "https://www.google.com/maps?q=24.266204,80.736741",
+    "HotelContact": "8319192828",
+    "HotelDetails": ""
+  }
+]

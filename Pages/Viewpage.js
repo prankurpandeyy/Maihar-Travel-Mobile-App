@@ -4,13 +4,15 @@ import Viewpagecard from '../Components/Viewpagecard';
 import Viewpagefilters from '../Components/Viewpagefilters';
 import {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {API_URL, PROJECT_ID} from '@env';
+import {API_URL, PROJECT_ID, DATABASE_ID, COLLECTION_ID} from '@env';
+
+import {Databases, Query} from 'appwrite';
 
 const Viewpage = ({navigation}) => {
   const [hotelData, setHotelData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-
+  console.log(hotelData);
   const fetchHotelData = async () => {
     try {
       const response = await fetch(API_URL, {

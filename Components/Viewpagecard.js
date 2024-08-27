@@ -22,7 +22,7 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
             key={hotel.$id}
             onPress={() => navigation.navigate('Details', {hotelId: hotel.$id})}
             style={styles.card}>
-            <Image source={{uri: imageUrl}} style={styles.image} />
+            {/* <Image source={{uri: imageUrl}} style={styles.image} /> */}
             <View style={styles.textContainer}>
               <Text style={styles.hotelName}>{hotel.HotelName}</Text>
               <Text style={styles.detailsText}>View More Details</Text>

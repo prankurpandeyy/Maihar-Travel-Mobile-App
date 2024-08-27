@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {Linking, ScrollView, StyleSheet, View} from 'react-native';
 import DataSpinner from './DataSpinner';
 import {color} from '@rneui/base';
 import {useRoute} from '@react-navigation/native';
@@ -13,7 +13,6 @@ import {
   Title,
 } from 'react-native-paper';
 import {API_URL, PROJECT_ID} from '@env';
-console.log('🚀 ~ API_URL:', PROJECT_ID);
 
 const Detailsview = () => {
   const [hotelData, setHotelData] = useState([]);
@@ -73,7 +72,7 @@ const Detailsview = () => {
               <View style={styles.row}>
                 <IconButton icon="food" size={24} />
                 <Text style={styles.text}>
-                  Type: {hotelData.HotelType.toUpperCase()}
+                  Food: {hotelData.HotelType.toUpperCase()}
                 </Text>
               </View>
               <Divider style={styles.divider} />
@@ -81,7 +80,8 @@ const Detailsview = () => {
               <View style={styles.row}>
                 <IconButton icon="currency-usd" size={24} />
                 <Text style={styles.text}>
-                  Rent: ₹{hotelData.HotelRent} Per Day
+                  Rent: ₹{hotelData.HotelRentMin}-{hotelData.HotelRentMax} Per
+                  Day
                 </Text>
               </View>
               <Divider style={styles.divider} />
@@ -116,7 +116,7 @@ const Detailsview = () => {
               </View>
               <Divider style={styles.divider} />
 
-              <View style={styles.row}>
+              {/* <View style={styles.row}>
                 <IconButton icon="check-circle" size={24} />
                 <Text style={styles.text}>
                   Facilities:{' '}
@@ -124,13 +124,13 @@ const Detailsview = () => {
                     ? hotelData.HotelFacilties.join(', ').toUpperCase()
                     : 'N/A'}
                 </Text>
-              </View>
-              <Divider style={styles.divider} />
+              </View> */}
+              {/* <Divider style={styles.divider} /> */}
 
               <View style={styles.row}>
                 <IconButton icon="car" size={24} />
                 <Text style={styles.text}>
-                  Features:{' '}
+                  PARKING:{' '}
                   {Array.isArray(hotelData.HotelFeatures)
                     ? hotelData.HotelFeatures.join(', ').toUpperCase()
                     : 'N/A'}
