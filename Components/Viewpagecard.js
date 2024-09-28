@@ -10,25 +10,41 @@ import {
 import DataSpinner from './DataSpinner';
 
 const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
-  const imageUrl = 'https://picsum.photos/200/500';
-
   return (
     <View style={styles.container}>
       {isLoading ? (
         <DataSpinner />
       ) : filteredHotelsByName.length > 0 ? (
-        filteredHotelsByName.map(hotel => (
-          <TouchableOpacity
-            key={hotel.$id}
-            onPress={() => navigation.navigate('Details', {hotelId: hotel.$id})}
-            style={styles.card}>
-            {/* <Image source={{uri: imageUrl}} style={styles.image} /> */}
-            <View style={styles.textContainer}>
-              <Text style={styles.hotelName}>{hotel.HotelName}</Text>
-              <Text style={styles.detailsText}>View More Details</Text>
-            </View>
-          </TouchableOpacity>
-        ))
+        filteredHotelsByName.map(hotel =>
+          hotel.isHotelFlagged ? (
+            <TouchableOpacity key={hotel.$id} style={styles.noCard}>
+              <View style={styles.textContainer}>
+                <Text style={styles.hotelName}>{hotel.HotelName}</Text>
+                <Text style={styles.detailsText}>
+                  The Hotel is Flagged By Authorties,Can't View More Details.
+                  Please Contact Admin.
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              key={hotel.$id}
+              onPress={() =>
+                navigation.navigate('Details', {hotelId: hotel.$id})
+              }
+              style={styles.card}>
+              <View style={styles.textContainer}>
+                <Text style={styles.hotelName}>{hotel.HotelName}</Text>
+                <Text style={styles.hotelPrice}>
+                  {' '}
+                  Price:
+                  {hotel.HotelRentMin}-{hotel.HotelRentMax}
+                </Text>
+                <Text style={styles.detailsText}>View More Details</Text>
+              </View>
+            </TouchableOpacity>
+          ),
+        )
       ) : (
         <Text style={styles.noHotelsText}>No hotels found</Text>
       )}
@@ -60,7 +76,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   textContainer: {
-    width: '50%',
+    width: '100%',
     paddingLeft: 16,
     justifyContent: 'center',
   },
@@ -68,15 +84,39 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'black',
+    width: '100%',
+  },
+  hotelPrice: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'red',
+    width: '100%',
   },
   detailsText: {
     color: '#4b5563', // Gray-600 equivalent
     marginTop: 8,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    width: '100%',
   },
   noHotelsText: {
     textAlign: 'center',
     color: '#ef4444', // Red-500 equivalent
     marginTop: 16,
+  },
+  noCard: {
+    marginVertical: 5,
+    padding: 8,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    flexDirection: 'row',
+    borderWidth: 2,
+    borderColor: '#ef4444', // Red-500 equivalent
   },
 });
 

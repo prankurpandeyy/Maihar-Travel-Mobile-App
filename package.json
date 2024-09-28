@@ -2,7 +2,6 @@
   "name": "maihar_travel",
   "version": "0.0.1",
   "private": true,
- 
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -14,6 +13,7 @@
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
     "appwrite": "^15.0.0",
+    "list.js": "^2.3.1",
     "react": "18.3.1",
     "react-native": "0.75.2",
     "react-native-dotenv": "^3.4.11",

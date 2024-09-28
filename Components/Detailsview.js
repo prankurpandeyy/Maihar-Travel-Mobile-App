@@ -1,6 +1,8 @@
 import {Linking, ScrollView, StyleSheet, View} from 'react-native';
+import React from 'react';
+
 import DataSpinner from './DataSpinner';
-import {color} from '@rneui/base';
+
 import {useRoute} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -50,6 +52,13 @@ const Detailsview = () => {
   }, []);
   // Usage
 
+  const trimHttps = url => {
+    if (url.startsWith('https://')) {
+      return url.substring(8); // Removes "https://"
+    }
+    return url;
+  };
+
   return (
     <SafeAreaView>
       {isLoading ? (
@@ -87,7 +96,14 @@ const Detailsview = () => {
               <Divider style={styles.divider} />
 
               <View style={styles.row}>
-                <IconButton icon="phone" size={24} />
+                <IconButton
+                  icon="phone"
+                  iconColor="#1D9BF0"
+                  size={24}
+                  onPress={() => {
+                    Linking.openURL('tel:' + hotelData.HotelContact);
+                  }}
+                />
                 <Text style={styles.text}>
                   Contact: {hotelData.HotelContact}
                 </Text>
@@ -99,10 +115,8 @@ const Detailsview = () => {
                 <Text
                   style={styles.text}
                   onPress={() => Linking.openURL(hotelData.HotelLocation)}>
-                  {' '}
-                  Location:
-                  <Text style={{color: '#1D9BF0'}}>
-                    {hotelData.HotelLocation}
+                  <Text style={{color: '#1D9BF0', fontWeight: 'bold'}}>
+                    {trimHttps(hotelData.HotelLocation)}
                   </Text>
                 </Text>
               </View>
@@ -111,7 +125,10 @@ const Detailsview = () => {
               <View style={styles.row}>
                 <IconButton icon="bed" size={24} />
                 <Text style={styles.text}>
-                  Rooms: {hotelData.HotelRoomType.toUpperCase()}
+                  Rooms:{' '}
+                  {hotelData.HotelRoomType.toUpperCase() === 'BOTH'
+                    ? 'AC + NON-AC'
+                    : hotelData.HotelRoomType.toUpperCase()}
                 </Text>
               </View>
               <Divider style={styles.divider} />
@@ -184,6 +201,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirectionr: 'row',
     marginTop: 20,
+    padding: 10,
+
+    backgroundColor: '#f5f5f5',
   },
   bottomtext: {
     color: 'red',
@@ -207,18 +227,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     marginLeft: 10,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   divider: {
     marginVertical: 8,
-  },
-  bottomtextbar: {
-    padding: 10,
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-  },
-  bottomtext: {
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });
 

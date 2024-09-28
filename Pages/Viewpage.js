@@ -1,18 +1,15 @@
-import {Chip, React, SafeAreaView, ScrollView} from 'react-native';
+import {React, SafeAreaView, ScrollView} from 'react-native';
 import Viewpagesearchbar from '../Components/Viewpagesearchbar';
 import Viewpagecard from '../Components/Viewpagecard';
 import Viewpagefilters from '../Components/Viewpagefilters';
 import {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {API_URL, PROJECT_ID, DATABASE_ID, COLLECTION_ID} from '@env';
-
-import {Databases, Query} from 'appwrite';
+import {API_URL, PROJECT_ID} from '@env';
 
 const Viewpage = ({navigation}) => {
   const [hotelData, setHotelData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  console.log(hotelData);
   const fetchHotelData = async () => {
     try {
       const response = await fetch(API_URL, {
@@ -46,13 +43,6 @@ const Viewpage = ({navigation}) => {
     fetchHotelData();
   }, []);
 
-  // clear all filters
-  const clearFilters = () => {
-    setHotelData(hotelData);
-    setSearchQuery('');
-    fetchHotelData();
-  };
-
   return (
     <SafeAreaView>
       <ScrollView style={styles.container}>
@@ -71,6 +61,8 @@ const Viewpage = ({navigation}) => {
           filteredHotelsByName={filteredHotelsByName}
           isLoading={isLoading}
         />
+
+        {/* // <Pagination /> */}
       </ScrollView>
     </SafeAreaView>
   );
