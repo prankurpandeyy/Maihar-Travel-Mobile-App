@@ -18,6 +18,7 @@ import {API_URL, PROJECT_ID} from '@env';
 
 const Detailsview = () => {
   const [hotelData, setHotelData] = useState([]);
+  console.log('🚀 ~ Detailsview ~ hotelData:', hotelData);
   const [isLoading, setIsLoading] = useState(true);
 
   const route = useRoute();
@@ -52,13 +53,13 @@ const Detailsview = () => {
   }, []);
   // Usage
 
-  const trimHttps = url => {
-    if (url.startsWith('https://')) {
-      return url.substring(8); // Removes "https://"
-    }
-    return url;
-  };
+  function createGoogleMapsEmbedUrl(latLong) {
+    const [lat, long] = latLong.split(',').map(coord => coord.trim());
 
+    // Create the Google Maps embed URL
+    const embedUrl = `https://www.google.com/maps/@${lat},${long}`; // Replace YOUR_API_KEY with your actual API key
+    return embedUrl;
+  }
   return (
     <SafeAreaView>
       {isLoading ? (
@@ -75,13 +76,13 @@ const Detailsview = () => {
             <Card.Content>
               <Title style={styles.title}>{hotelData.HotelName}</Title>
               <Paragraph style={styles.paragraph}>
-                Location: {hotelData.HotelAddress.toUpperCase()}
+                Location: {hotelData.HotelAddress}
               </Paragraph>
 
               <View style={styles.row}>
                 <IconButton icon="food" size={24} />
                 <Text style={styles.text}>
-                  Food: {hotelData.HotelType.toUpperCase()}
+                  Food: {hotelData.HotelFoodFacility}
                 </Text>
               </View>
               <Divider style={styles.divider} />
@@ -114,9 +115,13 @@ const Detailsview = () => {
                 <IconButton icon="google-maps" size={24} />
                 <Text
                   style={styles.text}
-                  onPress={() => Linking.openURL(hotelData.HotelLocation)}>
+                  onPress={() =>
+                    Linking.openURL(
+                      createGoogleMapsEmbedUrl(hotelData.HotelLocation),
+                    )
+                  }>
                   <Text style={{color: '#1D9BF0', fontWeight: 'bold'}}>
-                    {trimHttps(hotelData.HotelLocation)}
+                    {createGoogleMapsEmbedUrl(hotelData.HotelLocation)}
                   </Text>
                 </Text>
               </View>
@@ -128,29 +133,15 @@ const Detailsview = () => {
                   Rooms:{' '}
                   {hotelData.HotelRoomType.toUpperCase() === 'BOTH'
                     ? 'AC + NON-AC'
-                    : hotelData.HotelRoomType.toUpperCase()}
+                    : hotelData.HotelRoomType}
                 </Text>
               </View>
               <Divider style={styles.divider} />
 
-              {/* <View style={styles.row}>
-                <IconButton icon="check-circle" size={24} />
-                <Text style={styles.text}>
-                  Facilities:{' '}
-                  {Array.isArray(hotelData.HotelFacilties)
-                    ? hotelData.HotelFacilties.join(', ').toUpperCase()
-                    : 'N/A'}
-                </Text>
-              </View> */}
-              {/* <Divider style={styles.divider} /> */}
-
               <View style={styles.row}>
                 <IconButton icon="car" size={24} />
                 <Text style={styles.text}>
-                  PARKING:{' '}
-                  {Array.isArray(hotelData.HotelFeatures)
-                    ? hotelData.HotelFeatures.join(', ').toUpperCase()
-                    : 'N/A'}
+                  PARKING:{hotelData.HotelParking}
                 </Text>
               </View>
               <Divider style={styles.divider} />
