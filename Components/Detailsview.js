@@ -57,7 +57,7 @@ const Detailsview = () => {
     const [lat, long] = latLong.split(',').map(coord => coord.trim());
 
     // Create the Google Maps embed URL
-    const embedUrl = `https://www.google.com/maps/@${lat},${long}`; // Replace YOUR_API_KEY with your actual API key
+    const embedUrl = `https://www.google.com/maps?q=${lat},${long}`; // Replace YOUR_API_KEY with your actual API key
     return embedUrl;
   }
   return (

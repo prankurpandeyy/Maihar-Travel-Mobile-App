@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Chip, Title} from 'react-native-paper';
 
-const Viewpagefilters = ({hotelData, setHotelData, fetchHotelData}) => {
+const Viewpagefilters = ({hotelData, setHotelData, getData}) => {
   const priceRanges = [
     {label: 'All', min: 0, max: Infinity},
     {label: 'Till ₹500', min: 0, max: 500},
@@ -19,7 +19,7 @@ const Viewpagefilters = ({hotelData, setHotelData, fetchHotelData}) => {
 
   const applyFilter = () => {
     if (selectedRange.label === 'All') {
-      fetchHotelData(); // Fetch the original data
+      getData(); // Fetch the original data
     } else {
       const filteredHotels = hotelData.filter(hotel => {
         const hotelRentMin = parseInt(hotel.HotelRentMin, 10);
