@@ -1,6 +1,8 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Linking} from 'react-native';
-import {IconButton} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import PremiumGradient from './common/SafeGradient';
+import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
 
 const Feedback = () => {
   const handleCall = phoneNumber => {
@@ -11,102 +13,148 @@ const Feedback = () => {
     Linking.openURL(`mailto:${email}`);
   };
 
+  const contactMethods = [
+    {
+      icon: 'shield',
+      title: 'Emergency Police',
+      subtitle: 'MP Police Dial: 100',
+      type: 'phone',
+      value: '100',
+      color: COLORS.error,
+    },
+    {
+      icon: 'badge-account',
+      title: 'Maihar Police Station',
+      subtitle: '07674232047',
+      type: 'phone',
+      value: '07674232047',
+      color: COLORS.primary,
+    },
+    {
+      icon: 'phone',
+      title: 'General Support',
+      subtitle: 'Call Us: 111-223-3445',
+      type: 'phone',
+      value: '111-223-3445',
+      color: COLORS.secondary,
+    },
+    {
+      icon: 'email',
+      title: 'Feedback',
+      subtitle: 'feedback@example.com',
+      type: 'email',
+      value: 'feedback@example.com',
+      color: COLORS.info,
+    },
+    {
+      icon: 'email-outline',
+      title: 'Grievance',
+      subtitle: 'grievance@example.com',
+      type: 'email',
+      value: 'grievance@example.com',
+      color: COLORS.warning,
+    },
+  ];
+
   return (
-    <View style={styles.card}>
-      <Text style={styles.title}>Feedback & Grievance</Text>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Icon name="message-text" size={24} color={COLORS.primary} />
+        <Text style={styles.title}>Feedback & Grievance</Text>
+      </View>
+
+      <Text style={styles.subtitle}>
+        Get in touch with us for support, feedback, or emergency assistance
+      </Text>
+
       <View style={styles.contactContainer}>
-        <View style={styles.contactItem}>
+        {contactMethods.map((contact, index) => (
           <TouchableOpacity
-            style={styles.icon}
-            onPress={() => handleCall('100')}>
-            <IconButton icon="phone" color="#8f5de9" size={24} />
+            key={index}
+            style={styles.contactCard}
+            onPress={() =>
+              contact.type === 'phone'
+                ? handleCall(contact.value)
+                : handleEmail(contact.value)
+            }
+            activeOpacity={0.7}>
+            <View
+              style={[
+                styles.iconContainer,
+                {backgroundColor: contact.color + '20'},
+              ]}>
+              <Icon name={contact.icon} size={24} color={contact.color} />
+            </View>
+
+            <View style={styles.contactContent}>
+              <Text style={styles.contactTitle}>{contact.title}</Text>
+              <Text style={styles.contactSubtitle}>{contact.subtitle}</Text>
+            </View>
+
+            <Icon name="chevron-right" size={20} color={COLORS.textSecondary} />
           </TouchableOpacity>
-          <Text style={styles.contactText}>MP Police Dial: 100</Text>
-        </View>
-        <View style={styles.contactItem}>
-          <TouchableOpacity
-            style={styles.icon}
-            onPress={() => handleCall('07674232047')}>
-            <IconButton icon="phone" color="#8f5de9" size={24} />
-          </TouchableOpacity>
-          <Text style={styles.contactText}>
-            Maihar Police Station: 07674232047
-          </Text>
-        </View>
-        <View style={styles.contactItem}>
-          <TouchableOpacity
-            style={styles.icon}
-            onPress={() => handleCall('100')}>
-            <IconButton icon="phone" color="#8f5de9" size={24} />
-          </TouchableOpacity>
-          <Text style={styles.contactText}>Call Us: 111-223-3445</Text>
-        </View>
-        <View style={styles.contactItem}>
-          <TouchableOpacity
-            style={styles.icon}
-            onPress={() => handleEmail('feedback@example.com')}>
-            <IconButton icon="email" color="#8f5de9" size={24} />
-          </TouchableOpacity>
-          <Text style={styles.contactText}>Email Us: feedback@example.com</Text>
-        </View>
-        <View style={styles.contactItem}>
-          <TouchableOpacity
-            style={styles.icon}
-            onPress={() => handleEmail('grievance@example.com')}>
-            <IconButton icon="email" color="#8f5de9" size={24} />
-          </TouchableOpacity>
-          <Text style={styles.contactText}>
-            Email Us: grievance@example.com
-          </Text>
-        </View>
+        ))}
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#FFFFFF',
-    padding: 24,
-    borderRadius: 12,
-    elevation: 8,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 4},
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    margin: 16,
-    alignItems: 'center',
+  container: {
+    flex: 1,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  contactContainer: {
-    width: '100%',
-    paddingHorizontal: 16,
-  },
-  contactItem: {
+
+  // Header
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: SPACING.md,
   },
-  icon: {
-    padding: 10,
-    backgroundColor: '#EAF4FF',
-    borderRadius: 50,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    marginRight: 12,
+  title: {
+    ...TYPOGRAPHY.heading3,
+    color: COLORS.textPrimary,
+    fontWeight: 'bold',
+    marginLeft: SPACING.md,
   },
-  contactText: {
-    fontSize: 16,
-    color: '#555',
+  subtitle: {
+    ...TYPOGRAPHY.body1,
+    color: COLORS.textSecondary,
+    marginBottom: SPACING.xl,
+    lineHeight: 22,
+  },
+
+  // Contact Cards
+  contactContainer: {
+    gap: SPACING.md,
+  },
+  contactCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.surface,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.lg,
+    ...SHADOWS.sm,
+  },
+  iconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: RADIUS.lg,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: SPACING.lg,
+  },
+  contactContent: {
+    flex: 1,
+  },
+  contactTitle: {
+    ...TYPOGRAPHY.body1,
+    color: COLORS.textPrimary,
+    fontWeight: '600',
+    marginBottom: SPACING.xs,
+  },
+  contactSubtitle: {
+    ...TYPOGRAPHY.body2,
+    color: COLORS.textSecondary,
   },
 });
 

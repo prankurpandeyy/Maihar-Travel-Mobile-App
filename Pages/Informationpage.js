@@ -1,7 +1,13 @@
-import {View, Text, SafeAreaView, ScrollView, StyleSheet,Linking} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Linking,
+} from 'react-native';
 import React from 'react';
 import Information from '../Components/Information';
-
 
 const Informationpage = ({navigation}) => {
   return (
@@ -23,7 +29,7 @@ const Informationpage = ({navigation}) => {
 };
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: '#F8F9FA',
     height: '100%',
   },
 
@@ -31,6 +37,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     margin: 2,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
   },
 });
 

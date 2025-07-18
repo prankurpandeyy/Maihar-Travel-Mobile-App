@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Table, Row, Rows} from 'react-native-table-component';
+import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
 
 const SimpleTable = ({tableHead, tableData}) => {
   return (
@@ -8,7 +9,6 @@ const SimpleTable = ({tableHead, tableData}) => {
       <Table borderStyle={styles.tableBorder}>
         <Row data={tableHead} style={styles.head} textStyle={styles.headText} />
         <Rows data={tableData} style={styles.row} textStyle={styles.text} />
-      
       </Table>
     </View>
   );
@@ -16,31 +16,35 @@ const SimpleTable = ({tableHead, tableData}) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
-    elevation: 3,
+    backgroundColor: COLORS.surface,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.md,
+    ...SHADOWS.sm,
   },
   tableBorder: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.md,
+    overflow: 'hidden',
   },
   head: {
-    height: 40,
-    backgroundColor: '#f1f1f1',
+    height: 48,
+    backgroundColor: COLORS.primary,
   },
   headText: {
+    ...TYPOGRAPHY.body2,
     textAlign: 'center',
     fontWeight: 'bold',
-    color: '#333',
+    color: COLORS.textWhite,
   },
   row: {
-    height: 40,
-    backgroundColor: '#fff',
+    height: 44,
+    backgroundColor: COLORS.surfaceVariant,
   },
   text: {
+    ...TYPOGRAPHY.body2,
     textAlign: 'center',
-    color: '#555',
+    color: COLORS.textPrimary,
   },
 });
 

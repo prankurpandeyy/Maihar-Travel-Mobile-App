@@ -242,7 +242,6 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  ActivityIndicator,
   View,
   Button,
   Text,
@@ -250,10 +249,14 @@ import {
 import Viewpagesearchbar from '../Components/Viewpagesearchbar';
 import Viewpagecard from '../Components/Viewpagecard';
 import Viewpagefilters from '../Components/Viewpagefilters';
+import HotelListingSkeleton from '../Components/Skeleton/HotelListingSkeleton';
 import {Client, Databases, Query} from 'appwrite';
+import {COLORS} from '../constants/theme';
 
 import {API_URL, PROJECT_ID, DATABASE_ID, COLLECTION_ID} from '@env';
-
+console.log('API_URL:', API_URL);
+console.log('PROJECT_ID:', PROJECT_ID);
+console.log('DATABASE_ID:', DATABASE_ID);
 // Initialize Appwrite Client
 const client = new Client()
   .setEndpoint('https://cloud.appwrite.io/v1')
@@ -321,7 +324,7 @@ const Viewpage = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.safeArea}>
       <ScrollView
         style={styles.container}
         onScroll={({nativeEvent}) => {
@@ -348,9 +351,7 @@ const Viewpage = ({navigation}) => {
         />
 
         {isLoading && hotelData.length === 0 ? ( // Loading state only when there is no data
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </View>
+          <HotelListingSkeleton />
         ) : (
           <>
             <Viewpagecard
@@ -366,14 +367,13 @@ const Viewpage = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    height: '100%',
-  },
-  loadingContainer: {
+  safeArea: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: COLORS.background,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background,
   },
 });
 

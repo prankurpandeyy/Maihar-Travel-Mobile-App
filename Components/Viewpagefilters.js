@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Chip, Title} from 'react-native-paper';
+import {View, StyleSheet, ScrollView} from 'react-native';
+import {Chip, Text} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
 
 const Viewpagefilters = ({hotelData, setHotelData, getData}) => {
   const priceRanges = [
@@ -38,43 +40,85 @@ const Viewpagefilters = ({hotelData, setHotelData, getData}) => {
 
   return (
     <View style={styles.container}>
-      <Title style={styles.title}>Filter by Price</Title>
-      <View style={styles.chipsContainer}>
+      <View style={styles.header}>
+        <Icon name="filter-variant" size={20} color={COLORS.primary} />
+        <Text style={styles.title}>Filter by Price Range</Text>
+      </View>
+
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.chipsContainer}>
         {priceRanges.map(range => (
           <Chip
             key={range.label}
-            mode={
-              selectedRange.label === range.label ? 'contained' : 'outlined'
-            }
+            mode={selectedRange.label === range.label ? 'flat' : 'outlined'}
             selected={selectedRange.label === range.label}
             onPress={() => setSelectedRange(range)}
-            style={styles.chip}>
+            style={[
+              styles.chip,
+              selectedRange.label === range.label
+                ? styles.selectedChip
+                : styles.unselectedChip,
+            ]}
+            textStyle={[
+              styles.chipText,
+              selectedRange.label === range.label
+                ? styles.selectedChipText
+                : styles.unselectedChipText,
+            ]}>
             {range.label}
           </Chip>
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    backgroundColor: 'white',
-    borderRadius: 10,
+    backgroundColor: COLORS.surface,
+    marginHorizontal: SPACING.lg,
+    marginVertical: SPACING.md,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.lg,
+    ...SHADOWS.sm,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: SPACING.md,
   },
   title: {
-    marginBottom: 8,
+    fontSize: TYPOGRAPHY.fontSize.lg,
+    fontWeight: TYPOGRAPHY.fontWeight.semibold,
+    color: COLORS.text,
+    marginLeft: SPACING.sm,
   },
   chipsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
+    paddingRight: SPACING.lg,
   },
   chip: {
-    margin: 2,
+    marginRight: SPACING.sm,
+    borderRadius: RADIUS.full,
+  },
+  selectedChip: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
+  },
+  unselectedChip: {
+    backgroundColor: COLORS.surface,
+    borderColor: COLORS.border,
+  },
+  chipText: {
+    fontSize: TYPOGRAPHY.fontSize.sm,
+    fontWeight: TYPOGRAPHY.fontWeight.medium,
+  },
+  selectedChipText: {
+    color: COLORS.textWhite,
+  },
+  unselectedChipText: {
+    color: COLORS.text,
   },
 });
 

@@ -1,41 +1,87 @@
-import * as React from 'react';
+import React from 'react';
 import {Searchbar, Text} from 'react-native-paper';
 import {StyleSheet, View} from 'react-native';
+import PremiumGradient from './common/CustomGradient';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
 
 const Viewpagesearchbar = ({searchQuery, setSearchQuery}) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.headertext} variant="titleLarge">
-        MAIHAR HOTEL SEARCH{' '}
-      </Text>
-      <Searchbar
-        placeholder="Search"
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        style={styles.searchquerytext}
-      />
-    </View>
+    <PremiumGradient
+      colors={[COLORS.gradientStart, COLORS.gradientEnd]}
+      direction="horizontal"
+      style={styles.container}>
+      <View style={styles.content}>
+        <View style={styles.headerContainer}>
+          <Icon name="hotel" size={28} color={COLORS.textWhite} />
+          <Text style={styles.headerText}>DISCOVER HOTELS</Text>
+        </View>
+
+        <Text style={styles.subHeaderText}>
+          Find the perfect stay near Sharda Mata Temple
+        </Text>
+
+        <View style={styles.searchContainer}>
+          <Searchbar
+            placeholder="Search hotels by name..."
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            style={styles.searchBar}
+            inputStyle={styles.searchInput}
+            iconColor={COLORS.primary}
+            placeholderTextColor={COLORS.textSecondary}
+          />
+        </View>
+      </View>
+    </PremiumGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: 'auto',
-    flexDirection: 'column',
-    justifyContent: 'center',
+    paddingBottom: SPACING.xl,
+  },
+  content: {
+    paddingHorizontal: SPACING.xl,
+    paddingTop: SPACING['2xl'],
+    paddingBottom: SPACING.lg,
+  },
+  headerContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white',
+    justifyContent: 'center',
+    marginBottom: SPACING.sm,
   },
-  headertext: {
-    margin: 5,
+  headerText: {
+    fontSize: TYPOGRAPHY.fontSize['2xl'],
+    fontWeight: TYPOGRAPHY.fontWeight.bold,
+    color: COLORS.textWhite,
+    marginLeft: SPACING.sm,
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
   },
-  searchquerytext: {
-    marginLeft: 10,
-    marginRight: 10,
-    width: '90%',
-    backgroundColor: '#cbb4f5',
-    borderRadius: 10,
+  subHeaderText: {
+    fontSize: TYPOGRAPHY.fontSize.sm,
+    color: COLORS.textWhite,
+    textAlign: 'center',
+    opacity: 0.9,
+    marginBottom: SPACING.xl,
+  },
+  searchContainer: {
+    paddingHorizontal: SPACING.sm,
+  },
+  searchBar: {
+    backgroundColor: COLORS.surface,
+    borderRadius: RADIUS.xl,
+    elevation: 0,
+    ...SHADOWS.md,
+    borderWidth: 0,
+  },
+  searchInput: {
+    fontSize: TYPOGRAPHY.fontSize.base,
+    color: COLORS.text,
   },
 });
 export default Viewpagesearchbar;
