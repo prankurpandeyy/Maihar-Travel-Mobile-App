@@ -11,7 +11,7 @@ import React from 'react';
 import HotelDetailsSkeleton from './Skeleton/HotelDetailsSkeleton';
 
 import {useRoute} from '@react-navigation/native';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useCallback} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   Card,
@@ -37,7 +37,7 @@ const Detailsview = () => {
   const route = useRoute();
   const {hotelId} = route.params; // Access hotelId here
 
-  const fetchHotelById = async hotelId => {
+  const fetchHotelById = useCallback(async hotelId => {
     try {
       const response = await fetch(API_URL + '/' + hotelId, {
         method: 'GET',
@@ -60,10 +60,11 @@ const Detailsview = () => {
     } catch (error) {
       console.error('Error fetching hotel data:', error);
     }
-  };
+  }, []);
+
   useEffect(() => {
     fetchHotelById(hotelId);
-  }, []);
+  }, [hotelId, fetchHotelById]);
   // Usage
 
   function createGoogleMapsEmbedUrl(latLong) {
@@ -85,7 +86,7 @@ const Detailsview = () => {
             direction="diagonal"
             style={styles.header}>
             <View style={styles.headerContent}>
-              <Icon name="hotel" size={32} color={COLORS.textWhite} />
+              <Icon name="home-city" size={32} color={COLORS.textWhite} />
               <Text style={styles.headerTitle}>HOTEL DETAILS</Text>
             </View>
           </PremiumGradient>
@@ -268,13 +269,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerTitle: {
-    fontSize: TYPOGRAPHY.fontSize['2xl'],
-    fontWeight: TYPOGRAPHY.fontWeight.bold,
+    ...TYPOGRAPHY.heading2,
     color: COLORS.textWhite,
     marginLeft: SPACING.md,
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 2,
   },
 
   // Content
@@ -302,9 +299,8 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
   },
   hotelName: {
-    fontSize: TYPOGRAPHY.fontSize['3xl'],
-    fontWeight: TYPOGRAPHY.fontWeight.bold,
-    color: COLORS.text,
+    ...TYPOGRAPHY.heading1,
+    color: COLORS.textPrimary,
     flex: 1,
     marginRight: SPACING.md,
   },
@@ -318,8 +314,7 @@ const styles = StyleSheet.create({
     ...SHADOWS.sm,
   },
   availableText: {
-    fontSize: TYPOGRAPHY.fontSize.xs,
-    fontWeight: TYPOGRAPHY.fontWeight.medium,
+    ...TYPOGRAPHY.caption,
     color: COLORS.success,
     marginLeft: SPACING.xs,
   },
@@ -329,7 +324,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.xl,
   },
   locationText: {
-    fontSize: TYPOGRAPHY.fontSize.base,
+    ...TYPOGRAPHY.body1,
     color: COLORS.textSecondary,
     marginLeft: SPACING.sm,
     flex: 1,

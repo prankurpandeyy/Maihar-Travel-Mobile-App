@@ -1,21 +1,22 @@
-import React, {useState, useEffect} from 'react';
-import {View, FlatList, Text} from 'react-native';
-import {Button, Card, ActivityIndicator} from 'react-native-paper';
-import {Client, Databases, Query} from 'appwrite';
-import {API_URL, PROJECT_ID, DATABSE_ID, COLLECTION_ID} from '@env'; // Import environment variables
+import React, { useState, useEffect } from 'react';
+import { View, FlatList, StyleSheet } from 'react-native';
+import { Button, Card, ActivityIndicator, Text } from 'react-native-paper';
+import { Client, Databases, Query } from 'appwrite';
+import { API_URL, PROJECT_ID, DATABSE_ID, COLLECTION_ID } from '@env';
+import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../constants/theme';
 
 const client = new Client().setEndpoint(API_URL).setProject(PROJECT_ID);
 const databases = new Databases(client);
 
 const Pagination = () => {
-  const [hotelData, setHotelData] = useState([]); // Holds hotel data
-  const [loading, setLoading] = useState(true); // Loading state
-  const [currentPage, setCurrentPage] = useState(1); // Current page
-  const [totalPages, setTotalPages] = useState(0); // Total pages
-  const dataPerPage = 25; // Items per page
-  // GETDATA
+  const [hotelData, setHotelData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const dataPerPage = 25;
 
   const fetchHotelData = async () => {
+    try {
     const page1 = await databases.listDocuments(
       'DATABASE_ID',
       'COLLECTION_ID',
@@ -25,91 +26,194 @@ const Pagination = () => {
     const total = page1.total;
     setTotalPages(Math.ceil(total / dataPerPage));
     setLoading(false);
+    } catch (error) {
+      console.error('Error fetching hotel data:', error);
+      setLoading(false);
+    }
   };
 
-  // Fetch hotel data from API
   useEffect(() => {
     fetchHotelData();
-  });
+  }, []);
 
-  // Calculate and return the data for the current page
   const getCurrentPageData = () => {
     const start = (currentPage - 1) * dataPerPage;
     const end = start + dataPerPage;
-    return hotelData.slice(start, end); // Slice the hotel data array to get the current page data
+    return hotelData.slice(start, end);
   };
 
-  // Render each hotel item
-  const renderItem = () => (
-    <Card style={{margin: 10}}>
+  const renderItem = ({ item }) => (
+    <Card style={styles.card}>
       <Card.Content>
-        {/* <Text style={{fontSize: 18}}>{hotelData.name}</Text>{' '} */}
-        {/* Ensure the item has a name property */}
+        <Text style={styles.hotelName}>{item.HotelName || 'Hotel Name'}</Text>
+        <Text style={styles.hotelDetails}>
+          Price: ₹{item.HotelRentMin} - ₹{item.HotelRentMax}
+        </Text>
       </Card.Content>
     </Card>
   );
 
-  // Render pagination buttons with page numbers
   const renderPageNumbers = () => {
     const pageNumbers = [];
-    for (let i = 1; i <= totalPages; i++) {
+    const maxVisiblePages = 5;
+    const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    for (let i = startPage; i <= endPage; i++) {
       pageNumbers.push(
         <Button
           key={i}
           mode={i === currentPage ? 'contained' : 'outlined'}
           onPress={() => setCurrentPage(i)}
-          style={{marginHorizontal: 5}}>
-          <Text>{i}</Text> {/* Wrap the page number in a Text component */}
+          style={[
+            styles.pageButton,
+            i === currentPage ? styles.activePageButton : styles.inactivePageButton
+          ]}
+          labelStyle={[
+            styles.pageButtonText,
+            i === currentPage ? styles.activePageText : styles.inactivePageText
+          ]}>
+          {i}
         </Button>,
       );
     }
     return pageNumbers;
   };
 
-  return (
-    <View style={{flex: 1, padding: 20}}>
-      {loading ? (
-        <ActivityIndicator animating={true} />
-      ) : (
-        <>
-          {/* List of hotels */}
-          <FlatList
-            data={getCurrentPageData()} // Use the function to get data for the current page
-            renderItem={renderItem}
-            keyExtractor={item => item.$id.toString()} // Unique ID from Appwrite
-            // Avoid extra styles that might cause scrolling issues
-          />
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={COLORS.primary} />
+        <Text style={styles.loadingText}>Loading hotels...</Text>
+      </View>
+    );
+  }
 
-          {/* Pagination controls */}
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginVertical: 20,
-            }}>
-            {/* Previous button */}
+  return (
+    <View style={styles.container}>
+          <FlatList
+        data={getCurrentPageData()}
+            renderItem={renderItem}
+        keyExtractor={item => item.$id?.toString() || Math.random().toString()}
+        contentContainerStyle={styles.listContainer}
+      />
+
+      <View style={styles.paginationContainer}>
             <Button
               mode="contained"
               disabled={currentPage === 1}
-              onPress={() => setCurrentPage(currentPage - 1)}>
-              <Text>Prev</Text> {/* Wrap button text in Text component */}
+          onPress={() => setCurrentPage(currentPage - 1)}
+          style={[
+            styles.navButton,
+            currentPage === 1 ? styles.disabledButton : styles.enabledButton
+          ]}
+          labelStyle={styles.navButtonText}>
+          Previous
             </Button>
 
-            {/* Page numbers */}
+        <View style={styles.pageNumbers}>
             {renderPageNumbers()}
+        </View>
 
-            {/* Next button */}
             <Button
               mode="contained"
               disabled={currentPage === totalPages}
-              onPress={() => setCurrentPage(currentPage + 1)}>
-              <Text>Next</Text> {/* Wrap button text in Text component */}
+          onPress={() => setCurrentPage(currentPage + 1)}
+          style={[
+            styles.navButton,
+            currentPage === totalPages ? styles.disabledButton : styles.enabledButton
+          ]}
+          labelStyle={styles.navButtonText}>
+          Next
             </Button>
           </View>
-        </>
-      )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+    padding: SPACING.lg,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.background,
+  },
+  loadingText: {
+    ...TYPOGRAPHY.body1,
+    color: COLORS.textSecondary,
+    marginTop: SPACING.md,
+  },
+  listContainer: {
+    paddingBottom: SPACING.xl,
+  },
+  card: {
+    backgroundColor: COLORS.surface,
+    marginVertical: SPACING.sm,
+    borderRadius: RADIUS.lg,
+    ...SHADOWS.sm,
+  },
+  hotelName: {
+    ...TYPOGRAPHY.heading4,
+    color: COLORS.textPrimary,
+    marginBottom: SPACING.xs,
+  },
+  hotelDetails: {
+    ...TYPOGRAPHY.body2,
+    color: COLORS.textSecondary,
+  },
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: SPACING.lg,
+    paddingHorizontal: SPACING.md,
+    backgroundColor: COLORS.surface,
+    borderRadius: RADIUS.lg,
+    ...SHADOWS.sm,
+  },
+  pageNumbers: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  navButton: {
+    borderRadius: RADIUS.md,
+  },
+  enabledButton: {
+    backgroundColor: COLORS.primary,
+  },
+  disabledButton: {
+    backgroundColor: COLORS.textLight,
+  },
+  navButtonText: {
+    ...TYPOGRAPHY.button,
+    color: COLORS.textWhite,
+  },
+  pageButton: {
+    marginHorizontal: SPACING.xs,
+    minWidth: 40,
+    borderRadius: RADIUS.md,
+  },
+  activePageButton: {
+    backgroundColor: COLORS.primary,
+  },
+  inactivePageButton: {
+    backgroundColor: COLORS.surface,
+    borderColor: COLORS.border,
+  },
+  pageButtonText: {
+    ...TYPOGRAPHY.body2,
+  },
+  activePageText: {
+    color: COLORS.textWhite,
+  },
+  inactivePageText: {
+    color: COLORS.textPrimary,
+  },
+});
 
 export default Pagination;

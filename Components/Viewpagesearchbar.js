@@ -13,25 +13,25 @@ const Viewpagesearchbar = ({searchQuery, setSearchQuery}) => {
       style={styles.container}>
       <View style={styles.content}>
         <View style={styles.headerContainer}>
-          <Icon name="hotel" size={28} color={COLORS.textWhite} />
+          <Icon name="home-city" size={28} color={COLORS.textWhite} />
           <Text style={styles.headerText}>DISCOVER HOTELS</Text>
         </View>
 
         <Text style={styles.subHeaderText}>
           Find the perfect stay near Sharda Mata Temple
-        </Text>
+      </Text>
 
         <View style={styles.searchContainer}>
-          <Searchbar
+      <Searchbar
             placeholder="Search hotels by name..."
-            value={searchQuery}
-            onChangeText={setSearchQuery}
+        value={searchQuery}
+        onChangeText={setSearchQuery}
             style={styles.searchBar}
             inputStyle={styles.searchInput}
             iconColor={COLORS.primary}
             placeholderTextColor={COLORS.textSecondary}
-          />
-        </View>
+      />
+    </View>
       </View>
     </PremiumGradient>
   );
@@ -54,16 +54,12 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.sm,
   },
   headerText: {
-    fontSize: TYPOGRAPHY.fontSize['2xl'],
-    fontWeight: TYPOGRAPHY.fontWeight.bold,
+    ...TYPOGRAPHY.heading2,
     color: COLORS.textWhite,
     marginLeft: SPACING.sm,
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 2,
   },
   subHeaderText: {
-    fontSize: TYPOGRAPHY.fontSize.sm,
+    ...TYPOGRAPHY.body2,
     color: COLORS.textWhite,
     textAlign: 'center',
     opacity: 0.9,
@@ -80,8 +76,8 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   searchInput: {
-    fontSize: TYPOGRAPHY.fontSize.base,
-    color: COLORS.text,
+    ...TYPOGRAPHY.body1,
+    color: COLORS.textPrimary,
   },
 });
 export default Viewpagesearchbar;

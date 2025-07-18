@@ -198,3 +198,4 @@ export const COMMON_STYLES = {
     color: COLORS.text,
   },
 };
+ 

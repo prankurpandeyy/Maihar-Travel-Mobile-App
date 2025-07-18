@@ -1,42 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {Chip, Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
 
-const Viewpagefilters = ({hotelData, setHotelData, getData}) => {
+const Viewpagefilters = ({priceRange, setPriceRange}) => {
   const priceRanges = [
     {label: 'All', min: 0, max: Infinity},
-    {label: 'Till ₹500', min: 0, max: 500},
-    {label: '₹500 - ₹1000', min: 500, max: 1000},
-    {label: '₹1000 - ₹2000', min: 1000, max: 2000},
-    {label: 'Above ₹2000', min: 2000, max: Infinity},
+    {label: '₹0-500', min: 0, max: 500},
+    {label: '₹500-1000', min: 500, max: 1000},
+    {label: '₹1000-1500', min: 1000, max: 1500},
+    {label: '₹1500+', min: 1500, max: Infinity},
   ];
-
-  const [selectedRange, setSelectedRange] = useState(priceRanges[0]);
-
-  useEffect(() => {
-    applyFilter();
-  }, [selectedRange]);
-
-  const applyFilter = () => {
-    if (selectedRange.label === 'All') {
-      getData(); // Fetch the original data
-    } else {
-      const filteredHotels = hotelData.filter(hotel => {
-        const hotelRentMin = parseInt(hotel.HotelRentMin, 10);
-        const hotelRentMax = parseInt(hotel.HotelRentMax, 10);
-        return (
-          (hotelRentMin >= selectedRange.min &&
-            hotelRentMin <= selectedRange.max) ||
-          (hotelRentMax >= selectedRange.min &&
-            hotelRentMax <= selectedRange.max)
-        );
-      });
-
-      setHotelData(filteredHotels.length > 0 ? filteredHotels : []);
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -52,18 +27,18 @@ const Viewpagefilters = ({hotelData, setHotelData, getData}) => {
         {priceRanges.map(range => (
           <Chip
             key={range.label}
-            mode={selectedRange.label === range.label ? 'flat' : 'outlined'}
-            selected={selectedRange.label === range.label}
-            onPress={() => setSelectedRange(range)}
+            mode={priceRange.label === range.label ? 'flat' : 'outlined'}
+            selected={priceRange.label === range.label}
+            onPress={() => setPriceRange(range)}
             style={[
               styles.chip,
-              selectedRange.label === range.label
+              priceRange.label === range.label
                 ? styles.selectedChip
                 : styles.unselectedChip,
             ]}
             textStyle={[
               styles.chipText,
-              selectedRange.label === range.label
+              priceRange.label === range.label
                 ? styles.selectedChipText
                 : styles.unselectedChipText,
             ]}>
@@ -80,8 +55,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.surface,
     marginHorizontal: SPACING.lg,
     marginVertical: SPACING.md,
-    borderRadius: RADIUS.lg,
+    borderRadius: RADIUS.xl,
     padding: SPACING.lg,
+    marginTop: -SPACING['2xl'],
     ...SHADOWS.sm,
   },
   header: {
@@ -90,16 +66,16 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   title: {
-    fontSize: TYPOGRAPHY.fontSize.lg,
-    fontWeight: TYPOGRAPHY.fontWeight.semibold,
-    color: COLORS.text,
+    ...TYPOGRAPHY.heading4,
+    color: COLORS.textPrimary,
     marginLeft: SPACING.sm,
   },
   chipsContainer: {
-    paddingRight: SPACING.lg,
+    flexDirection: 'row',
+    paddingVertical: SPACING.sm,
   },
   chip: {
-    marginRight: SPACING.sm,
+    marginRight: SPACING.md,
     borderRadius: RADIUS.full,
   },
   selectedChip: {
@@ -111,14 +87,13 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
   },
   chipText: {
-    fontSize: TYPOGRAPHY.fontSize.sm,
-    fontWeight: TYPOGRAPHY.fontWeight.medium,
+    ...TYPOGRAPHY.body2,
   },
   selectedChipText: {
     color: COLORS.textWhite,
   },
   unselectedChipText: {
-    color: COLORS.text,
+    color: COLORS.textSecondary,
   },
 });
 

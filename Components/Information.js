@@ -229,16 +229,12 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   headerTitle: {
-    fontSize: TYPOGRAPHY.fontSize['2xl'],
-    fontWeight: TYPOGRAPHY.fontWeight.bold,
+    ...TYPOGRAPHY.heading2,
     color: COLORS.textWhite,
     marginLeft: SPACING.md,
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 2,
   },
   headerSubtitle: {
-    fontSize: TYPOGRAPHY.fontSize.sm,
+    ...TYPOGRAPHY.body2,
     color: COLORS.textWhite,
     textAlign: 'center',
     opacity: 0.9,
@@ -264,8 +260,7 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.sm,
   },
   accordionTitle: {
-    fontSize: TYPOGRAPHY.fontSize.lg,
-    fontWeight: TYPOGRAPHY.fontWeight.semibold,
+    ...TYPOGRAPHY.heading4,
     color: COLORS.textPrimary,
   },
   accordionContent: {
@@ -287,10 +282,10 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
   },
   historyText: {
-    fontSize: TYPOGRAPHY.fontSize.base,
-    lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.base,
+    ...TYPOGRAPHY.body1,
     color: COLORS.textPrimary,
     textAlign: 'justify',
+    lineHeight: 24,
   },
 
   // Table Section
@@ -298,8 +293,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
   },
   tableTitle: {
-    fontSize: TYPOGRAPHY.fontSize.lg,
-    fontWeight: TYPOGRAPHY.fontWeight.semibold,
+    ...TYPOGRAPHY.heading4,
     color: COLORS.textPrimary,
     marginBottom: SPACING.md,
     textAlign: 'center',
@@ -320,17 +314,16 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   noteTitle: {
-    fontSize: TYPOGRAPHY.fontSize.lg,
-    fontWeight: TYPOGRAPHY.fontWeight.bold,
+    ...TYPOGRAPHY.heading4,
     color: COLORS.textPrimary,
     marginLeft: SPACING.sm,
   },
   noteText: {
-    fontSize: TYPOGRAPHY.fontSize.base,
-    lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.base,
+    ...TYPOGRAPHY.body1,
     color: COLORS.textSecondary,
     marginBottom: SPACING.xl,
     textAlign: 'justify',
+    lineHeight: 24,
   },
 
   // Booking Button
@@ -347,8 +340,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.xl,
   },
   buttonText: {
-    fontSize: TYPOGRAPHY.fontSize.base,
-    fontWeight: TYPOGRAPHY.fontWeight.bold,
+    ...TYPOGRAPHY.button,
     color: COLORS.textWhite,
     marginLeft: SPACING.sm,
   },

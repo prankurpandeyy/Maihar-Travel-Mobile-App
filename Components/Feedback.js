@@ -23,7 +23,7 @@ const Feedback = () => {
       color: COLORS.error,
     },
     {
-      icon: 'badge-account',
+      icon: 'shield-account',
       title: 'Maihar Police Station',
       subtitle: '07674232047',
       type: 'phone',

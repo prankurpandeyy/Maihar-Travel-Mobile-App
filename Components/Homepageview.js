@@ -27,10 +27,10 @@ function Homepageview({navigation}) {
         {/* Header Section */}
         <View style={styles.headerSection}>
           <View style={styles.imageContainer}>
-            <Image
-              style={styles.image}
-              source={require('../assets/matasharda.jpg')}
-            />
+      <Image
+        style={styles.image}
+        source={require('../assets/matasharda.jpg')}
+      />
             <View style={styles.imageOverlay} />
           </View>
 
@@ -48,7 +48,7 @@ function Homepageview({navigation}) {
         </View>
 
         {/* Action Buttons */}
-        <View style={styles.buttonContainer}>
+      <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={[styles.primaryButton, styles.hotelButton]}
             onPress={() => navigation.navigate('View')}
@@ -57,7 +57,7 @@ function Homepageview({navigation}) {
               colors={[COLORS.secondary, COLORS.secondaryLight]}
               direction="horizontal"
               style={styles.buttonGradient}>
-              <Icon name="hotel" size={24} color={COLORS.textWhite} />
+              <Icon name="home-city" size={24} color={COLORS.textWhite} />
               <Text style={styles.buttonText}>EXPLORE HOTELS</Text>
             </PremiumGradient>
           </TouchableOpacity>

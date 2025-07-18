@@ -9,7 +9,7 @@ const FacilityCard = ({navigation}) => {
     {icon: 'walk', name: '1063 Steps', color: COLORS.primary},
     {icon: 'tram', name: 'Ropeway Service', color: COLORS.secondary},
     {icon: 'water', name: 'Drinking Water', color: COLORS.info},
-    {icon: 'shoe-heel', name: 'Shoe Storage', color: COLORS.warning},
+    {icon: 'shoe-print', name: 'Shoe Storage', color: COLORS.warning},
     {icon: 'power', name: 'Power Backup', color: COLORS.success},
     {icon: 'toilet', name: 'Washrooms', color: COLORS.accent},
     {icon: 'chair', name: 'Sitting Benches', color: COLORS.primary},
@@ -81,7 +81,7 @@ const FacilityCard = ({navigation}) => {
             colors={[COLORS.secondary, COLORS.secondaryLight]}
             direction="horizontal"
             style={styles.buttonGradient}>
-            <Icon name="hotel" size={20} color={COLORS.textWhite} />
+            <Icon name="home-city" size={20} color={COLORS.textWhite} />
             <Text style={styles.buttonText}>EXPLORE HOTELS</Text>
             <Icon name="chevron-right" size={20} color={COLORS.textWhite} />
           </PremiumGradient>

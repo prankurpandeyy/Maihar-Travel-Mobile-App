@@ -1,11 +1,12 @@
 import React from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-paper';
+import {COLORS, TYPOGRAPHY, SPACING} from '../constants/theme';
 
 const DataSpinner = () => (
-  <View style={[styles.container, styles.horizontal]}>
-    <ActivityIndicator size="large" color="red" />
-    <Text>loading...</Text>
+  <View style={styles.container}>
+    <ActivityIndicator size="large" color={COLORS.primary} />
+    <Text style={styles.loadingText}>Loading...</Text>
   </View>
 );
 
@@ -13,12 +14,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-  },
-  horizontal: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: 25,
+    padding: SPACING.xl,
+  },
+  loadingText: {
+    ...TYPOGRAPHY.body1,
+    color: COLORS.textSecondary,
+    marginTop: SPACING.md,
   },
 });
 

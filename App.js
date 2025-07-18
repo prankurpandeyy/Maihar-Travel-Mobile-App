@@ -1,26 +1,66 @@
 import React from 'react';
-import {StyleSheet, Text, View, SafeAreaView, ScrollView} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {StatusBar} from 'react-native';
 import Homepage from './Pages/Homepage';
 import Viewpage from './Pages/Viewpage';
 import Detailspage from './Pages/Detailspage';
 import Informationpage from './Pages/Informationpage';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {COLORS} from './constants/theme';
 
-const App = () => {
-  const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
+
+function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={Homepage} />
-        <Stack.Screen name="View" component={Viewpage} />
-        <Stack.Screen name="Details" component={Detailspage} />
-        <Stack.Screen name="Information" component={Informationpage} />
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={COLORS.primary}
+        translucent={false}
+      />
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+          },
+          headerTintColor: COLORS.textWhite,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerShadowVisible: true,
+        }}>
+        <Stack.Screen
+          name="Home"
+          component={Homepage}
+          options={{
+            title: 'Maihar Travel',
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="View"
+          component={Viewpage}
+          options={{
+            title: 'Hotels Near Sharda Mata Temple',
+          }}
+        />
+        <Stack.Screen
+          name="Details"
+          component={Detailspage}
+          options={{
+            title: 'Hotel Details',
+          }}
+        />
+        <Stack.Screen
+          name="Information"
+          component={Informationpage}
+          options={{
+            title: 'Temple Information',
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
-
-    // <Homepage />
   );
-};
+}
 
 export default App;

@@ -272,6 +272,11 @@ const Viewpage = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [after, setAfter] = useState(null); // Cursor for pagination
+  const [priceRange, setPriceRange] = useState({
+    label: 'All',
+    min: 0,
+    max: Infinity,
+  });
 
   const getData = async () => {
     setIsLoading(true);
@@ -291,10 +296,18 @@ const Viewpage = ({navigation}) => {
         return; // No more documents to load
       }
 
-      // Append new documents to existing data
-      setHotelData(prev => [...prev, ...response.documents]);
-      setFilteredData(prev => [...prev, ...response.documents]);
-      setAfter(response.documents[response.documents.length - 1].$id); // Update cursor to the last fetched document
+      // Deduplication logic: filter out documents that already exist
+      const newDocuments = response.documents.filter(
+        newDoc =>
+          !hotelData.some(existingDoc => existingDoc.$id === newDoc.$id),
+      );
+
+      if (newDocuments.length > 0) {
+        // Append only new unique documents to existing data
+        setHotelData(prev => [...prev, ...newDocuments]);
+        setFilteredData(prev => [...prev, ...newDocuments]);
+        setAfter(response.documents[response.documents.length - 1].$id); // Update cursor to the last fetched document
+      }
     } catch (error) {
       console.error('Error fetching hotel data:', error);
     } finally {
@@ -303,10 +316,35 @@ const Viewpage = ({navigation}) => {
   };
 
   const applyFilter = () => {
-    const filtered = hotelData.filter(hotel =>
-      hotel.HotelName.toLowerCase().includes(searchQuery.toLowerCase()),
+    // Ensure filtered data is also deduplicated
+    const uniqueHotelData = hotelData.filter(
+      (hotel, index, self) =>
+        index === self.findIndex(h => h.$id === hotel.$id),
     );
-    setFilteredData(filtered); // Update filtered data based on search query
+
+    let filtered = uniqueHotelData;
+
+    // Apply search filter
+    if (searchQuery) {
+      filtered = filtered.filter(hotel =>
+        hotel.HotelName.toLowerCase().includes(searchQuery.toLowerCase()),
+      );
+    }
+
+    // Apply price range filter
+    if (priceRange.min !== 0 || priceRange.max !== Infinity) {
+      filtered = filtered.filter(hotel => {
+        const minPrice = hotel.HotelRentMin;
+        const maxPrice = hotel.HotelRentMax;
+        return (
+          (minPrice >= priceRange.min && minPrice <= priceRange.max) ||
+          (maxPrice >= priceRange.min && maxPrice <= priceRange.max) ||
+          (minPrice <= priceRange.min && maxPrice >= priceRange.max)
+        );
+      });
+    }
+
+    setFilteredData(filtered); // Update filtered data based on search query and price range
   };
 
   useEffect(() => {
@@ -315,7 +353,7 @@ const Viewpage = ({navigation}) => {
 
   useEffect(() => {
     applyFilter(); // Apply filtering whenever search query changes
-  }, [searchQuery, hotelData]); // Re-apply filtering when search query or hotel data changes
+  }, [searchQuery, hotelData, priceRange]); // Re-apply filtering when search query or hotel data changes
 
   const loadMoreData = () => {
     if (!isLoading) {
@@ -345,9 +383,8 @@ const Viewpage = ({navigation}) => {
           setSearchQuery={setSearchQuery}
         />
         <Viewpagefilters
-          hotelData={hotelData}
-          setHotelData={setHotelData}
-          getData={getData}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
         />
 
         {isLoading && hotelData.length === 0 ? ( // Loading state only when there is no data

@@ -134,9 +134,11 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
       {isLoading ? (
         <HotelListSkeleton count={5} />
       ) : filteredHotelsByName.length > 0 ? (
-        filteredHotelsByName.map(hotel =>
+        filteredHotelsByName.map((hotel, index) =>
           hotel.isHotelFlagged ? (
-            <TouchableOpacity key={hotel.$id} style={styles.flaggedCard}>
+            <TouchableOpacity
+              key={`flagged-${hotel.$id}-${index}`}
+              style={styles.flaggedCard}>
               <View style={styles.flaggedBadge}>
                 <Icon name="alert-circle" size={16} color={COLORS.error} />
                 <Text style={styles.flaggedBadgeText}>FLAGGED</Text>
@@ -144,7 +146,7 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
 
               <View style={styles.cardContent}>
                 <View style={styles.hotelHeader}>
-                  <Icon name="hotel" size={20} color={COLORS.error} />
+                  <Icon name="home-city" size={20} color={COLORS.error} />
                   <Text style={styles.flaggedHotelName}>{hotel.HotelName}</Text>
                 </View>
 
@@ -163,7 +165,7 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              key={hotel.$id}
+              key={`hotel-${hotel.$id}-${index}`}
               onPress={() =>
                 navigation.navigate('Details', {hotelId: hotel.$id})
               }
@@ -175,7 +177,7 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
                 style={styles.cardGradient}>
                 <View style={styles.cardContent}>
                   <View style={styles.hotelHeader}>
-                    <Icon name="hotel" size={20} color={COLORS.primary} />
+                    <Icon name="home-city" size={20} color={COLORS.primary} />
                     <Text style={styles.hotelName}>{hotel.HotelName}</Text>
                     <View style={styles.availableBadge}>
                       <Text style={styles.availableText}>Available</Text>
