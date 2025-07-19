@@ -85,6 +85,58 @@ export const TYPOGRAPHY = {
     normal: 1.4,
     relaxed: 1.6,
   },
+
+  // Heading Styles (Complete style objects)
+  heading1: {
+    fontSize: 32,
+    fontWeight: '700',
+    lineHeight: 38,
+    fontFamily: 'System',
+  },
+  heading2: {
+    fontSize: 28,
+    fontWeight: '600',
+    lineHeight: 34,
+    fontFamily: 'System',
+  },
+  heading3: {
+    fontSize: 24,
+    fontWeight: '600',
+    lineHeight: 30,
+    fontFamily: 'System',
+  },
+  heading4: {
+    fontSize: 20,
+    fontWeight: '500',
+    lineHeight: 26,
+    fontFamily: 'System',
+  },
+  heading5: {
+    fontSize: 18,
+    fontWeight: '500',
+    lineHeight: 24,
+    fontFamily: 'System',
+  },
+
+  // Body Text Styles
+  body1: {
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 24,
+    fontFamily: 'System',
+  },
+  body2: {
+    fontSize: 14,
+    fontWeight: '400',
+    lineHeight: 20,
+    fontFamily: 'System',
+  },
+  caption: {
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 16,
+    fontFamily: 'System',
+  },
 };
 
 export const SPACING = {
@@ -198,4 +250,3 @@ export const COMMON_STYLES = {
     color: COLORS.text,
   },
 };
- 

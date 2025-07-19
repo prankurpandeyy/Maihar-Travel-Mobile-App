@@ -17,10 +17,10 @@ const Informationpage = ({navigation}) => {
         <Text
           style={styles.devInfo}
           onPress={() => {
-            Linking.openURL('https://atdsoftwares.netlify.app/');
+            Linking.openURL('https://99mvps.netlify.app/');
           }}>
           <Text style={{fontWeight: 'bold', color: '#1D9BF0'}}>
-            Designed & Developed by ATD Softwares Maihar
+            Designed & Developed by 99mvps Maihar
           </Text>
         </Text>
       </ScrollView>

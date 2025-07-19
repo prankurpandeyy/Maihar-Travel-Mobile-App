@@ -178,7 +178,7 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
                 <View style={styles.cardContent}>
                   <View style={styles.hotelHeader}>
                     <Icon name="home-city" size={20} color={COLORS.primary} />
-                    <Text style={styles.hotelName}>{hotel.HotelName}</Text>
+                <Text style={styles.hotelName}>{hotel.HotelName}</Text>
                     <View style={styles.availableBadge}>
                       <Text style={styles.availableText}>Available</Text>
                     </View>
@@ -199,14 +199,14 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
                   <View style={styles.cardFooter}>
                     <Text style={styles.viewDetailsText}>
                       Tap to view details
-                    </Text>
+                </Text>
                     <Icon
                       name="chevron-right"
                       size={20}
                       color={COLORS.primary}
                     />
                   </View>
-                </View>
+              </View>
               </PremiumGradient>
             </TouchableOpacity>
           ),
@@ -214,7 +214,7 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
       ) : (
         <View style={styles.emptyState}>
           <Icon name="home-off" size={48} color={COLORS.textLight} />
-          <Text style={styles.noHotelsText}>No hotels found</Text>
+        <Text style={styles.noHotelsText}>No hotels found</Text>
           <Text style={styles.emptyStateSubtext}>
             Try adjusting your search or filters
           </Text>

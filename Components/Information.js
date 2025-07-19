@@ -7,10 +7,48 @@ import {
   TouchableOpacity,
   Linking,
   Animated,
+  Image,
+  Dimensions,
+  Modal,
+  FlatList,
+  PixelRatio,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PremiumGradient from './common/CustomGradient';
+import OptimizedImage from './common/OptimizedImage';
 import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
+import {
+  getGalleryImages,
+  getTempleImage,
+  preloadImages,
+} from '../utils/imageUtils';
+
+// Enhanced responsive utilities for all mobile screen sizes
+const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
+const scale = screenWidth / 375; // Base iPhone 6/7/8 width
+const verticalScale = screenHeight / 667; // Base iPhone 6/7/8 height
+const moderateScale = (size, factor = 0.5) => size + (scale - 1) * factor;
+const moderateVerticalScale = (size, factor = 0.5) =>
+  size + (verticalScale - 1) * factor;
+
+// Device categorization for responsive design
+const isSmallDevice = screenWidth < 360;
+const isMediumDevice = screenWidth >= 360 && screenWidth < 414;
+const isLargeDevice = screenWidth >= 414 && screenWidth < 768;
+const isTablet = screenWidth >= 768;
+
+// Responsive sizing functions
+const responsiveWidth = percentage => (screenWidth * percentage) / 100;
+const responsiveHeight = percentage => (screenHeight * percentage) / 100;
+const responsiveFontSize = baseSize => {
+  // Ensure we have a valid number, fallback to 16 if undefined
+  const fontSize = typeof baseSize === 'number' ? baseSize : 16;
+
+  if (isSmallDevice) return moderateScale(fontSize * 0.9);
+  if (isMediumDevice) return moderateScale(fontSize);
+  if (isLargeDevice) return moderateScale(fontSize * 1.1);
+  return moderateScale(fontSize * 1.2); // Tablet
+};
 
 // Skeleton Loading Component
 const SkeletonLoader = ({width, height, style}) => {
@@ -129,6 +167,115 @@ const InfoTable = ({data, headers}) => (
   </View>
 );
 
+// Image Gallery Component
+const ImageGallery = ({images, title}) => {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openImageModal = image => {
+    setSelectedImage(image);
+    setModalVisible(true);
+  };
+
+  const renderImageItem = ({item, index}) => (
+    <TouchableOpacity
+      style={styles.galleryImageContainer}
+      onPress={() => openImageModal(item)}
+      activeOpacity={0.8}>
+      <Image
+        source={item.source}
+        style={styles.galleryImage}
+        resizeMode="cover"
+      />
+      <View style={styles.imageOverlay}>
+        <Icon name="magnify-plus" size={24} color={COLORS.textWhite} />
+      </View>
+      <Text style={styles.imageCaption}>{item.caption}</Text>
+    </TouchableOpacity>
+  );
+
+  return (
+    <View style={styles.imageGalleryContainer}>
+      <Text style={styles.galleryTitle}>{title}</Text>
+      <FlatList
+        data={images}
+        renderItem={renderImageItem}
+        keyExtractor={(item, index) => `gallery-${index}`}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.galleryScrollContainer}
+      />
+
+      {/* Full Screen Image Modal */}
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setModalVisible(false)}>
+        <View style={styles.modalContainer}>
+          <TouchableOpacity
+            style={styles.modalBackdrop}
+            onPress={() => setModalVisible(false)}>
+            <View style={styles.modalContent}>
+              {selectedImage && (
+                <>
+                  <Image
+                    source={selectedImage.source}
+                    style={styles.modalImage}
+                    resizeMode="contain"
+                  />
+                  <View style={styles.modalCaption}>
+                    <Text style={styles.modalCaptionText}>
+                      {selectedImage.caption}
+                    </Text>
+                    <Text style={styles.modalDescriptionText}>
+                      {selectedImage.description}
+                    </Text>
+                  </View>
+                </>
+              )}
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setModalVisible(false)}>
+                <Icon name="close" size={24} color={COLORS.textWhite} />
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+    </View>
+  );
+};
+
+// Section Image Component
+const SectionImage = ({source, caption, style}) => (
+  <View style={[styles.sectionImageContainer, style]}>
+    <OptimizedImage
+      source={source}
+      style={styles.sectionImage}
+      resizeMode="cover"
+    />
+    <Text style={styles.sectionImageCaption}>{caption}</Text>
+  </View>
+);
+
+// Hero Image Component
+const HeroImage = () => (
+  <View style={styles.heroImageContainer}>
+    <OptimizedImage
+      source={getTempleImage('main-temple')}
+      style={styles.heroImage}
+      resizeMode="cover"
+    />
+    <View style={styles.heroImageOverlay}>
+      <Text style={styles.heroImageTitle}>Sharda Mata Temple</Text>
+      <Text style={styles.heroImageSubtitle}>
+        Sacred Journey to Trikut Hills
+      </Text>
+    </View>
+  </View>
+);
+
 // Main Information Component
 const Information = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -138,6 +285,18 @@ const Information = ({navigation}) => {
       setIsLoading(false);
     }, 800);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Load temple images using utility functions
+  const [galleryImages, setGalleryImages] = useState([]);
+
+  useEffect(() => {
+    // Preload critical images for better performance
+    preloadImages(['main-temple', 'ropeway', 'temple-stairs']);
+
+    // Load gallery images
+    const images = getGalleryImages();
+    setGalleryImages(images);
   }, []);
 
   // Temple Data
@@ -245,6 +404,12 @@ const Information = ({navigation}) => {
 
       {/* Content */}
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {/* Hero Image */}
+        <HeroImage />
+
+        {/* Temple Gallery */}
+        <ImageGallery images={galleryImages} title="📸 Temple Gallery" />
+
         {/* History Section */}
         <CustomAccordion
           title="Temple History & Significance"
@@ -300,6 +465,7 @@ const Information = ({navigation}) => {
 
         {/* Facilities */}
         <CustomAccordion title="Temple Facilities" icon="star-circle">
+          {/* Basic Facilities Grid */}
           <View style={styles.facilitiesGrid}>
             {facilities.map((facility, index) => (
               <View key={index} style={styles.facilityCard}>
@@ -315,17 +481,125 @@ const Information = ({navigation}) => {
             ))}
           </View>
 
+          {/* Detailed Facility Information */}
+          <View style={styles.detailedFacilities}>
+            <Text style={styles.facilitiesHeader}>🚶‍♂️ Access to Temple</Text>
+
+            <View style={styles.facilityDetail}>
+              <View style={styles.facilityDetailHeader}>
+                <Icon name="stairs" size={20} color={COLORS.primary} />
+                <Text style={styles.facilityDetailTitle}>Temple Stairs</Text>
+              </View>
+
+              <SectionImage
+                source={getTempleImage('stairs')}
+                caption="1,063 stone steps with rest points and railings"
+                style={{marginBottom: SPACING.md}}
+              />
+
+              <Text style={styles.facilityDetailText}>
+                • <Text style={styles.boldText}>1,063 steps</Text> to reach the
+                main temple from the base{'\n'}• Well-maintained stone steps
+                with railings{'\n'}• Rest points available every 200-300 steps
+                {'\n'}• Average climbing time: 45-60 minutes{'\n'}• Early
+                morning climb recommended (cooler temperature)
+              </Text>
+            </View>
+
+            <View style={styles.facilityDetail}>
+              <View style={styles.facilityDetailHeader}>
+                <Icon name="gondola" size={20} color={COLORS.secondary} />
+                <Text style={styles.facilityDetailTitle}>
+                  Ropeway Alternative
+                </Text>
+              </View>
+              <Text style={styles.facilityDetailText}>
+                • Modern ropeway system available{'\n'}•{' '}
+                <Text style={styles.boldText}>Journey time: 3-4 minutes</Text>
+                {'\n'}• Scenic aerial view of Trikut Hills{'\n'}• After ropeway:
+                Additional 50 steps to temple{'\n'}• Suitable for elderly and
+                differently-abled pilgrims
+              </Text>
+            </View>
+
+            <View style={styles.facilityDetail}>
+              <View style={styles.facilityDetailHeader}>
+                <Icon name="food" size={20} color={COLORS.success} />
+                <Text style={styles.facilityDetailTitle}>Annakoot Prasad</Text>
+              </View>
+              <Text style={styles.facilityDetailText}>
+                • <Text style={styles.boldText}>Free meals</Text> for all
+                devotees{'\n'}• Timing: 12:00 PM to 3:00 PM daily{'\n'}• Simple
+                vegetarian food (rice, dal, sabzi, roti){'\n'}• Tokens required
+                - available at counter{'\n'}• First-come, first-served basis
+              </Text>
+            </View>
+
+            <View style={styles.facilityDetail}>
+              <View style={styles.facilityDetailHeader}>
+                <Icon name="car" size={20} color={COLORS.info} />
+                <Text style={styles.facilityDetailTitle}>
+                  Parking & Transport
+                </Text>
+              </View>
+              <Text style={styles.facilityDetailText}>
+                • Large parking area at temple base{'\n'}•{' '}
+                <Text style={styles.boldText}>₹20-50</Text> parking fee for cars
+                {'\n'}• Auto-rickshaw and taxi services available{'\n'}• Local
+                bus connectivity from Maihar station{'\n'}• Bicycle parking also
+                available
+              </Text>
+            </View>
+
+            <View style={styles.facilityDetail}>
+              <View style={styles.facilityDetailHeader}>
+                <Icon name="account-group" size={20} color={COLORS.accent} />
+                <Text style={styles.facilityDetailTitle}>Amenities</Text>
+              </View>
+              <Text style={styles.facilityDetailText}>
+                • Clean restrooms at base and midway points{'\n'}• Drinking
+                water stations throughout the route{'\n'}• Small shops for
+                prasad and religious items{'\n'}• Cloakroom facility for luggage
+                storage{'\n'}• First aid center with basic medical supplies
+              </Text>
+            </View>
+
+            <View style={styles.facilityDetail}>
+              <View style={styles.facilityDetailHeader}>
+                <Icon name="shopping" size={20} color={COLORS.warning} />
+                <Text style={styles.facilityDetailTitle}>
+                  Prasad & Shopping
+                </Text>
+              </View>
+              <Text style={styles.facilityDetailText}>
+                • Official prasad counter inside temple{'\n'}• Coconut, sweets,
+                and flower offerings{'\n'}• Religious books and souvenirs{'\n'}•{' '}
+                <Text style={styles.boldText}>Avoid</Text> purchasing from
+                unauthorized vendors{'\n'}• Fixed price list displayed at
+                counters
+              </Text>
+            </View>
+          </View>
+
           <View style={styles.facilitiesNote}>
-            <Icon name="information" size={20} color={COLORS.warning} />
+            <Icon name="lightbulb" size={20} color={COLORS.primary} />
             <Text style={styles.facilitiesNoteText}>
-              Annakoot Prasad offers free meals daily from 12:00 PM to 3:00 PM
-              on first-come, first-served basis.
+              <Text style={styles.boldText}>Pro Tips:</Text> {'\n'}• Carry water
+              bottle and wear comfortable shoes{'\n'}• Start early morning for
+              cooler weather{'\n'}• Keep ropeway ticket as backup option{'\n'}•
+              Respect temple dress code and photography rules
             </Text>
           </View>
         </CustomAccordion>
 
         {/* Ropeway Information */}
         <CustomAccordion title="Ropeway Services" icon="gondola">
+          <SectionImage
+            source={getTempleImage('ropeway')}
+            caption="Modern Ropeway System - Scenic 3-4 minute journey"
+            style={{marginBottom: SPACING.lg}}
+          />
+
           <InfoTable
             headers={['Day', 'Service', 'Timing']}
             data={ropewayTimings}
@@ -341,9 +615,7 @@ const Information = ({navigation}) => {
 
           <TouchableOpacity
             style={styles.bookingButton}
-            onPress={() =>
-              Linking.openURL('https://uat.ropeways.com/online-booking')
-            }
+            onPress={() => Linking.openURL('https://www.bookmeriride.com/')}
             activeOpacity={0.8}>
             <PremiumGradient
               colors={[COLORS.secondary, COLORS.secondaryLight]}
@@ -372,8 +644,8 @@ const Information = ({navigation}) => {
                 color: COLORS.primary,
               },
               {
-                title: 'Temple Information',
-                number: '111-223-3445',
+                title: 'Admin Mata Sharda Temple',
+                number: '+917400506920',
                 icon: 'information',
                 color: COLORS.info,
               },
@@ -642,6 +914,45 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
+  // Detailed Facilities
+  detailedFacilities: {
+    marginTop: SPACING.xl,
+  },
+  facilitiesHeader: {
+    ...TYPOGRAPHY.heading4,
+    color: COLORS.textPrimary,
+    marginBottom: SPACING.lg,
+    fontWeight: TYPOGRAPHY.fontWeight.bold,
+  },
+  facilityDetail: {
+    backgroundColor: COLORS.surfaceVariant,
+    padding: SPACING.lg,
+    borderRadius: RADIUS.lg,
+    marginBottom: SPACING.lg,
+    borderLeftWidth: 4,
+    borderLeftColor: COLORS.primary,
+  },
+  facilityDetailHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: SPACING.md,
+  },
+  facilityDetailTitle: {
+    ...TYPOGRAPHY.heading4,
+    color: COLORS.textPrimary,
+    marginLeft: SPACING.md,
+    fontWeight: TYPOGRAPHY.fontWeight.semibold,
+  },
+  facilityDetailText: {
+    ...TYPOGRAPHY.body2,
+    color: COLORS.textPrimary,
+    lineHeight: 22,
+  },
+  boldText: {
+    fontWeight: TYPOGRAPHY.fontWeight.bold,
+    color: COLORS.primary,
+  },
+
   // Ropeway
   ropewayNote: {
     flexDirection: 'row',
@@ -733,6 +1044,193 @@ const styles = StyleSheet.create({
     ...TYPOGRAPHY.heading4,
     color: COLORS.textWhite,
     marginHorizontal: SPACING.md,
+  },
+
+  // Image Gallery - Responsive for all mobile screens
+  imageGalleryContainer: {
+    marginTop: moderateVerticalScale(SPACING.lg),
+    marginBottom: moderateVerticalScale(SPACING.lg),
+  },
+  galleryTitle: {
+    ...TYPOGRAPHY.heading4,
+    fontSize: responsiveFontSize(TYPOGRAPHY.heading4.fontSize),
+    color: COLORS.textPrimary,
+    marginBottom: moderateVerticalScale(SPACING.md),
+    paddingHorizontal: moderateScale(SPACING.lg),
+  },
+  galleryScrollContainer: {
+    paddingHorizontal: moderateScale(SPACING.sm),
+  },
+  galleryImageContainer: {
+    // Responsive gallery image sizing for different devices
+    width: isSmallDevice
+      ? responsiveWidth(80) // 80% width on small devices
+      : isTablet
+      ? responsiveWidth(40) // 40% width on tablets (2 images visible)
+      : responsiveWidth(70), // 70% width on medium/large phones
+    height: isSmallDevice
+      ? responsiveWidth(60) // Maintain aspect ratio
+      : isTablet
+      ? responsiveWidth(30)
+      : responsiveWidth(50),
+    marginRight: moderateScale(SPACING.lg),
+    borderRadius: moderateScale(RADIUS.lg),
+    overflow: 'hidden',
+    position: 'relative',
+    ...SHADOWS.md,
+  },
+  galleryImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover', // Ensure proper image scaling
+  },
+  imageOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: RADIUS.lg,
+  },
+  imageCaption: {
+    ...TYPOGRAPHY.body2,
+    color: COLORS.textWhite,
+    textAlign: 'center',
+    marginTop: SPACING.xs,
+  },
+
+  // Section Image - Responsive sizing
+  sectionImageContainer: {
+    width: '100%',
+    // Responsive height based on device size
+    height: isSmallDevice
+      ? responsiveHeight(25) // 25% of screen height on small devices
+      : isTablet
+      ? responsiveHeight(20) // 20% on tablets
+      : responsiveHeight(28), // 28% on medium/large phones
+    marginBottom: moderateVerticalScale(SPACING.lg),
+    borderRadius: moderateScale(RADIUS.lg),
+    overflow: 'hidden',
+    position: 'relative',
+    ...SHADOWS.sm,
+  },
+  sectionImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  sectionImageCaption: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    ...TYPOGRAPHY.body2,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body2.fontSize),
+    color: COLORS.textWhite,
+    textAlign: 'center',
+    padding: moderateScale(SPACING.sm),
+    lineHeight: responsiveFontSize(18),
+  },
+
+  // Hero Image - Responsive for all screen sizes
+  heroImageContainer: {
+    width: '100%',
+    // Responsive hero image height
+    height: isSmallDevice
+      ? responsiveHeight(25) // Smaller on small devices to save space
+      : isTablet
+      ? responsiveHeight(35) // Larger on tablets for impact
+      : responsiveHeight(30), // Standard on medium/large phones
+    marginBottom: moderateVerticalScale(SPACING.xl),
+    borderRadius: moderateScale(RADIUS.xl),
+    overflow: 'hidden',
+    position: 'relative',
+    ...SHADOWS.lg,
+  },
+  heroImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  heroImageOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: moderateScale(SPACING.lg),
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    borderBottomLeftRadius: moderateScale(RADIUS.lg),
+    borderBottomRightRadius: moderateScale(RADIUS.lg),
+  },
+  heroImageTitle: {
+    ...TYPOGRAPHY.heading1,
+    fontSize: responsiveFontSize(TYPOGRAPHY.heading1.fontSize),
+    color: COLORS.textWhite,
+    marginBottom: moderateVerticalScale(SPACING.xs),
+    lineHeight: responsiveFontSize(TYPOGRAPHY.heading1.fontSize * 1.2),
+    textShadowColor: 'rgba(0,0,0,0.8)',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
+  },
+  heroImageSubtitle: {
+    ...TYPOGRAPHY.body1,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body1.fontSize),
+    color: COLORS.textWhite,
+    opacity: 0.95,
+    lineHeight: responsiveFontSize(TYPOGRAPHY.body1.fontSize * 1.3),
+    textShadowColor: 'rgba(0,0,0,0.6)',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
+  },
+
+  // Modal
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.9)',
+  },
+  modalBackdrop: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: Dimensions.get('window').width * 0.8,
+    height: Dimensions.get('window').height * 0.8,
+    backgroundColor: COLORS.surface,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+    alignItems: 'center',
+  },
+  modalImage: {
+    width: '100%',
+    height: '70%',
+    marginBottom: SPACING.md,
+  },
+  modalCaption: {
+    paddingHorizontal: SPACING.md,
+    paddingBottom: SPACING.md,
+  },
+  modalCaptionText: {
+    ...TYPOGRAPHY.heading4,
+    color: COLORS.textWhite,
+    marginBottom: SPACING.xs,
+  },
+  modalDescriptionText: {
+    ...TYPOGRAPHY.body2,
+    color: COLORS.textWhite,
+    opacity: 0.8,
+  },
+  closeButton: {
+    position: 'absolute',
+    top: SPACING.md,
+    right: SPACING.md,
+    zIndex: 10,
   },
 });
 

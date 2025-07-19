@@ -306,7 +306,7 @@ const Viewpage = ({navigation}) => {
         // Append only new unique documents to existing data
         setHotelData(prev => [...prev, ...newDocuments]);
         setFilteredData(prev => [...prev, ...newDocuments]);
-        setAfter(response.documents[response.documents.length - 1].$id); // Update cursor to the last fetched document
+      setAfter(response.documents[response.documents.length - 1].$id); // Update cursor to the last fetched document
       }
     } catch (error) {
       console.error('Error fetching hotel data:', error);
@@ -327,8 +327,8 @@ const Viewpage = ({navigation}) => {
     // Apply search filter
     if (searchQuery) {
       filtered = filtered.filter(hotel =>
-        hotel.HotelName.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
+      hotel.HotelName.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
     }
 
     // Apply price range filter
