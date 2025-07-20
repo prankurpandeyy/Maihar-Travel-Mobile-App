@@ -1,404 +1,418 @@
-// import {React, SafeAreaView, ScrollView} from 'react-native';
-// import Viewpagesearchbar from '../Components/Viewpagesearchbar';
-// import Viewpagecard from '../Components/Viewpagecard';
-// import Viewpagefilters from '../Components/Viewpagefilters';
-// import {useEffect, useState} from 'react';
-// import {StyleSheet} from 'react-native';
-// import {API_URL, PROJECT_ID} from '@env';
-
-// const Viewpage = ({navigation}) => {
-//   const [hotelData, setHotelData] = useState([]);
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [searchQuery, setSearchQuery] = useState('');
-//   const fetchHotelData = async () => {
-//     try {
-//       const response = await fetch(API_URL, {
-//         method: 'GET',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           'X-Appwrite-Project': PROJECT_ID, // Your Project ID
-//         },
-//       });
-
-//       if (!response.ok) {
-//         throw new Error('Failed to fetch hotel data');
-//       }
-
-//       const data = await response.json();
-
-//       setHotelData(data.documents);
-//       return data.documents; // Assuming the response has a 'documents' field
-//     } catch (error) {
-//       console.error(error);
-//     } finally {
-//       setIsLoading(false); // Ensure loading state is set to false after fetching
-//     }
-//   };
-
-//   const filteredHotelsByName = hotelData.filter(hotel =>
-//     hotel.HotelName.toLowerCase().includes(searchQuery.toLowerCase()),
-//   );
-
-//   useEffect(() => {
-//     fetchHotelData();
-//   }, []);
-
-//   return (
-//     <SafeAreaView>
-//       <ScrollView style={styles.container}>
-//         <Viewpagesearchbar
-//           searchQuery={searchQuery}
-//           setSearchQuery={setSearchQuery}
-//         />
-//         <Viewpagefilters
-//           hotelData={hotelData} // Your hotel data from API
-//           setHotelData={setHotelData}
-//           fetchHotelData={fetchHotelData}
-//         />
-
-//         <Viewpagecard
-//           navigation={navigation}
-//           filteredHotelsByName={filteredHotelsByName}
-//           isLoading={isLoading}
-//         />
-
-//         {/* // <Pagination /> */}
-//       </ScrollView>
-//     </SafeAreaView>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     backgroundColor: 'white',
-//     height: '100%',
-//   },
-// });
-
-// export default Viewpage;
-
-// updated code
-// import React, {useEffect, useState} from 'react';
-// import {
-//   SafeAreaView,
-//   ScrollView,
-//   StyleSheet,
-//   ActivityIndicator,
-//   View,
-//   Button,
-//   Text,
-// } from 'react-native';
-// import Viewpagesearchbar from '../Components/Viewpagesearchbar';
-// import Viewpagecard from '../Components/Viewpagecard';
-// import Viewpagefilters from '../Components/Viewpagefilters';
-// import {API_URL, PROJECT_ID} from '@env';
-
-// const Viewpage = ({navigation}) => {
-//   const [hotelData, setHotelData] = useState([]); // Fetched data
-//   const [filteredData, setFilteredData] = useState([]); // Data after filtering
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [searchQuery, setSearchQuery] = useState('');
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [totalPages, setTotalPages] = useState(0);
-//   const pageSize = 25; // Define the number of items per page
-
-//   const getData = async page => {
-//     try {
-//       // Fetch data from API_URL with pagination
-//       const response = await fetch(
-//         `${API_URL}?page=${page}&limit=${pageSize}`,
-//         {
-//           method: 'GET',
-//           headers: {
-//             'Content-Type': 'application/json',
-//             'X-Appwrite-Project': PROJECT_ID, // Include your Project ID if needed
-//           },
-//         },
-//       );
-//       console.log(response);
-
-//       if (!response.ok) {
-//         throw new Error('Failed to fetch data');
-//       }
-
-//       const data = await response.json();
-
-//       if (!data.documents) {
-//         throw new Error('No documents found.');
-//       }
-
-//       console.log('🚀 ~ getData ~ page:', data);
-//       setHotelData(data.documents); // Store the fetched data
-//       setTotalPages(Math.ceil(data.total / pageSize)); // Calculate total pages based on total records
-//       setFilteredData(data.documents); // Set filtered data initially to all fetched data
-//     } catch (error) {
-//       console.error('Error fetching hotel data:', error);
-//     } finally {
-//       setIsLoading(false); // Set loading state to false after fetching
-//     }
-//   };
-
-//   const applyFilter = () => {
-//     const filtered = hotelData.filter(hotel =>
-//       hotel.HotelName.toLowerCase().includes(searchQuery.toLowerCase()),
-//     );
-//     setFilteredData(filtered); // Update filtered data based on search query
-//   };
-
-//   useEffect(() => {
-//     getData(currentPage); // Fetch data for the current page
-//   }, [currentPage]); // Fetch new data when currentPage changes
-
-//   useEffect(() => {
-//     applyFilter(); // Apply filtering whenever search query changes
-//   }, [searchQuery, hotelData]); // Re-apply filtering when search query or hotel data changes
-
-//   const handleNextPage = () => {
-//     if (currentPage < totalPages) {
-//       setCurrentPage(currentPage + 1); // Increment page number
-//     }
-//   };
-
-//   const handlePreviousPage = () => {
-//     if (currentPage > 1) {
-//       setCurrentPage(currentPage - 1); // Decrement page number
-//     }
-//   };
-
-//   return (
-//     <SafeAreaView>
-//       <ScrollView style={styles.container}>
-//         <Viewpagesearchbar
-//           searchQuery={searchQuery}
-//           setSearchQuery={setSearchQuery}
-//         />
-//         <Viewpagefilters
-//           hotelData={hotelData}
-//           setHotelData={setHotelData}
-//           getData={getData}
-//         />
-
-//         {isLoading ? (
-//           <View style={styles.loadingContainer}>
-//             <ActivityIndicator size="large" color="#0000ff" />
-//           </View>
-//         ) : (
-//           <>
-//             <Viewpagecard
-//               navigation={navigation}
-//               filteredHotelsByName={filteredData} // Use filtered data here
-//               isLoading={isLoading}
-//             />
-
-//             {/* Pagination Controls */}
-//             <View style={styles.paginationContainer}>
-//               <Button
-//                 title="Previous"
-//                 onPress={handlePreviousPage}
-//                 disabled={currentPage === 1}
-//               />
-//               <Text style={styles.pageInfo}>
-//                 Page {currentPage} of {totalPages}
-//               </Text>
-//               <Button
-//                 title="Next"
-//                 onPress={handleNextPage}
-//                 disabled={currentPage === totalPages}
-//               />
-//             </View>
-//           </>
-//         )}
-//       </ScrollView>
-//     </SafeAreaView>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     backgroundColor: 'white',
-//     height: '100%',
-//   },
-//   loadingContainer: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   paginationContainer: {
-//     flexDirection: 'row',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     padding: 16,
-//   },
-//   pageInfo: {
-//     marginHorizontal: 10,
-//     fontSize: 16,
-//   },
-// });
-
-// export default Viewpage;
-
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback, useMemo} from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
-  Button,
-  Text,
+  RefreshControl,
 } from 'react-native';
+import {Text, Snackbar} from 'react-native-paper';
 import Viewpagesearchbar from '../Components/Viewpagesearchbar';
 import Viewpagecard from '../Components/Viewpagecard';
 import Viewpagefilters from '../Components/Viewpagefilters';
 import HotelListingSkeleton from '../Components/Skeleton/HotelListingSkeleton';
 import {Client, Databases, Query} from 'appwrite';
 import {COLORS} from '../constants/theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {API_URL, PROJECT_ID, DATABASE_ID, COLLECTION_ID} from '@env';
-console.log('API_URL:', API_URL);
-console.log('PROJECT_ID:', PROJECT_ID);
-console.log('DATABASE_ID:', DATABASE_ID);
+
 // Initialize Appwrite Client
 const client = new Client()
   .setEndpoint('https://cloud.appwrite.io/v1')
   .setProject(PROJECT_ID);
 const databases = new Databases(client);
-const databaseId = DATABASE_ID; // Replace with your Database ID
-const collectionId = COLLECTION_ID; // Replace with your Collection ID
-const batchSize = 88; // Define the number of items per batch
+const databaseId = DATABASE_ID;
+const collectionId = COLLECTION_ID;
+
+// Cache configuration
+const CACHE_KEY = 'hotel_data_cache';
+const CACHE_EXPIRY_HOURS = 2; // Cache expires after 2 hours
 
 const Viewpage = ({navigation}) => {
-  const [hotelData, setHotelData] = useState([]); // Fetched data
-  const [filteredData, setFilteredData] = useState([]); // Data after filtering
+  // Core data states
+  const [allHotels, setAllHotels] = useState([]); // All hotels from server
+  const [filteredData, setFilteredData] = useState([]); // Filtered results
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Filter states
   const [searchQuery, setSearchQuery] = useState('');
-  const [after, setAfter] = useState(null); // Cursor for pagination
-  const [priceRange, setPriceRange] = useState({
-    label: 'All',
-    min: 0,
-    max: Infinity,
+  const [filters, setFilters] = useState({
+    priceRange: {label: 'All', min: 0, max: Infinity},
+    hotelType: 'all', // 'all', 'ac', 'nonac', 'both'
+    foodAvailable: 'all', // 'all', 'yes', 'no'
+    parkingAvailable: 'all', // 'all', 'yes', 'no'
+    showFlagged: false, // true/false
+    sortBy: 'name', // 'name', 'priceLow', 'priceHigh'
   });
 
-  const getData = async () => {
+  // Pagination for display (not server pagination)
+  const [displayLimit, setDisplayLimit] = useState(20);
+  const LOAD_MORE_SIZE = 20;
+
+  // Check if cache is valid
+  const isCacheValid = useCallback(async () => {
+    try {
+      const cachedTimestamp = await AsyncStorage.getItem(
+        CACHE_KEY + '_timestamp',
+      );
+      if (cachedTimestamp) {
+        const cacheTime = parseInt(cachedTimestamp);
+        const now = Date.now();
+        const hoursDiff = (now - cacheTime) / (1000 * 60 * 60);
+        return hoursDiff < CACHE_EXPIRY_HOURS;
+      }
+      return false;
+    } catch (error) {
+      console.log('Cache check error:', error);
+      return false;
+    }
+  }, []);
+
+  // Load data from cache
+  const loadFromCache = useCallback(async () => {
+    try {
+      const cachedData = await AsyncStorage.getItem(CACHE_KEY);
+      if (cachedData) {
+        const parsed = JSON.parse(cachedData);
+        setAllHotels(parsed);
+        return parsed;
+      }
+      return null;
+    } catch (error) {
+      console.log('Cache load error:', error);
+      return null;
+    }
+  }, []);
+
+  // Save data to cache
+  const saveToCache = useCallback(async data => {
+    try {
+      await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(data));
+      await AsyncStorage.setItem(
+        CACHE_KEY + '_timestamp',
+        Date.now().toString(),
+      );
+    } catch (error) {
+      console.log('Cache save error:', error);
+    }
+  }, []);
+
+  // Load ALL hotels efficiently (handles 50+ items)
+  const loadAllHotels = useCallback(async () => {
+    try {
+      setError(null);
+      const allHotelData = [];
+      let hasMore = true;
+      let lastId = null;
+
+      // Load hotels in batches to handle Appwrite's limit
+      while (hasMore) {
+        const queries = [Query.limit(50)]; // Max per request
+        if (lastId) {
+          queries.push(Query.cursorAfter(lastId));
+        }
+
+        const response = await databases.listDocuments(
+          databaseId,
+          collectionId,
+          queries,
+        );
+
+        if (response.documents.length > 0) {
+          // Deduplicate based on $id
+          const newDocs = response.documents.filter(
+            newDoc =>
+              !allHotelData.some(existing => existing.$id === newDoc.$id),
+          );
+
+          allHotelData.push(...newDocs);
+          lastId = response.documents[response.documents.length - 1].$id;
+
+          // If we got less than 50, we've reached the end
+          hasMore = response.documents.length === 50;
+        } else {
+          hasMore = false;
+        }
+      }
+
+      console.log(`✅ Loaded ${allHotelData.length} hotels total`);
+
+      // Save to cache
+      await saveToCache(allHotelData);
+      setAllHotels(allHotelData);
+
+      return allHotelData;
+    } catch (error) {
+      console.error('❌ Error loading hotels:', error);
+      setError('Failed to load hotels. Please try again.');
+      throw error;
+    }
+  }, [databaseId, collectionId, saveToCache]);
+
+  // Initial data load with caching
+  const initializeData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const queries = [Query.limit(batchSize)];
-      if (after) {
-        queries.push(Query.cursorAfter(after)); // Use the cursor to fetch subsequent items
+      // Check cache first
+      const cacheValid = await isCacheValid();
+      let hotelData = null;
+
+      if (cacheValid) {
+        console.log('📦 Loading from cache...');
+        hotelData = await loadFromCache();
       }
 
-      const response = await databases.listDocuments(
-        databaseId,
-        collectionId,
-        queries,
-      );
-
-      if (response.documents.length === 0) {
-        return; // No more documents to load
+      if (!hotelData || hotelData.length === 0) {
+        console.log('🌐 Loading from server...');
+        hotelData = await loadAllHotels();
       }
 
-      // Deduplication logic: filter out documents that already exist
-      const newDocuments = response.documents.filter(
-        newDoc =>
-          !hotelData.some(existingDoc => existingDoc.$id === newDoc.$id),
-      );
-
-      if (newDocuments.length > 0) {
-        // Append only new unique documents to existing data
-        setHotelData(prev => [...prev, ...newDocuments]);
-        setFilteredData(prev => [...prev, ...newDocuments]);
-      setAfter(response.documents[response.documents.length - 1].$id); // Update cursor to the last fetched document
-      }
+      console.log(`🎯 Initialized with ${hotelData?.length || 0} hotels`);
     } catch (error) {
-      console.error('Error fetching hotel data:', error);
+      console.error('Failed to initialize data:', error);
     } finally {
-      setIsLoading(false); // Set loading state to false after fetching
+      setIsLoading(false);
     }
-  };
+  }, [isCacheValid, loadFromCache, loadAllHotels]);
 
-  const applyFilter = () => {
-    // Ensure filtered data is also deduplicated
-    const uniqueHotelData = hotelData.filter(
-      (hotel, index, self) =>
-        index === self.findIndex(h => h.$id === hotel.$id),
-    );
+  // Refresh data (force reload from server)
+  const refreshData = useCallback(async () => {
+    setIsRefreshing(true);
+    try {
+      await loadAllHotels();
+    } catch (error) {
+      console.error('Failed to refresh data:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [loadAllHotels]);
 
-    let filtered = uniqueHotelData;
+  // Smart filtering with debouncing
+  const filteredHotels = useMemo(() => {
+    let result = [...allHotels];
 
     // Apply search filter
-    if (searchQuery) {
-      filtered = filtered.filter(hotel =>
-      hotel.HotelName.toLowerCase().includes(searchQuery.toLowerCase()),
-    );
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      result = result.filter(
+        hotel =>
+          hotel.HotelName?.toLowerCase().includes(query) ||
+          hotel.HotelAddress?.toLowerCase().includes(query),
+      );
     }
 
     // Apply price range filter
-    if (priceRange.min !== 0 || priceRange.max !== Infinity) {
-      filtered = filtered.filter(hotel => {
-        const minPrice = hotel.HotelRentMin;
-        const maxPrice = hotel.HotelRentMax;
+    if (filters.priceRange.min !== 0 || filters.priceRange.max !== Infinity) {
+      result = result.filter(hotel => {
+        const minPrice = hotel.HotelRentMin || 0;
+        const maxPrice = hotel.HotelRentMax || Infinity;
         return (
-          (minPrice >= priceRange.min && minPrice <= priceRange.max) ||
-          (maxPrice >= priceRange.min && maxPrice <= priceRange.max) ||
-          (minPrice <= priceRange.min && maxPrice >= priceRange.max)
+          (minPrice >= filters.priceRange.min &&
+            minPrice <= filters.priceRange.max) ||
+          (maxPrice >= filters.priceRange.min &&
+            maxPrice <= filters.priceRange.max) ||
+          (minPrice <= filters.priceRange.min &&
+            maxPrice >= filters.priceRange.max)
         );
       });
     }
 
-    setFilteredData(filtered); // Update filtered data based on search query and price range
-  };
-
-  useEffect(() => {
-    getData(); // Fetch data on component mount
-  }, []); // Only run on mount
-
-  useEffect(() => {
-    applyFilter(); // Apply filtering whenever search query changes
-  }, [searchQuery, hotelData, priceRange]); // Re-apply filtering when search query or hotel data changes
-
-  const loadMoreData = () => {
-    if (!isLoading) {
-      getData(); // Fetch more data using cursor
+    // Apply hotel type filter
+    if (filters.hotelType !== 'all') {
+      result = result.filter(hotel => {
+        const roomType = hotel.HotelRoomType?.toLowerCase() || '';
+        switch (filters.hotelType) {
+          case 'ac':
+            return roomType.includes('ac') && !roomType.includes('non');
+          case 'nonac':
+            return (
+              roomType.includes('non') ||
+              (!roomType.includes('ac') && roomType.includes('non'))
+            );
+          case 'both':
+            return (
+              roomType.includes('both') ||
+              (roomType.includes('ac') && roomType.includes('non'))
+            );
+          default:
+            return true;
+        }
+      });
     }
-  };
+
+    // Apply food filter
+    if (filters.foodAvailable !== 'all') {
+      result = result.filter(hotel => {
+        const hasFood = hotel.HotelFoodFacility?.toLowerCase() === 'yes';
+        return filters.foodAvailable === 'yes' ? hasFood : !hasFood;
+      });
+    }
+
+    // Apply parking filter
+    if (filters.parkingAvailable !== 'all') {
+      result = result.filter(hotel => {
+        const hasParking = hotel.HotelParking?.toLowerCase() === 'yes';
+        return filters.parkingAvailable === 'yes' ? hasParking : !hasParking;
+      });
+    }
+
+    // Apply flagged filter
+    if (!filters.showFlagged) {
+      result = result.filter(hotel => !hotel.isHotelFlagged);
+    }
+
+    // Apply sorting
+    result.sort((a, b) => {
+      switch (filters.sortBy) {
+        case 'priceLow':
+          return (a.HotelRentMin || 0) - (b.HotelRentMin || 0);
+        case 'priceHigh':
+          return (b.HotelRentMax || 0) - (a.HotelRentMax || 0);
+        case 'name':
+        default:
+          return (a.HotelName || '').localeCompare(b.HotelName || '');
+      }
+    });
+
+    return result;
+  }, [allHotels, searchQuery, filters]);
+
+  // Paginated display data
+  const displayedHotels = useMemo(() => {
+    return filteredHotels.slice(0, displayLimit);
+  }, [filteredHotels, displayLimit]);
+
+  // Load more functionality
+  const loadMore = useCallback(() => {
+    if (displayedHotels.length < filteredHotels.length) {
+      setDisplayLimit(prev => prev + LOAD_MORE_SIZE);
+    }
+  }, [displayedHotels.length, filteredHotels.length]);
+
+  // Update filtered data when calculations change
+  useEffect(() => {
+    setFilteredData(displayedHotels);
+    // Reset display limit when filters change
+    if (displayLimit > 20 && filteredHotels.length <= 20) {
+      setDisplayLimit(20);
+    }
+  }, [displayedHotels, filteredHotels.length, displayLimit]);
+
+  // Initial load
+  useEffect(() => {
+    initializeData();
+  }, [initializeData]);
+
+  // Filter update function for child components
+  const updateFilters = useCallback(newFilters => {
+    setFilters(prev => ({...prev, ...newFilters}));
+    setDisplayLimit(20); // Reset pagination when filters change
+  }, []);
+
+  // Search update with immediate feedback
+  const updateSearch = useCallback(query => {
+    setSearchQuery(query);
+    setDisplayLimit(20); // Reset pagination when search changes
+  }, []);
+
+  // Calculate statistics
+  const stats = useMemo(
+    () => ({
+      total: allHotels.length,
+      filtered: filteredHotels.length,
+      displayed: displayedHotels.length,
+      flagged: allHotels.filter(h => h.isHotelFlagged).length,
+      available: allHotels.filter(h => !h.isHotelFlagged).length,
+    }),
+    [allHotels, filteredHotels, displayedHotels],
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
         style={styles.container}
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={refreshData} />
+        }
         onScroll={({nativeEvent}) => {
-          // Check if scrolled near the bottom to load more data
+          // Auto-load more when near bottom
           const isCloseToBottom =
             nativeEvent.layoutMeasurement.height +
               nativeEvent.contentOffset.y >=
-            nativeEvent.contentSize.height - 50;
+            nativeEvent.contentSize.height - 100;
 
-          if (isCloseToBottom) {
-            loadMoreData(); // Load more data
+          if (
+            isCloseToBottom &&
+            !isLoading &&
+            displayedHotels.length < filteredHotels.length
+          ) {
+            loadMore();
           }
         }}
-        scrollEventThrottle={16} // Throttle scroll events for better performance
-      >
+        scrollEventThrottle={16}>
+        {/* Search Header */}
         <Viewpagesearchbar
           searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-        />
-        <Viewpagefilters
-          priceRange={priceRange}
-          setPriceRange={setPriceRange}
+          setSearchQuery={updateSearch}
         />
 
-        {isLoading && hotelData.length === 0 ? ( // Loading state only when there is no data
+        {/* Advanced Filters */}
+        <Viewpagefilters
+          filters={filters}
+          updateFilters={updateFilters}
+          stats={stats}
+        />
+
+        {/* Results Summary */}
+        {!isLoading && (
+          <View style={styles.summaryContainer}>
+            <Text style={styles.summaryText}>
+              Showing {displayedHotels.length} of {filteredHotels.length} hotels
+            </Text>
+            {displayedHotels.length < filteredHotels.length && (
+              <Text style={styles.loadMoreHint}>
+                Scroll down to load more...
+              </Text>
+            )}
+          </View>
+        )}
+
+        {/* Hotel Cards */}
+        {isLoading && allHotels.length === 0 ? (
           <HotelListingSkeleton />
         ) : (
-          <>
-            <Viewpagecard
-              navigation={navigation}
-              filteredHotelsByName={filteredData} // Use filtered data here
-              isLoading={isLoading}
-            />
-          </>
+          <Viewpagecard
+            navigation={navigation}
+            filteredHotelsByName={displayedHotels}
+            isLoading={isLoading}
+          />
+        )}
+
+        {/* Load More Button (optional) */}
+        {!isLoading && displayedHotels.length < filteredHotels.length && (
+          <View style={styles.loadMoreContainer}>
+            <Text style={styles.loadMoreButton} onPress={loadMore}>
+              Load More Hotels ({filteredHotels.length - displayedHotels.length}{' '}
+              remaining)
+            </Text>
+          </View>
         )}
       </ScrollView>
+
+      {/* Error Snackbar */}
+      <Snackbar
+        visible={!!error}
+        onDismiss={() => setError(null)}
+        duration={4000}
+        action={{
+          label: 'Retry',
+          onPress: refreshData,
+        }}>
+        {error}
+      </Snackbar>
     </SafeAreaView>
   );
 };
@@ -411,6 +425,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
+  },
+  summaryContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: COLORS.surface,
+    marginHorizontal: 16,
+    marginVertical: 8,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  summaryText: {
+    fontSize: 14,
+    color: COLORS.textSecondary,
+    fontWeight: '500',
+  },
+  loadMoreHint: {
+    fontSize: 12,
+    color: COLORS.textLight,
+    marginTop: 4,
+  },
+  loadMoreContainer: {
+    padding: 16,
+    alignItems: 'center',
+  },
+  loadMoreButton: {
+    fontSize: 16,
+    color: COLORS.primary,
+    fontWeight: '600',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    backgroundColor: COLORS.primaryLight + '20',
+    borderRadius: 8,
+    textAlign: 'center',
   },
 });
 
