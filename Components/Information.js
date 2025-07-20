@@ -7,15 +7,24 @@ import {
   TouchableOpacity,
   Linking,
   Animated,
-  Image,
   Dimensions,
-  Modal,
-  FlatList,
   PixelRatio,
+  Image,
 } from 'react-native';
+import {
+  Card,
+  Portal,
+  Modal,
+  Button,
+  Divider,
+  Surface,
+  ActivityIndicator,
+} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ImageView from 'react-native-image-viewing';
 import PremiumGradient from './common/CustomGradient';
 import OptimizedImage from './common/OptimizedImage';
+import InformationSkeleton from './Skeleton/InformationSkeleton';
 import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
 import {
   getGalleryImages,
@@ -31,13 +40,13 @@ const moderateScale = (size, factor = 0.5) => size + (scale - 1) * factor;
 const moderateVerticalScale = (size, factor = 0.5) =>
   size + (verticalScale - 1) * factor;
 
-// Device categorization for responsive design
-const isSmallDevice = screenWidth < 360;
-const isMediumDevice = screenWidth >= 360 && screenWidth < 414;
-const isLargeDevice = screenWidth >= 414 && screenWidth < 768;
-const isTablet = screenWidth >= 768;
+// Device type detection for responsive design
+const isSmallDevice = screenWidth < 375; // iPhone SE, small phones
+const isMediumDevice = screenWidth >= 375 && screenWidth < 414; // iPhone 6/7/8
+const isLargeDevice = screenWidth >= 414 && screenWidth < 768; // iPhone Plus/Max
+const isTablet = screenWidth >= 768; // iPad and tablets
 
-// Responsive sizing functions
+// Responsive utilities
 const responsiveWidth = percentage => (screenWidth * percentage) / 100;
 const responsiveHeight = percentage => (screenHeight * percentage) / 100;
 const responsiveFontSize = baseSize => {
@@ -50,104 +59,40 @@ const responsiveFontSize = baseSize => {
   return moderateScale(fontSize * 1.2); // Tablet
 };
 
-// Skeleton Loading Component
-const SkeletonLoader = ({width, height, style}) => {
-  const animatedValue = useState(new Animated.Value(0))[0];
-
-  useEffect(() => {
-    const animation = Animated.loop(
-      Animated.sequence([
-        Animated.timing(animatedValue, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(animatedValue, {
-          toValue: 0,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ]),
-    );
-    animation.start();
-    return () => animation.stop();
-  }, [animatedValue]);
-
-  const opacity = animatedValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0.3, 0.7],
-  });
-
-  return (
-    <Animated.View
-      style={[
-        {
-          width,
-          height,
-          backgroundColor: COLORS.border,
-          borderRadius: RADIUS.sm,
-          opacity,
-        },
-        style,
-      ]}
-    />
-  );
-};
-
-// Accordion Component
+// Custom Accordion Component using React Native Paper
 const CustomAccordion = ({title, icon, children, isFirst = false}) => {
-  const [isExpanded, setIsExpanded] = useState(isFirst);
-  const [animation] = useState(new Animated.Value(isFirst ? 1 : 0));
-
-  const toggleAccordion = () => {
-    const toValue = isExpanded ? 0 : 1;
-    setIsExpanded(!isExpanded);
-
-    Animated.timing(animation, {
-      toValue,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const rotateInterpolate = animation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '180deg'],
-  });
+  const [expanded, setExpanded] = useState(isFirst);
 
   return (
-    <View style={styles.accordionContainer}>
+    <Surface style={styles.accordionContainer} elevation={2}>
       <TouchableOpacity
         style={styles.accordionHeader}
-        onPress={toggleAccordion}
-        activeOpacity={0.8}>
+        onPress={() => setExpanded(!expanded)}
+        activeOpacity={0.7}>
         <View style={styles.accordionTitleContainer}>
-          <View
-            style={[
-              styles.iconContainer,
-              {backgroundColor: COLORS.primary + '15'},
-            ]}>
-            <Icon name={icon} size={24} color={COLORS.primary} />
-          </View>
+          <Icon name={icon} size={24} color={COLORS.primary} />
           <Text style={styles.accordionTitle}>{title}</Text>
         </View>
-        <Animated.View style={{transform: [{rotate: rotateInterpolate}]}}>
-          <Icon name="chevron-down" size={24} color={COLORS.textSecondary} />
-        </Animated.View>
+        <Icon
+          name={expanded ? 'chevron-up' : 'chevron-down'}
+          size={24}
+          color={COLORS.textSecondary}
+        />
       </TouchableOpacity>
 
-      {isExpanded && (
+      {expanded && (
         <Animated.View style={styles.accordionContent}>
+          <Divider style={styles.accordionDivider} />
           {children}
         </Animated.View>
       )}
-    </View>
+    </Surface>
   );
 };
 
-// Table Component
-const InfoTable = ({data, headers}) => (
-  <View style={styles.tableContainer}>
+// Info Table Component using React Native Paper
+const InfoTable = ({headers, data}) => (
+  <Surface style={styles.tableContainer} elevation={1}>
     <View style={styles.tableHeader}>
       {headers.map((header, index) => (
         <Text key={index} style={styles.tableHeaderText}>
@@ -155,6 +100,7 @@ const InfoTable = ({data, headers}) => (
         </Text>
       ))}
     </View>
+    <Divider />
     {data.map((row, index) => (
       <View key={index} style={styles.tableRow}>
         {row.map((cell, cellIndex) => (
@@ -164,116 +110,139 @@ const InfoTable = ({data, headers}) => (
         ))}
       </View>
     ))}
-  </View>
+  </Surface>
 );
 
-// Image Gallery Component
-const ImageGallery = ({images, title}) => {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
+// Helper function to convert local images to proper format for react-native-image-viewing
+const convertImageForViewing = imageSource => {
+  if (typeof imageSource === 'number') {
+    // For local require() images, we need to use Image.resolveAssetSource
+    const resolved = Image.resolveAssetSource(imageSource);
+    return {
+      uri: resolved.uri,
+      width: resolved.width,
+      height: resolved.height,
+    };
+  } else if (imageSource && imageSource.uri) {
+    // For remote images
+    return imageSource;
+  } else if (imageSource && imageSource.local) {
+    // Handle our custom local image format
+    const resolved = Image.resolveAssetSource(imageSource.local);
+    return {
+      uri: resolved.uri,
+      width: resolved.width,
+      height: resolved.height,
+    };
+  }
+  return null;
+};
 
-  const openImageModal = image => {
-    setSelectedImage(image);
-    setModalVisible(true);
+// Enhanced Image Gallery Component with react-native-image-viewing
+const ImageGallery = ({images, title}) => {
+  const [imageViewVisible, setImageViewVisible] = useState(false);
+  const [imageIndex, setImageIndex] = useState(0);
+
+  // Convert gallery images to react-native-image-viewing format
+  const viewingImages = images
+    .map(img => {
+      const converted = convertImageForViewing(img.source);
+      return (
+        converted || {
+          uri: 'https://via.placeholder.com/400x300?text=Image+Not+Found',
+        }
+      );
+    })
+    .filter(Boolean); // Remove any null values
+
+  const openImageViewer = index => {
+    setImageIndex(index);
+    setImageViewVisible(true);
   };
 
-  const renderImageItem = ({item, index}) => (
-    <TouchableOpacity
-      style={styles.galleryImageContainer}
-      onPress={() => openImageModal(item)}
-      activeOpacity={0.8}>
-      <Image
+  const renderGalleryItem = (item, index) => (
+    <Card
+      key={index}
+      style={styles.galleryCard}
+      onPress={() => openImageViewer(index)}>
+      <Card.Cover
         source={item.source}
-        style={styles.galleryImage}
+        style={styles.galleryCardImage}
         resizeMode="cover"
       />
-      <View style={styles.imageOverlay}>
-        <Icon name="magnify-plus" size={24} color={COLORS.textWhite} />
-      </View>
-      <Text style={styles.imageCaption}>{item.caption}</Text>
-    </TouchableOpacity>
+      <Card.Content style={styles.galleryCardContent}>
+        <Text style={styles.galleryCardCaption}>{item.caption}</Text>
+      </Card.Content>
+    </Card>
   );
 
   return (
     <View style={styles.imageGalleryContainer}>
       <Text style={styles.galleryTitle}>{title}</Text>
-      <FlatList
-        data={images}
-        renderItem={renderImageItem}
-        keyExtractor={(item, index) => `gallery-${index}`}
+      <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.galleryScrollContainer}
-      />
+        contentContainerStyle={styles.galleryScrollContainer}>
+        {images.map(renderGalleryItem)}
+      </ScrollView>
 
-      {/* Full Screen Image Modal */}
-      <Modal
-        visible={modalVisible}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={() => setModalVisible(false)}>
-        <View style={styles.modalContainer}>
-          <TouchableOpacity
-            style={styles.modalBackdrop}
-            onPress={() => setModalVisible(false)}>
-            <View style={styles.modalContent}>
-              {selectedImage && (
-                <>
-                  <Image
-                    source={selectedImage.source}
-                    style={styles.modalImage}
-                    resizeMode="contain"
-                  />
-                  <View style={styles.modalCaption}>
-                    <Text style={styles.modalCaptionText}>
-                      {selectedImage.caption}
-                    </Text>
-                    <Text style={styles.modalDescriptionText}>
-                      {selectedImage.description}
-                    </Text>
-                  </View>
-                </>
-              )}
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={() => setModalVisible(false)}>
-                <Icon name="close" size={24} color={COLORS.textWhite} />
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </Modal>
+      {/* Professional Image Viewer with proper zoom */}
+      <ImageView
+        images={viewingImages}
+        imageIndex={imageIndex}
+        visible={imageViewVisible}
+        onRequestClose={() => setImageViewVisible(false)}
+        backgroundColor={COLORS.surface}
+        swipeToCloseEnabled={true}
+        doubleTapToZoomEnabled={true}
+        presentationStyle="overFullScreen"
+        FooterComponent={({imageIndex}) => (
+          <Surface style={styles.imageViewerFooter} elevation={3}>
+            <Text style={styles.imageViewerCaption}>
+              {images[imageIndex]?.caption}
+            </Text>
+            <Text style={styles.imageViewerDescription}>
+              {images[imageIndex]?.description}
+            </Text>
+            <Text style={styles.imageViewerCounter}>
+              {imageIndex + 1} of {images.length}
+            </Text>
+          </Surface>
+        )}
+      />
     </View>
   );
 };
 
 // Section Image Component
 const SectionImage = ({source, caption, style}) => (
-  <View style={[styles.sectionImageContainer, style]}>
-    <OptimizedImage
+  <Card style={[styles.sectionImageContainer, style]}>
+    <Card.Cover
       source={source}
       style={styles.sectionImage}
       resizeMode="cover"
     />
-    <Text style={styles.sectionImageCaption}>{caption}</Text>
-  </View>
+    <Card.Content style={styles.sectionImageCaptionContainer}>
+      <Text style={styles.sectionImageCaption}>{caption}</Text>
+    </Card.Content>
+  </Card>
 );
 
 // Hero Image Component
 const HeroImage = () => (
-  <View style={styles.heroImageContainer}>
-    <OptimizedImage
+  <Card style={styles.heroImageContainer}>
+    <Card.Cover
       source={getTempleImage('main-temple')}
       style={styles.heroImage}
       resizeMode="cover"
     />
-    <View style={styles.heroImageOverlay}>
+    <Card.Content style={styles.heroImageOverlay}>
       <Text style={styles.heroImageTitle}>Sharda Mata Temple</Text>
       <Text style={styles.heroImageSubtitle}>
         Sacred Journey to Trikut Hills
       </Text>
-    </View>
-  </View>
+    </Card.Content>
+  </Card>
 );
 
 // Main Information Component
@@ -346,44 +315,7 @@ const Information = ({navigation}) => {
   ];
 
   if (isLoading) {
-    return (
-      <View style={styles.container}>
-        {/* Skeleton Header */}
-        <View style={styles.skeletonHeader}>
-          <SkeletonLoader width={40} height={40} style={{borderRadius: 20}} />
-          <SkeletonLoader
-            width="60%"
-            height={24}
-            style={{marginLeft: SPACING.md}}
-          />
-        </View>
-
-        {/* Skeleton Content */}
-        <ScrollView style={styles.content}>
-          {[1, 2, 3, 4, 5].map(item => (
-            <View key={item} style={styles.skeletonCard}>
-              <View style={styles.skeletonCardHeader}>
-                <SkeletonLoader
-                  width={24}
-                  height={24}
-                  style={{borderRadius: 12}}
-                />
-                <SkeletonLoader
-                  width="70%"
-                  height={20}
-                  style={{marginLeft: SPACING.md}}
-                />
-                <SkeletonLoader
-                  width={24}
-                  height={24}
-                  style={{borderRadius: 12}}
-                />
-              </View>
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-    );
+    return <InformationSkeleton />;
   }
 
   return (
@@ -394,7 +326,7 @@ const Information = ({navigation}) => {
         direction="diagonal"
         style={styles.header}>
         <View style={styles.headerContent}>
-          <Icon name="temple-hindu" size={32} color={COLORS.textWhite} />
+          <Icon name="home-city-outline" size={32} color={COLORS.textWhite} />
           <Text style={styles.headerTitle}>TEMPLE INFORMATION</Text>
         </View>
         <Text style={styles.headerSubtitle}>
@@ -415,20 +347,22 @@ const Information = ({navigation}) => {
           title="Temple History & Significance"
           icon="book-open-variant"
           isFirst={true}>
-          <View style={styles.historyCard}>
-            <Text style={styles.historyText}>
-              🏛️ Maihar Devi Temple, dedicated to Goddess Sharda (Saraswati), is
-              perched atop the Trikut Hills in Satna district, Madhya Pradesh.
-              This ancient temple requires a climb of 1,063 steps or a scenic
-              ropeway ride.
-            </Text>
-            <Text style={styles.historyText}>
-              ✨ The temple is associated with Sringeri Mutt and houses shrines
-              of Lord Bala Ganapathi, Lord Muruga, and Acharya Sri Sankara. It's
-              renowned for hosting three daily pujas and the grand 10-day
-              Navarathri festival.
-            </Text>
-          </View>
+          <Card style={styles.historyCard} elevation={1}>
+            <Card.Content>
+              <Text style={styles.historyText}>
+                🏛️ Maihar Devi Temple, dedicated to Goddess Sharda (Saraswati),
+                is perched atop the Trikut Hills in Satna district, Madhya
+                Pradesh. This ancient temple requires a climb of 1,063 steps or
+                a scenic ropeway ride.
+              </Text>
+              <Text style={styles.historyText}>
+                ✨ The temple is associated with Sringeri Mutt and houses
+                shrines of Lord Bala Ganapathi, Lord Muruga, and Acharya Sri
+                Sankara. It's renowned for hosting three daily pujas and the
+                grand 10-day Navarathri festival.
+              </Text>
+            </Card.Content>
+          </Card>
 
           <InfoTable
             headers={['Day', 'Darshan Session', 'Timing']}
@@ -463,12 +397,12 @@ const Information = ({navigation}) => {
           </View>
         </CustomAccordion>
 
-        {/* Facilities */}
+        {/* Temple Facilities */}
         <CustomAccordion title="Temple Facilities" icon="star-circle">
           {/* Basic Facilities Grid */}
           <View style={styles.facilitiesGrid}>
             {facilities.map((facility, index) => (
-              <View key={index} style={styles.facilityCard}>
+              <Surface key={index} style={styles.facilityCard} elevation={2}>
                 <View
                   style={[
                     styles.facilityIcon,
@@ -477,122 +411,145 @@ const Information = ({navigation}) => {
                   <Icon name={facility.icon} size={24} color={facility.color} />
                 </View>
                 <Text style={styles.facilityName}>{facility.name}</Text>
-              </View>
+              </Surface>
             ))}
           </View>
 
           {/* Detailed Facility Information */}
-          <View style={styles.detailedFacilities}>
-            <Text style={styles.facilitiesHeader}>🚶‍♂️ Access to Temple</Text>
+          <Card style={styles.detailedFacilities} elevation={1}>
+            <Card.Content>
+              <Text style={styles.facilitiesHeader}>🚶‍♂️ Access to Temple</Text>
 
-            <View style={styles.facilityDetail}>
-              <View style={styles.facilityDetailHeader}>
-                <Icon name="stairs" size={20} color={COLORS.primary} />
-                <Text style={styles.facilityDetailTitle}>Temple Stairs</Text>
-              </View>
+              <View style={styles.facilityDetail}>
+                <View style={styles.facilityDetailHeader}>
+                  <Icon name="stairs" size={20} color={COLORS.primary} />
+                  <Text style={styles.facilityDetailTitle}>Temple Stairs</Text>
+                </View>
 
-              <SectionImage
-                source={getTempleImage('stairs')}
-                caption="1,063 stone steps with rest points and railings"
-                style={{marginBottom: SPACING.md}}
-              />
+                <SectionImage
+                  source={getTempleImage('stairs')}
+                  caption="1,063 stone steps with rest points and railings"
+                  style={{marginBottom: SPACING.md}}
+                />
 
-              <Text style={styles.facilityDetailText}>
-                • <Text style={styles.boldText}>1,063 steps</Text> to reach the
-                main temple from the base{'\n'}• Well-maintained stone steps
-                with railings{'\n'}• Rest points available every 200-300 steps
-                {'\n'}• Average climbing time: 45-60 minutes{'\n'}• Early
-                morning climb recommended (cooler temperature)
-              </Text>
-            </View>
-
-            <View style={styles.facilityDetail}>
-              <View style={styles.facilityDetailHeader}>
-                <Icon name="gondola" size={20} color={COLORS.secondary} />
-                <Text style={styles.facilityDetailTitle}>
-                  Ropeway Alternative
+                <Text style={styles.facilityDetailText}>
+                  • <Text style={styles.boldText}>1,063 steps</Text> to reach
+                  the main temple from the base{'\n'}• Well-maintained stone
+                  steps with railings{'\n'}• Rest points available every 200-300
+                  steps
+                  {'\n'}• Average climbing time: 45-60 minutes{'\n'}• Early
+                  morning climb recommended (cooler temperature)
                 </Text>
               </View>
-              <Text style={styles.facilityDetailText}>
-                • Modern ropeway system available{'\n'}•{' '}
-                <Text style={styles.boldText}>Journey time: 3-4 minutes</Text>
-                {'\n'}• Scenic aerial view of Trikut Hills{'\n'}• After ropeway:
-                Additional 50 steps to temple{'\n'}• Suitable for elderly and
-                differently-abled pilgrims
-              </Text>
-            </View>
 
-            <View style={styles.facilityDetail}>
-              <View style={styles.facilityDetailHeader}>
-                <Icon name="food" size={20} color={COLORS.success} />
-                <Text style={styles.facilityDetailTitle}>Annakoot Prasad</Text>
-              </View>
-              <Text style={styles.facilityDetailText}>
-                • <Text style={styles.boldText}>Free meals</Text> for all
-                devotees{'\n'}• Timing: 12:00 PM to 3:00 PM daily{'\n'}• Simple
-                vegetarian food (rice, dal, sabzi, roti){'\n'}• Tokens required
-                - available at counter{'\n'}• First-come, first-served basis
-              </Text>
-            </View>
+              <Divider style={styles.facilityDivider} />
 
-            <View style={styles.facilityDetail}>
-              <View style={styles.facilityDetailHeader}>
-                <Icon name="car" size={20} color={COLORS.info} />
-                <Text style={styles.facilityDetailTitle}>
-                  Parking & Transport
+              <View style={styles.facilityDetail}>
+                <View style={styles.facilityDetailHeader}>
+                  <Icon name="gondola" size={20} color={COLORS.secondary} />
+                  <Text style={styles.facilityDetailTitle}>
+                    Ropeway Alternative
+                  </Text>
+                </View>
+
+                <Text style={styles.facilityDetailText}>
+                  • Modern ropeway system available{'\n'}•{' '}
+                  <Text style={styles.boldText}>Journey time: 3-4 minutes</Text>
+                  {'\n'}• Scenic aerial view of Trikut Hills{'\n'}• After
+                  ropeway: Additional 50 steps to temple{'\n'}• Suitable for
+                  elderly and differently-abled pilgrims
                 </Text>
               </View>
-              <Text style={styles.facilityDetailText}>
-                • Large parking area at temple base{'\n'}•{' '}
-                <Text style={styles.boldText}>₹20-50</Text> parking fee for cars
-                {'\n'}• Auto-rickshaw and taxi services available{'\n'}• Local
-                bus connectivity from Maihar station{'\n'}• Bicycle parking also
-                available
-              </Text>
-            </View>
 
-            <View style={styles.facilityDetail}>
-              <View style={styles.facilityDetailHeader}>
-                <Icon name="account-group" size={20} color={COLORS.accent} />
-                <Text style={styles.facilityDetailTitle}>Amenities</Text>
-              </View>
-              <Text style={styles.facilityDetailText}>
-                • Clean restrooms at base and midway points{'\n'}• Drinking
-                water stations throughout the route{'\n'}• Small shops for
-                prasad and religious items{'\n'}• Cloakroom facility for luggage
-                storage{'\n'}• First aid center with basic medical supplies
-              </Text>
-            </View>
+              <Divider style={styles.facilityDivider} />
 
-            <View style={styles.facilityDetail}>
-              <View style={styles.facilityDetailHeader}>
-                <Icon name="shopping" size={20} color={COLORS.warning} />
-                <Text style={styles.facilityDetailTitle}>
-                  Prasad & Shopping
+              <View style={styles.facilityDetail}>
+                <View style={styles.facilityDetailHeader}>
+                  <Icon name="food" size={20} color={COLORS.success} />
+                  <Text style={styles.facilityDetailTitle}>
+                    Annakoot Prasad
+                  </Text>
+                </View>
+
+                <Text style={styles.facilityDetailText}>
+                  • <Text style={styles.boldText}>Free meals</Text> for all
+                  devotees{'\n'}• Timing: 12:00 PM to 3:00 PM daily{'\n'}•
+                  Simple vegetarian food (rice, dal, sabzi, roti){'\n'}• Tokens
+                  required - available at counter{'\n'}• First-come,
+                  first-served basis
                 </Text>
               </View>
-              <Text style={styles.facilityDetailText}>
-                • Official prasad counter inside temple{'\n'}• Coconut, sweets,
-                and flower offerings{'\n'}• Religious books and souvenirs{'\n'}•{' '}
-                <Text style={styles.boldText}>Avoid</Text> purchasing from
-                unauthorized vendors{'\n'}• Fixed price list displayed at
-                counters
-              </Text>
-            </View>
-          </View>
 
-          <View style={styles.facilitiesNote}>
-            <Icon name="lightbulb" size={20} color={COLORS.primary} />
-            <Text style={styles.facilitiesNoteText}>
-              <Text style={styles.boldText}>Pro Tips:</Text> {'\n'}• Carry water
-              bottle and wear comfortable shoes{'\n'}• Start early morning for
-              cooler weather{'\n'}• Keep ropeway ticket as backup option{'\n'}•
-              Respect temple dress code and photography rules
-            </Text>
-          </View>
+              <Divider style={styles.facilityDivider} />
+
+              <View style={styles.facilityDetail}>
+                <View style={styles.facilityDetailHeader}>
+                  <Icon name="car" size={20} color={COLORS.info} />
+                  <Text style={styles.facilityDetailTitle}>
+                    Parking & Transport
+                  </Text>
+                </View>
+
+                <Text style={styles.facilityDetailText}>
+                  • Large parking area at temple base{'\n'}•{' '}
+                  <Text style={styles.boldText}>₹20-50</Text> parking fee for
+                  cars{'\n'}• Auto-rickshaw and taxi services available{'\n'}•
+                  Local bus connectivity from Maihar station{'\n'}• Bicycle
+                  parking also available
+                </Text>
+              </View>
+
+              <Divider style={styles.facilityDivider} />
+
+              <View style={styles.facilityDetail}>
+                <View style={styles.facilityDetailHeader}>
+                  <Icon name="account-group" size={20} color={COLORS.accent} />
+                  <Text style={styles.facilityDetailTitle}>Amenities</Text>
+                </View>
+
+                <Text style={styles.facilityDetailText}>
+                  • Clean restrooms at base and midway points{'\n'}• Drinking
+                  water stations throughout the route{'\n'}• Small shops for
+                  prasad and religious items{'\n'}• Cloakroom facility for
+                  luggage storage{'\n'}• First aid center with basic medical
+                  supplies
+                </Text>
+              </View>
+
+              <Divider style={styles.facilityDivider} />
+
+              <View style={styles.facilityDetail}>
+                <View style={styles.facilityDetailHeader}>
+                  <Icon name="shopping" size={20} color={COLORS.warning} />
+                  <Text style={styles.facilityDetailTitle}>
+                    Prasad & Shopping
+                  </Text>
+                </View>
+
+                <Text style={styles.facilityDetailText}>
+                  • Official prasad counter inside temple{'\n'}• Coconut,
+                  sweets, and flower offerings{'\n'}• Religious books and
+                  souvenirs{'\n'}• <Text style={styles.boldText}>Avoid</Text>{' '}
+                  purchasing from unauthorized vendors{'\n'}• Fixed price list
+                  displayed at counters
+                </Text>
+              </View>
+
+              <View style={styles.facilitiesNote}>
+                <Icon name="lightbulb" size={20} color={COLORS.primary} />
+                <Text style={styles.facilitiesNoteText}>
+                  <Text style={styles.boldText}>Pro Tips:</Text> {'\n'}• Carry
+                  water bottle and wear comfortable shoes{'\n'}• Start early
+                  morning for cooler weather{'\n'}• Keep ropeway ticket as
+                  backup option{'\n'}• Respect temple dress code and photography
+                  rules
+                </Text>
+              </View>
+            </Card.Content>
+          </Card>
         </CustomAccordion>
 
-        {/* Ropeway Information */}
+        {/* Ropeway Services */}
         <CustomAccordion title="Ropeway Services" icon="gondola">
           <SectionImage
             source={getTempleImage('ropeway')}
@@ -605,26 +562,24 @@ const Information = ({navigation}) => {
             data={ropewayTimings}
           />
 
-          <View style={styles.ropewayNote}>
-            <Icon name="information-outline" size={20} color={COLORS.info} />
-            <Text style={styles.ropewayNoteText}>
-              After the ropeway, climb approximately 50 stairs to reach the
-              temple. Book tickets online or offline at the Ropeway Center.
-            </Text>
-          </View>
+          <Card style={styles.ropewayNote} elevation={1}>
+            <Card.Content style={styles.ropewayNoteContent}>
+              <Icon name="information-outline" size={20} color={COLORS.info} />
+              <Text style={styles.ropewayNoteText}>
+                After the ropeway, climb approximately 50 stairs to reach the
+                temple. Book tickets online or offline at the Ropeway Center.
+              </Text>
+            </Card.Content>
+          </Card>
 
-          <TouchableOpacity
-            style={styles.bookingButton}
+          <Button
+            mode="contained"
             onPress={() => Linking.openURL('https://www.bookmeriride.com/')}
-            activeOpacity={0.8}>
-            <PremiumGradient
-              colors={[COLORS.secondary, COLORS.secondaryLight]}
-              direction="horizontal"
-              style={styles.buttonGradient}>
-              <Icon name="ticket" size={20} color={COLORS.textWhite} />
-              <Text style={styles.buttonText}>Book Ropeway Tickets</Text>
-            </PremiumGradient>
-          </TouchableOpacity>
+            style={styles.bookingButton}
+            contentStyle={styles.bookingButtonContent}
+            icon="ticket">
+            Book Ropeway Tickets
+          </Button>
         </CustomAccordion>
 
         {/* Contact & Emergency */}
@@ -688,6 +643,9 @@ const Information = ({navigation}) => {
             </PremiumGradient>
           </TouchableOpacity>
         </View>
+
+        {/* Bottom Spacing for better scroll experience */}
+        <View style={styles.bottomSpacing} />
       </ScrollView>
     </View>
   );
@@ -699,71 +657,56 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
 
-  // Header
+  // Header Styles
   header: {
-    paddingVertical: SPACING['3xl'],
-    paddingHorizontal: SPACING.xl,
-    paddingBottom: SPACING['4xl'],
+    paddingTop: moderateVerticalScale(SPACING['2xl']),
+    paddingBottom: moderateVerticalScale(SPACING.xl),
+    paddingHorizontal: moderateScale(SPACING.lg),
+    borderBottomLeftRadius: moderateScale(RADIUS.xl),
+    borderBottomRightRadius: moderateScale(RADIUS.xl),
+    ...SHADOWS.lg,
   },
   headerContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: SPACING.md,
+    marginBottom: moderateVerticalScale(SPACING.xs),
   },
   headerTitle: {
-    ...TYPOGRAPHY.heading2,
+    ...TYPOGRAPHY.heading1,
+    fontSize: responsiveFontSize(TYPOGRAPHY.heading1.fontSize),
     color: COLORS.textWhite,
-    marginLeft: SPACING.md,
+    marginLeft: moderateScale(SPACING.md),
+    flex: 1,
+    lineHeight: responsiveFontSize(TYPOGRAPHY.heading1.fontSize * 1.2),
   },
   headerSubtitle: {
-    ...TYPOGRAPHY.body2,
+    ...TYPOGRAPHY.body1,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body1.fontSize),
     color: COLORS.textWhite,
-    textAlign: 'center',
     opacity: 0.9,
+    marginTop: moderateVerticalScale(SPACING.xs),
+    lineHeight: responsiveFontSize(TYPOGRAPHY.body1.fontSize * 1.3),
   },
 
   // Content
   content: {
     flex: 1,
-    marginTop: -SPACING['2xl'],
+    paddingHorizontal: moderateScale(SPACING.lg),
+    paddingTop: moderateVerticalScale(SPACING.lg),
   },
 
-  // Skeleton Loading
-  skeletonHeader: {
-    backgroundColor: COLORS.accent,
-    padding: SPACING['3xl'],
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  skeletonCard: {
-    backgroundColor: COLORS.surface,
-    marginHorizontal: SPACING.lg,
-    marginVertical: SPACING.sm,
-    borderRadius: RADIUS.xl,
-    padding: SPACING.lg,
-    ...SHADOWS.md,
-  },
-  skeletonCardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  // Accordion
+  // Accordion Styles
   accordionContainer: {
+    marginBottom: moderateVerticalScale(SPACING.lg),
+    borderRadius: moderateScale(RADIUS.lg),
     backgroundColor: COLORS.surface,
-    marginHorizontal: SPACING.lg,
-    marginVertical: SPACING.sm,
-    borderRadius: RADIUS.xl,
     overflow: 'hidden',
-    ...SHADOWS.md,
   },
   accordionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: SPACING.lg,
+    paddingHorizontal: moderateScale(SPACING.lg),
+    paddingVertical: moderateVerticalScale(SPACING.lg),
     backgroundColor: COLORS.surface,
   },
   accordionTitleContainer: {
@@ -771,70 +714,209 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: RADIUS.lg,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: SPACING.md,
-  },
   accordionTitle: {
     ...TYPOGRAPHY.heading4,
+    fontSize: responsiveFontSize(TYPOGRAPHY.heading4.fontSize),
     color: COLORS.textPrimary,
-    flex: 1,
+    marginLeft: moderateScale(SPACING.md),
+    lineHeight: responsiveFontSize(TYPOGRAPHY.heading4.fontSize * 1.2),
   },
   accordionContent: {
-    padding: SPACING.lg,
-    paddingTop: 0,
-    backgroundColor: COLORS.surface,
+    paddingHorizontal: moderateScale(SPACING.lg),
+    paddingBottom: moderateVerticalScale(SPACING.lg),
+  },
+  accordionDivider: {
+    marginBottom: moderateVerticalScale(SPACING.lg),
+    backgroundColor: COLORS.divider,
   },
 
-  // History
-  historyCard: {
-    backgroundColor: COLORS.surfaceVariant,
-    padding: SPACING.lg,
-    borderRadius: RADIUS.lg,
-    marginBottom: SPACING.lg,
+  // Image Gallery - Enhanced for all mobile screens
+  imageGalleryContainer: {
+    marginTop: moderateVerticalScale(SPACING.lg),
+    marginBottom: moderateVerticalScale(SPACING.lg),
   },
-  historyText: {
-    ...TYPOGRAPHY.body1,
+  galleryTitle: {
+    ...TYPOGRAPHY.heading4,
+    fontSize: responsiveFontSize(TYPOGRAPHY.heading4.fontSize),
     color: COLORS.textPrimary,
-    marginBottom: SPACING.md,
-    lineHeight: 24,
+    marginBottom: moderateVerticalScale(SPACING.md),
+  },
+  galleryScrollContainer: {
+    paddingRight: moderateScale(SPACING.sm),
+  },
+  galleryCard: {
+    width: isSmallDevice
+      ? responsiveWidth(75) // Slightly smaller on small devices
+      : isTablet
+      ? responsiveWidth(35) // Multiple cards visible on tablets
+      : responsiveWidth(65), // Standard on medium/large phones
+    marginRight: moderateScale(SPACING.md),
+    borderRadius: moderateScale(RADIUS.lg),
+    overflow: 'hidden',
+  },
+  galleryCardImage: {
+    height: isSmallDevice
+      ? moderateVerticalScale(120) // Smaller height on small devices
+      : isTablet
+      ? moderateVerticalScale(140) // Larger on tablets
+      : moderateVerticalScale(130), // Standard height
+  },
+  galleryCardContent: {
+    paddingVertical: moderateVerticalScale(SPACING.sm),
+  },
+  galleryCardCaption: {
+    ...TYPOGRAPHY.body2,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body2.fontSize),
+    color: COLORS.textPrimary,
+    textAlign: 'center',
+    lineHeight: responsiveFontSize(TYPOGRAPHY.body2.fontSize * 1.3),
   },
 
-  // Table
-  tableContainer: {
+  // Image Viewer Footer
+  imageViewerFooter: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.lg,
+    paddingHorizontal: moderateScale(SPACING.lg),
+    paddingVertical: moderateVerticalScale(SPACING.lg),
+    borderTopLeftRadius: moderateScale(RADIUS.lg),
+    borderTopRightRadius: moderateScale(RADIUS.lg),
+  },
+  imageViewerCaption: {
+    ...TYPOGRAPHY.heading5,
+    fontSize: responsiveFontSize(TYPOGRAPHY.heading5.fontSize),
+    color: COLORS.textPrimary,
+    marginBottom: moderateVerticalScale(SPACING.xs),
+    textAlign: 'center',
+  },
+  imageViewerDescription: {
+    ...TYPOGRAPHY.body2,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body2.fontSize),
+    color: COLORS.textSecondary,
+    marginBottom: moderateVerticalScale(SPACING.xs),
+    textAlign: 'center',
+    lineHeight: responsiveFontSize(TYPOGRAPHY.body2.fontSize * 1.4),
+  },
+  imageViewerCounter: {
+    ...TYPOGRAPHY.caption,
+    fontSize: responsiveFontSize(TYPOGRAPHY.caption.fontSize),
+    color: COLORS.textLight,
+    textAlign: 'center',
+  },
+
+  // Section Image - Responsive sizing
+  sectionImageContainer: {
+    width: '100%',
+    borderRadius: moderateScale(RADIUS.lg),
     overflow: 'hidden',
-    marginTop: SPACING.lg,
-    ...SHADOWS.sm,
+    marginBottom: moderateVerticalScale(SPACING.md),
+  },
+  sectionImage: {
+    height: isSmallDevice
+      ? responsiveHeight(20) // Smaller on small devices
+      : isTablet
+      ? responsiveHeight(25) // Larger on tablets
+      : responsiveHeight(22), // Standard height
+  },
+  sectionImageCaptionContainer: {
+    paddingVertical: moderateVerticalScale(SPACING.sm),
+  },
+  sectionImageCaption: {
+    ...TYPOGRAPHY.caption,
+    fontSize: responsiveFontSize(TYPOGRAPHY.caption.fontSize),
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    lineHeight: responsiveFontSize(TYPOGRAPHY.caption.fontSize * 1.3),
+  },
+
+  // Hero Image - Responsive for all screen sizes
+  heroImageContainer: {
+    borderRadius: moderateScale(RADIUS.xl),
+    overflow: 'hidden',
+    marginBottom: moderateVerticalScale(SPACING.xl),
+    position: 'relative',
+  },
+  heroImage: {
+    height: isSmallDevice
+      ? responsiveHeight(25) // Smaller on small devices
+      : isTablet
+      ? responsiveHeight(35) // Larger on tablets
+      : responsiveHeight(30), // Standard on medium/large phones
+  },
+  heroImageOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    paddingVertical: moderateVerticalScale(SPACING.lg),
+  },
+  heroImageTitle: {
+    ...TYPOGRAPHY.heading1,
+    fontSize: responsiveFontSize(TYPOGRAPHY.heading1.fontSize),
+    color: COLORS.textWhite,
+    marginBottom: moderateVerticalScale(SPACING.xs),
+    textAlign: 'center',
+    lineHeight: responsiveFontSize(TYPOGRAPHY.heading1.fontSize * 1.2),
+  },
+  heroImageSubtitle: {
+    ...TYPOGRAPHY.body1,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body1.fontSize),
+    color: COLORS.textWhite,
+    opacity: 0.95,
+    textAlign: 'center',
+    lineHeight: responsiveFontSize(TYPOGRAPHY.body1.fontSize * 1.3),
+  },
+
+  // Table Styles
+  tableContainer: {
+    borderRadius: moderateScale(RADIUS.md),
+    overflow: 'hidden',
+    marginTop: moderateVerticalScale(SPACING.md),
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: COLORS.primary,
-    paddingVertical: SPACING.md,
+    backgroundColor: COLORS.primaryLight + '20',
+    paddingVertical: moderateVerticalScale(SPACING.md),
+    paddingHorizontal: moderateScale(SPACING.md),
   },
   tableHeaderText: {
     ...TYPOGRAPHY.body2,
-    color: COLORS.textWhite,
-    fontWeight: TYPOGRAPHY.fontWeight.bold,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body2.fontSize),
+    fontWeight: TYPOGRAPHY.fontWeight.semibold,
+    color: COLORS.textPrimary,
     flex: 1,
     textAlign: 'center',
   },
   tableRow: {
     flexDirection: 'row',
-    paddingVertical: SPACING.md,
+    paddingVertical: moderateVerticalScale(SPACING.sm),
+    paddingHorizontal: moderateScale(SPACING.md),
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
+    borderBottomColor: COLORS.divider,
   },
   tableCellText: {
     ...TYPOGRAPHY.body2,
-    color: COLORS.textPrimary,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body2.fontSize),
+    color: COLORS.textSecondary,
     flex: 1,
     textAlign: 'center',
+    lineHeight: responsiveFontSize(TYPOGRAPHY.body2.fontSize * 1.3),
+  },
+
+  // History Card
+  historyCard: {
+    marginBottom: moderateVerticalScale(SPACING.lg),
+    borderRadius: moderateScale(RADIUS.lg),
+  },
+  historyText: {
+    ...TYPOGRAPHY.body1,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body1.fontSize),
+    color: COLORS.textSecondary,
+    lineHeight: responsiveFontSize(TYPOGRAPHY.body1.fontSize * 1.5),
+    marginBottom: moderateVerticalScale(SPACING.md),
   },
 
   // Transport
@@ -869,34 +951,80 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
   },
 
-  // Facilities
+  // Facilities Grid
   facilitiesGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: SPACING.lg,
+    marginBottom: moderateVerticalScale(SPACING.lg),
   },
   facilityCard: {
-    width: '48%',
-    backgroundColor: COLORS.surfaceVariant,
-    padding: SPACING.lg,
-    borderRadius: RADIUS.lg,
+    width: isSmallDevice
+      ? '47%' // 2 columns on small devices
+      : isTablet
+      ? '30%' // 3 columns on tablets
+      : '48%', // 2 columns on medium/large phones
+    paddingVertical: moderateVerticalScale(SPACING.md),
+    paddingHorizontal: moderateScale(SPACING.sm),
+    marginBottom: moderateVerticalScale(SPACING.md),
     alignItems: 'center',
-    marginBottom: SPACING.md,
+    borderRadius: moderateScale(RADIUS.md),
   },
   facilityIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: RADIUS.lg,
+    width: moderateScale(48),
+    height: moderateScale(48),
+    borderRadius: moderateScale(24),
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: SPACING.md,
+    marginBottom: moderateVerticalScale(SPACING.sm),
   },
   facilityName: {
-    ...TYPOGRAPHY.body2,
+    ...TYPOGRAPHY.caption,
+    fontSize: responsiveFontSize(TYPOGRAPHY.caption.fontSize),
     color: COLORS.textPrimary,
     textAlign: 'center',
-    fontWeight: TYPOGRAPHY.fontWeight.medium,
+    lineHeight: responsiveFontSize(TYPOGRAPHY.caption.fontSize * 1.3),
+  },
+
+  // Detailed Facilities
+  detailedFacilities: {
+    borderRadius: moderateScale(RADIUS.lg),
+  },
+  facilitiesHeader: {
+    ...TYPOGRAPHY.heading5,
+    fontSize: responsiveFontSize(TYPOGRAPHY.heading5.fontSize),
+    color: COLORS.textPrimary,
+    marginBottom: moderateVerticalScale(SPACING.lg),
+    textAlign: 'center',
+  },
+  facilityDetail: {
+    marginBottom: moderateVerticalScale(SPACING.lg),
+  },
+  facilityDetailHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: moderateVerticalScale(SPACING.md),
+  },
+  facilityDetailTitle: {
+    ...TYPOGRAPHY.body1,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body1.fontSize),
+    fontWeight: TYPOGRAPHY.fontWeight.semibold,
+    color: COLORS.textPrimary,
+    marginLeft: moderateScale(SPACING.sm),
+  },
+  facilityDetailText: {
+    ...TYPOGRAPHY.body2,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body2.fontSize),
+    color: COLORS.textSecondary,
+    lineHeight: responsiveFontSize(TYPOGRAPHY.body2.fontSize * 1.5),
+  },
+  facilityDivider: {
+    backgroundColor: COLORS.divider,
+    marginVertical: moderateVerticalScale(SPACING.lg),
+  },
+  boldText: {
+    fontWeight: TYPOGRAPHY.fontWeight.semibold,
+    color: COLORS.textPrimary,
   },
   facilitiesNote: {
     flexDirection: 'row',
@@ -914,80 +1042,32 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  // Detailed Facilities
-  detailedFacilities: {
-    marginTop: SPACING.xl,
-  },
-  facilitiesHeader: {
-    ...TYPOGRAPHY.heading4,
-    color: COLORS.textPrimary,
-    marginBottom: SPACING.lg,
-    fontWeight: TYPOGRAPHY.fontWeight.bold,
-  },
-  facilityDetail: {
-    backgroundColor: COLORS.surfaceVariant,
-    padding: SPACING.lg,
-    borderRadius: RADIUS.lg,
-    marginBottom: SPACING.lg,
-    borderLeftWidth: 4,
-    borderLeftColor: COLORS.primary,
-  },
-  facilityDetailHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: SPACING.md,
-  },
-  facilityDetailTitle: {
-    ...TYPOGRAPHY.heading4,
-    color: COLORS.textPrimary,
-    marginLeft: SPACING.md,
-    fontWeight: TYPOGRAPHY.fontWeight.semibold,
-  },
-  facilityDetailText: {
-    ...TYPOGRAPHY.body2,
-    color: COLORS.textPrimary,
-    lineHeight: 22,
-  },
-  boldText: {
-    fontWeight: TYPOGRAPHY.fontWeight.bold,
-    color: COLORS.primary,
-  },
-
-  // Ropeway
+  // Ropeway Note
   ropewayNote: {
+    marginVertical: moderateVerticalScale(SPACING.lg),
+    borderRadius: moderateScale(RADIUS.md),
+    backgroundColor: COLORS.info + '10',
+  },
+  ropewayNoteContent: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: COLORS.info + '10',
-    padding: SPACING.lg,
-    borderRadius: RADIUS.lg,
-    marginVertical: SPACING.lg,
-    borderLeftWidth: 4,
-    borderLeftColor: COLORS.info,
   },
   ropewayNoteText: {
     ...TYPOGRAPHY.body2,
-    color: COLORS.textPrimary,
-    marginLeft: SPACING.md,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body2.fontSize),
+    color: COLORS.textSecondary,
+    marginLeft: moderateScale(SPACING.sm),
     flex: 1,
+    lineHeight: responsiveFontSize(TYPOGRAPHY.body2.fontSize * 1.4),
   },
 
-  // Buttons
+  // Booking Button
   bookingButton: {
-    borderRadius: RADIUS.lg,
-    overflow: 'hidden',
-    ...SHADOWS.sm,
+    marginTop: moderateVerticalScale(SPACING.md),
+    borderRadius: moderateScale(RADIUS.md),
   },
-  buttonGradient: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: SPACING.lg,
-    paddingHorizontal: SPACING.xl,
-  },
-  buttonText: {
-    ...TYPOGRAPHY.button,
-    color: COLORS.textWhite,
-    marginLeft: SPACING.sm,
+  bookingButtonContent: {
+    paddingVertical: moderateVerticalScale(SPACING.sm),
   },
 
   // Contact
@@ -1046,191 +1126,8 @@ const styles = StyleSheet.create({
     marginHorizontal: SPACING.md,
   },
 
-  // Image Gallery - Responsive for all mobile screens
-  imageGalleryContainer: {
-    marginTop: moderateVerticalScale(SPACING.lg),
-    marginBottom: moderateVerticalScale(SPACING.lg),
-  },
-  galleryTitle: {
-    ...TYPOGRAPHY.heading4,
-    fontSize: responsiveFontSize(TYPOGRAPHY.heading4.fontSize),
-    color: COLORS.textPrimary,
-    marginBottom: moderateVerticalScale(SPACING.md),
-    paddingHorizontal: moderateScale(SPACING.lg),
-  },
-  galleryScrollContainer: {
-    paddingHorizontal: moderateScale(SPACING.sm),
-  },
-  galleryImageContainer: {
-    // Responsive gallery image sizing for different devices
-    width: isSmallDevice
-      ? responsiveWidth(80) // 80% width on small devices
-      : isTablet
-      ? responsiveWidth(40) // 40% width on tablets (2 images visible)
-      : responsiveWidth(70), // 70% width on medium/large phones
-    height: isSmallDevice
-      ? responsiveWidth(60) // Maintain aspect ratio
-      : isTablet
-      ? responsiveWidth(30)
-      : responsiveWidth(50),
-    marginRight: moderateScale(SPACING.lg),
-    borderRadius: moderateScale(RADIUS.lg),
-    overflow: 'hidden',
-    position: 'relative',
-    ...SHADOWS.md,
-  },
-  galleryImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover', // Ensure proper image scaling
-  },
-  imageOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: RADIUS.lg,
-  },
-  imageCaption: {
-    ...TYPOGRAPHY.body2,
-    color: COLORS.textWhite,
-    textAlign: 'center',
-    marginTop: SPACING.xs,
-  },
-
-  // Section Image - Responsive sizing
-  sectionImageContainer: {
-    width: '100%',
-    // Responsive height based on device size
-    height: isSmallDevice
-      ? responsiveHeight(25) // 25% of screen height on small devices
-      : isTablet
-      ? responsiveHeight(20) // 20% on tablets
-      : responsiveHeight(28), // 28% on medium/large phones
-    marginBottom: moderateVerticalScale(SPACING.lg),
-    borderRadius: moderateScale(RADIUS.lg),
-    overflow: 'hidden',
-    position: 'relative',
-    ...SHADOWS.sm,
-  },
-  sectionImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  sectionImageCaption: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0,0,0,0.8)',
-    ...TYPOGRAPHY.body2,
-    fontSize: responsiveFontSize(TYPOGRAPHY.body2.fontSize),
-    color: COLORS.textWhite,
-    textAlign: 'center',
-    padding: moderateScale(SPACING.sm),
-    lineHeight: responsiveFontSize(18),
-  },
-
-  // Hero Image - Responsive for all screen sizes
-  heroImageContainer: {
-    width: '100%',
-    // Responsive hero image height
-    height: isSmallDevice
-      ? responsiveHeight(25) // Smaller on small devices to save space
-      : isTablet
-      ? responsiveHeight(35) // Larger on tablets for impact
-      : responsiveHeight(30), // Standard on medium/large phones
-    marginBottom: moderateVerticalScale(SPACING.xl),
-    borderRadius: moderateScale(RADIUS.xl),
-    overflow: 'hidden',
-    position: 'relative',
-    ...SHADOWS.lg,
-  },
-  heroImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  heroImageOverlay: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: moderateScale(SPACING.lg),
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    borderBottomLeftRadius: moderateScale(RADIUS.lg),
-    borderBottomRightRadius: moderateScale(RADIUS.lg),
-  },
-  heroImageTitle: {
-    ...TYPOGRAPHY.heading1,
-    fontSize: responsiveFontSize(TYPOGRAPHY.heading1.fontSize),
-    color: COLORS.textWhite,
-    marginBottom: moderateVerticalScale(SPACING.xs),
-    lineHeight: responsiveFontSize(TYPOGRAPHY.heading1.fontSize * 1.2),
-    textShadowColor: 'rgba(0,0,0,0.8)',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 3,
-  },
-  heroImageSubtitle: {
-    ...TYPOGRAPHY.body1,
-    fontSize: responsiveFontSize(TYPOGRAPHY.body1.fontSize),
-    color: COLORS.textWhite,
-    opacity: 0.95,
-    lineHeight: responsiveFontSize(TYPOGRAPHY.body1.fontSize * 1.3),
-    textShadowColor: 'rgba(0,0,0,0.6)',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 2,
-  },
-
-  // Modal
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.9)',
-  },
-  modalBackdrop: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    width: Dimensions.get('window').width * 0.8,
-    height: Dimensions.get('window').height * 0.8,
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.lg,
-    overflow: 'hidden',
-    alignItems: 'center',
-  },
-  modalImage: {
-    width: '100%',
-    height: '70%',
-    marginBottom: SPACING.md,
-  },
-  modalCaption: {
-    paddingHorizontal: SPACING.md,
-    paddingBottom: SPACING.md,
-  },
-  modalCaptionText: {
-    ...TYPOGRAPHY.heading4,
-    color: COLORS.textWhite,
-    marginBottom: SPACING.xs,
-  },
-  modalDescriptionText: {
-    ...TYPOGRAPHY.body2,
-    color: COLORS.textWhite,
-    opacity: 0.8,
-  },
-  closeButton: {
-    position: 'absolute',
-    top: SPACING.md,
-    right: SPACING.md,
-    zIndex: 10,
+  bottomSpacing: {
+    height: moderateVerticalScale(SPACING['2xl']),
   },
 });
 
