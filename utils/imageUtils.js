@@ -110,7 +110,7 @@ export const TEMPLE_IMAGES = {
     },
     {
       id: 'temple-alternate',
-      local: require('../assets/maa-sharda-temple (2).jpg'), // 34KB
+      local: require('../assets/maa-sharda-temple-front.jpg'), // 34KB
       caption: 'Temple Alternate View',
       description: 'Different perspective of the sacred temple',
       tags: ['temple', 'alternate', 'perspective'],
