@@ -15,15 +15,7 @@ import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
 const Viewpagefilters = ({filters, updateFilters, stats}) => {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
-  // Price range options
-  const priceRanges = [
-    {label: 'All', min: 0, max: Infinity},
-    {label: '₹0-500', min: 0, max: 500},
-    {label: '₹500-1000', min: 500, max: 1000},
-    {label: '₹1000-1500', min: 1000, max: 1500},
-    {label: '₹1500-2000', min: 1500, max: 2000},
-    {label: '₹2000+', min: 2000, max: Infinity},
-  ];
+  // Price range options removed - no longer filtering by price
 
   // Hotel type options
   const hotelTypes = [
@@ -33,24 +25,12 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
     {label: 'Both AC/Non-AC', value: 'both', icon: 'home-thermometer'},
   ];
 
-  // Sort options
+  // Sort options (price-based sorting removed)
   const sortOptions = [
     {label: 'Name A-Z', value: 'name', icon: 'sort-alphabetical-ascending'},
-    {
-      label: 'Price Low to High',
-      value: 'priceLow',
-      icon: 'sort-numeric-ascending',
-    },
-    {
-      label: 'Price High to Low',
-      value: 'priceHigh',
-      icon: 'sort-numeric-descending',
-    },
   ];
 
-  const handlePriceRangeChange = range => {
-    updateFilters({priceRange: range});
-  };
+  // Price range handler removed
 
   const handleAdvancedFilterChange = (key, value) => {
     updateFilters({[key]: value});
@@ -58,7 +38,6 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
 
   const clearAllFilters = () => {
     updateFilters({
-      priceRange: {label: 'All', min: 0, max: Infinity},
       hotelType: 'all',
       foodAvailable: 'all',
       parkingAvailable: 'all',
@@ -69,12 +48,12 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
 
   const getActiveFiltersCount = () => {
     let count = 0;
-    if (filters.priceRange.label !== 'All') count++;
+    // Price range filter removed from count
     if (filters.hotelType !== 'all') count++;
     if (filters.foodAvailable !== 'all') count++;
     if (filters.parkingAvailable !== 'all') count++;
     if (filters.showFlagged) count++;
-    if (filters.sortBy !== 'name') count++;
+    // Price-based sorting removed, so sortBy will always be 'name'
     return count;
   };
 
@@ -133,47 +112,9 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
         </View>
       </View>
 
-      {/* Quick Price Range Filters */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.chipsContainer}>
-        {priceRanges.map(range => (
-          <Chip
-            key={range.label}
-            mode={
-              filters.priceRange.label === range.label ? 'flat' : 'outlined'
-            }
-            selected={filters.priceRange.label === range.label}
-            onPress={() => handlePriceRangeChange(range)}
-            style={[
-              styles.chip,
-              filters.priceRange.label === range.label
-                ? styles.selectedChip
-                : styles.unselectedChip,
-            ]}
-            textStyle={[
-              styles.chipText,
-              filters.priceRange.label === range.label
-                ? styles.selectedChipText
-                : styles.unselectedChipText,
-            ]}>
-            {range.label}
-          </Chip>
-        ))}
-      </ScrollView>
-
-      {/* Quick Sort & Type Filters */}
-      <View style={styles.quickFiltersRow}>
-        <Chip
-          mode="outlined"
-          icon={sortOptions.find(s => s.value === filters.sortBy)?.icon}
-          onPress={() => setShowAdvancedFilters(true)}
-          style={styles.quickFilterChip}>
-          {sortOptions.find(s => s.value === filters.sortBy)?.label}
-        </Chip>
-
-        {filters.hotelType !== 'all' && (
+      {/* Quick Hotel Type Filter */}
+      {filters.hotelType !== 'all' && (
+        <View style={styles.quickFiltersRow}>
           <Chip
             mode="flat"
             icon={hotelTypes.find(t => t.value === filters.hotelType)?.icon}
@@ -181,8 +122,8 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
             style={styles.activeFilterChip}>
             {hotelTypes.find(t => t.value === filters.hotelType)?.label}
           </Chip>
-        )}
-      </View>
+        </View>
+      )}
 
       {/* Advanced Filters Modal */}
       <Portal>
@@ -291,29 +232,7 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
               </View>
             </View>
 
-            {/* Sort Options */}
-            <View style={styles.filterSection}>
-              <Text style={styles.filterSectionTitle}>Sort By</Text>
-              <View style={styles.filterOptionsGrid}>
-                {sortOptions.map(option => (
-                  <Chip
-                    key={option.value}
-                    mode={filters.sortBy === option.value ? 'flat' : 'outlined'}
-                    icon={option.icon}
-                    selected={filters.sortBy === option.value}
-                    onPress={() =>
-                      handleAdvancedFilterChange('sortBy', option.value)
-                    }
-                    style={[
-                      styles.filterOptionChip,
-                      filters.sortBy === option.value &&
-                        styles.selectedFilterChip,
-                    ]}>
-                    {option.label}
-                  </Chip>
-                ))}
-              </View>
-            </View>
+            {/* Sort Options removed - only "Name A-Z" available, no need for selection */}
 
             {/* Show Flagged Hotels */}
             <View style={styles.filterSection}>
@@ -348,7 +267,7 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
                 style={styles.modalActionButton}>
                 Apply Filters
               </Button>
-    </View>
+            </View>
           </ScrollView>
         </Modal>
       </Portal>

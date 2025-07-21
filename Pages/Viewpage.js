@@ -40,12 +40,11 @@ const Viewpage = ({navigation}) => {
   // Filter states
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
-    priceRange: {label: 'All', min: 0, max: Infinity},
     hotelType: 'all', // 'all', 'ac', 'nonac', 'both'
     foodAvailable: 'all', // 'all', 'yes', 'no'
     parkingAvailable: 'all', // 'all', 'yes', 'no'
     showFlagged: false, // true/false
-    sortBy: 'name', // 'name', 'priceLow', 'priceHigh'
+    sortBy: 'name', // 'name' only (removed price-based sorting)
   });
 
   // Pagination for display (not server pagination)
@@ -113,13 +112,13 @@ const Viewpage = ({navigation}) => {
         const queries = [Query.limit(50)]; // Max per request
         if (lastId) {
           queries.push(Query.cursorAfter(lastId));
-      }
+        }
 
-      const response = await databases.listDocuments(
-        databaseId,
-        collectionId,
-        queries,
-      );
+        const response = await databases.listDocuments(
+          databaseId,
+          collectionId,
+          queries,
+        );
 
         if (response.documents.length > 0) {
           // Deduplicate based on $id
@@ -204,21 +203,7 @@ const Viewpage = ({navigation}) => {
       );
     }
 
-    // Apply price range filter
-    if (filters.priceRange.min !== 0 || filters.priceRange.max !== Infinity) {
-      result = result.filter(hotel => {
-        const minPrice = hotel.HotelRentMin || 0;
-        const maxPrice = hotel.HotelRentMax || Infinity;
-        return (
-          (minPrice >= filters.priceRange.min &&
-            minPrice <= filters.priceRange.max) ||
-          (maxPrice >= filters.priceRange.min &&
-            maxPrice <= filters.priceRange.max) ||
-          (minPrice <= filters.priceRange.min &&
-            maxPrice >= filters.priceRange.max)
-        );
-      });
-    }
+    // Price range filter removed - no longer filtering by price
 
     // Apply hotel type filter
     if (filters.hotelType !== 'all') {
@@ -264,13 +249,9 @@ const Viewpage = ({navigation}) => {
       result = result.filter(hotel => !hotel.isHotelFlagged);
     }
 
-    // Apply sorting
+    // Apply sorting (price-based sorting removed)
     result.sort((a, b) => {
       switch (filters.sortBy) {
-        case 'priceLow':
-          return (a.HotelRentMin || 0) - (b.HotelRentMin || 0);
-        case 'priceHigh':
-          return (b.HotelRentMax || 0) - (a.HotelRentMax || 0);
         case 'name':
         default:
           return (a.HotelName || '').localeCompare(b.HotelName || '');
@@ -384,11 +365,11 @@ const Viewpage = ({navigation}) => {
         {isLoading && allHotels.length === 0 ? (
           <HotelListingSkeleton />
         ) : (
-            <Viewpagecard
-              navigation={navigation}
+          <Viewpagecard
+            navigation={navigation}
             filteredHotelsByName={displayedHotels}
-              isLoading={isLoading}
-            />
+            isLoading={isLoading}
+          />
         )}
 
         {/* Load More Button (optional) */}
