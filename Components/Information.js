@@ -22,6 +22,7 @@ import {
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ImageView from 'react-native-image-viewing';
+import {WebView} from 'react-native-webview';
 import PremiumGradient from './common/CustomGradient';
 import OptimizedImage from './common/OptimizedImage';
 import InformationSkeleton from './Skeleton/InformationSkeleton';
@@ -53,9 +54,9 @@ const responsiveFontSize = baseSize => {
   // Ensure we have a valid number, fallback to 16 if undefined
   const fontSize = typeof baseSize === 'number' ? baseSize : 16;
 
-  if (isSmallDevice) return moderateScale(fontSize * 0.9);
-  if (isMediumDevice) return moderateScale(fontSize);
-  if (isLargeDevice) return moderateScale(fontSize * 1.1);
+  if (isSmallDevice) {return moderateScale(fontSize * 0.9);}
+  if (isMediumDevice) {return moderateScale(fontSize);}
+  if (isLargeDevice) {return moderateScale(fontSize * 1.1);}
   return moderateScale(fontSize * 1.2); // Tablet
 };
 
@@ -214,6 +215,124 @@ const ImageGallery = ({images, title}) => {
   );
 };
 
+// Enhanced Video Gallery Component with YouTube Playlist
+const VideoGallery = ({playlistUrl, title}) => {
+  const [isVideoModalVisible, setIsVideoModalVisible] = useState(false);
+  const [isWebViewLoading, setIsWebViewLoading] = useState(true);
+
+  // Extract playlist ID from URL
+  const getPlaylistId = url => {
+    const match = url.match(/[?&]list=([^&]+)/);
+    return match ? match[1] : null;
+  };
+
+  const playlistId = getPlaylistId(playlistUrl);
+
+  // YouTube embed URL for playlist
+  const embedUrl = `https://www.youtube.com/embed/videoseries?list=${playlistId}&autoplay=0&rel=0&showinfo=0&modestbranding=1`;
+
+  const openVideoModal = () => {
+    setIsVideoModalVisible(true);
+    setIsWebViewLoading(true);
+  };
+
+  const closeVideoModal = () => {
+    setIsVideoModalVisible(false);
+    setIsWebViewLoading(true);
+  };
+
+  return (
+    <View style={styles.videoGalleryContainer}>
+      <Text style={styles.galleryTitle}>{title}</Text>
+
+      {/* Video Thumbnail Card */}
+      <Card style={styles.videoCard} onPress={openVideoModal}>
+        <View style={styles.videoThumbnailContainer}>
+          <View style={styles.videoThumbnail}>
+            <Icon
+              name="play-circle"
+              size={moderateScale(60)}
+              color={COLORS.primary}
+            />
+            <Text style={styles.videoTitle}>Temple Video Gallery</Text>
+            <Text style={styles.videoSubtitle}>
+              Watch temple videos and virtual darshan
+            </Text>
+          </View>
+        </View>
+        <Card.Content style={styles.videoCardContent}>
+          <View style={styles.videoInfo}>
+            <Icon
+              name="youtube"
+              size={responsiveFontSize(16)}
+              color="#FF0000"
+            />
+            <Text style={styles.videoInfoText}>YouTube Playlist</Text>
+          </View>
+        </Card.Content>
+      </Card>
+
+      {/* Video Modal */}
+      <Portal>
+        <Modal
+          visible={isVideoModalVisible}
+          onDismiss={closeVideoModal}
+          contentContainerStyle={styles.videoModalContainer}>
+          <Surface style={styles.videoModalContent} elevation={5}>
+            {/* Modal Header */}
+            <View style={styles.videoModalHeader}>
+              <Text style={styles.videoModalTitle}>Temple Videos</Text>
+              <TouchableOpacity
+                onPress={closeVideoModal}
+                style={styles.closeButton}>
+                <Icon
+                  name="close"
+                  size={responsiveFontSize(24)}
+                  color={COLORS.textPrimary}
+                />
+              </TouchableOpacity>
+            </View>
+
+            {/* Video Content */}
+            <View style={styles.videoContainer}>
+              {isWebViewLoading && (
+                <View style={styles.videoLoadingContainer}>
+                  <ActivityIndicator size="large" color={COLORS.primary} />
+                  <Text style={styles.videoLoadingText}>Loading videos...</Text>
+                </View>
+              )}
+
+              <WebView
+                source={{uri: embedUrl}}
+                style={styles.webView}
+                allowsFullscreenVideo={true}
+                mediaPlaybackRequiresUserAction={false}
+                javaScriptEnabled={true}
+                domStorageEnabled={true}
+                startInLoadingState={true}
+                onLoadEnd={() => setIsWebViewLoading(false)}
+                onError={() => setIsWebViewLoading(false)}
+              />
+            </View>
+
+            {/* Modal Footer */}
+            <View style={styles.videoModalFooter}>
+              <Button
+                mode="outlined"
+                onPress={() => Linking.openURL(playlistUrl)}
+                icon="open-in-new"
+                style={styles.openYouTubeButton}
+                labelStyle={styles.openYouTubeButtonText}>
+                Open in YouTube
+              </Button>
+            </View>
+          </Surface>
+        </Modal>
+      </Portal>
+    </View>
+  );
+};
+
 // Section Image Component
 const SectionImage = ({source, caption, style}) => (
   <Card style={[styles.sectionImageContainer, style]}>
@@ -341,6 +460,12 @@ const Information = ({navigation}) => {
 
         {/* Temple Gallery */}
         <ImageGallery images={galleryImages} title="📸 Temple Gallery" />
+
+        {/* Video Gallery */}
+        <VideoGallery
+          playlistUrl="https://www.youtube.com/playlist?list=PLWj4lcD42iGp1pyXUv3nvaxa7l2xW-dpm"
+          title="🎥 Temple Videos"
+        />
 
         {/* History Section */}
         <CustomAccordion
@@ -805,6 +930,134 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(TYPOGRAPHY.caption.fontSize),
     color: COLORS.textLight,
     textAlign: 'center',
+  },
+
+  // Video Gallery - Enhanced for temple videos
+  videoGalleryContainer: {
+    marginTop: moderateVerticalScale(SPACING.lg),
+    marginBottom: moderateVerticalScale(SPACING.lg),
+  },
+  videoCard: {
+    marginHorizontal: moderateScale(SPACING.lg),
+    borderRadius: moderateScale(RADIUS.lg),
+    overflow: 'hidden',
+    ...SHADOWS.medium,
+  },
+  videoThumbnailContainer: {
+    height: isSmallDevice
+      ? moderateVerticalScale(140)
+      : isTablet
+      ? moderateVerticalScale(180)
+      : moderateVerticalScale(160),
+    backgroundColor: COLORS.surfaceVariant,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  videoThumbnail: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  videoTitle: {
+    ...TYPOGRAPHY.heading5,
+    fontSize: responsiveFontSize(TYPOGRAPHY.heading5.fontSize),
+    color: COLORS.textPrimary,
+    marginTop: moderateVerticalScale(SPACING.sm),
+    textAlign: 'center',
+  },
+  videoSubtitle: {
+    ...TYPOGRAPHY.body2,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body2.fontSize),
+    color: COLORS.textSecondary,
+    marginTop: moderateVerticalScale(SPACING.xs),
+    textAlign: 'center',
+    paddingHorizontal: moderateScale(SPACING.lg),
+  },
+  videoCardContent: {
+    paddingVertical: moderateVerticalScale(SPACING.sm),
+  },
+  videoInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  videoInfoText: {
+    ...TYPOGRAPHY.caption,
+    fontSize: responsiveFontSize(TYPOGRAPHY.caption.fontSize),
+    color: COLORS.textSecondary,
+    marginLeft: moderateScale(SPACING.xs),
+  },
+
+  // Video Modal
+  videoModalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(SPACING.md),
+  },
+  videoModalContent: {
+    width: '100%',
+    height: isSmallDevice
+      ? responsiveHeight(80)
+      : isTablet
+      ? responsiveHeight(85)
+      : responsiveHeight(82),
+    borderRadius: moderateScale(RADIUS.lg),
+    overflow: 'hidden',
+  },
+  videoModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(SPACING.lg),
+    paddingVertical: moderateVerticalScale(SPACING.md),
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.divider,
+  },
+  videoModalTitle: {
+    ...TYPOGRAPHY.heading4,
+    fontSize: responsiveFontSize(TYPOGRAPHY.heading4.fontSize),
+    color: COLORS.textPrimary,
+  },
+  closeButton: {
+    padding: moderateScale(SPACING.xs),
+  },
+  videoContainer: {
+    flex: 1,
+    position: 'relative',
+  },
+  videoLoadingContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.surface,
+    zIndex: 1,
+  },
+  videoLoadingText: {
+    ...TYPOGRAPHY.body2,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body2.fontSize),
+    color: COLORS.textSecondary,
+    marginTop: moderateVerticalScale(SPACING.sm),
+  },
+  webView: {
+    flex: 1,
+    backgroundColor: COLORS.surface,
+  },
+  videoModalFooter: {
+    paddingHorizontal: moderateScale(SPACING.lg),
+    paddingVertical: moderateVerticalScale(SPACING.md),
+    borderTopWidth: 1,
+    borderTopColor: COLORS.divider,
+  },
+  openYouTubeButton: {
+    borderColor: COLORS.primary,
+  },
+  openYouTubeButtonText: {
+    color: COLORS.primary,
+    fontSize: responsiveFontSize(14),
   },
 
   // Section Image - Responsive sizing

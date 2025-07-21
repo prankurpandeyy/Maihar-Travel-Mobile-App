@@ -39,7 +39,7 @@ function Homepageview({navigation}) {
           </View>
 
           <View style={styles.titleContainer}>
-            <Text style={styles.mainTitle}>MAIHAR TRAVEL</Text>
+            <Text style={styles.mainTitle}>MANDIR DARSHAN</Text>
             <Text style={styles.subtitle}>
               Your Gateway to Sharda Mata Temple
             </Text>

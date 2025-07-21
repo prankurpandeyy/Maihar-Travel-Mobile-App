@@ -108,9 +108,9 @@ const Legalpage = ({navigation}) => {
           <Text style={styles.lastUpdated}>Last updated: July 21, 2025</Text>
 
           <Text style={styles.introText}>
-            Maihar Travel ("we", "our", or "the app") is committed to protecting
-            your privacy. This Privacy Policy outlines how we handle any
-            information in relation to the use of our mobile application.
+            Mandir Darshan ("we", "our", or "the app") is committed to
+            protecting your privacy. This Privacy Policy outlines how we handle
+            any information in relation to the use of our mobile application.
           </Text>
 
           <View style={styles.section}>
@@ -179,7 +179,7 @@ const Legalpage = ({navigation}) => {
           <Text style={styles.lastUpdated}>Last updated: July 21, 2025</Text>
 
           <Text style={styles.introText}>
-            By using Maihar Travel App, you agree to the following terms:
+            By using Mandir Darshan App, you agree to the following terms:
           </Text>
 
           <View style={styles.section}>
