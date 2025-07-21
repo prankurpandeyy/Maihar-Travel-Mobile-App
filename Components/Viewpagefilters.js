@@ -22,7 +22,6 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
     {label: 'All Types', value: 'all', icon: 'home-variant'},
     {label: 'AC Only', value: 'ac', icon: 'air-conditioner'},
     {label: 'Non-AC', value: 'nonac', icon: 'fan'},
-    {label: 'Both AC/Non-AC', value: 'both', icon: 'home-thermometer'},
   ];
 
   // Sort options (price-based sorting removed)

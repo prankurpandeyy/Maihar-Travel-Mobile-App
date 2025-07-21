@@ -65,7 +65,6 @@ const Viewpage = ({navigation}) => {
       }
       return false;
     } catch (error) {
-      console.log('Cache check error:', error);
       return false;
     }
   }, []);
@@ -81,7 +80,6 @@ const Viewpage = ({navigation}) => {
       }
       return null;
     } catch (error) {
-      console.log('Cache load error:', error);
       return null;
     }
   }, []);
@@ -95,7 +93,7 @@ const Viewpage = ({navigation}) => {
         Date.now().toString(),
       );
     } catch (error) {
-      console.log('Cache save error:', error);
+      // Silently handle cache save errors
     }
   }, []);
 
@@ -137,8 +135,6 @@ const Viewpage = ({navigation}) => {
         }
       }
 
-      console.log(`✅ Loaded ${allHotelData.length} hotels total`);
-
       // Save to cache
       await saveToCache(allHotelData);
       setAllHotels(allHotelData);
@@ -149,7 +145,7 @@ const Viewpage = ({navigation}) => {
       setError('Failed to load hotels. Please try again.');
       throw error;
     }
-  }, [databaseId, collectionId, saveToCache]);
+  }, [saveToCache]);
 
   // Initial data load with caching
   const initializeData = useCallback(async () => {
@@ -160,16 +156,12 @@ const Viewpage = ({navigation}) => {
       let hotelData = null;
 
       if (cacheValid) {
-        console.log('📦 Loading from cache...');
         hotelData = await loadFromCache();
       }
 
       if (!hotelData || hotelData.length === 0) {
-        console.log('🌐 Loading from server...');
         hotelData = await loadAllHotels();
       }
-
-      console.log(`🎯 Initialized with ${hotelData?.length || 0} hotels`);
     } catch (error) {
       console.error('Failed to initialize data:', error);
     } finally {
@@ -216,11 +208,6 @@ const Viewpage = ({navigation}) => {
             return (
               roomType.includes('non') ||
               (!roomType.includes('ac') && roomType.includes('non'))
-            );
-          case 'both':
-            return (
-              roomType.includes('both') ||
-              (roomType.includes('ac') && roomType.includes('non'))
             );
           default:
             return true;

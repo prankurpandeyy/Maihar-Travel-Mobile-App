@@ -1,7 +1,4 @@
 import {
-  View,
-  Text,
-  Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,

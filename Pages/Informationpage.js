@@ -17,10 +17,12 @@ const Informationpage = ({navigation}) => {
         <Text
           style={styles.devInfo}
           onPress={() => {
-            Linking.openURL('https://99mvps.netlify.app/');
+            Linking.openURL(
+              'https://in.linkedin.com/in/kshitiz-agrawal-975a87256',
+            );
           }}>
           <Text style={{fontWeight: 'bold', color: '#1D9BF0'}}>
-            Designed & Developed by 99mvps Maihar
+            Designed & Developed by Kshitiz Agrawal IIT Indore
           </Text>
         </Text>
       </ScrollView>

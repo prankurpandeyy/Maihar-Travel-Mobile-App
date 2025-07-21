@@ -247,9 +247,8 @@ export const preloadImages = async (imageIds = []) => {
 
   try {
     await Promise.allSettled(preloadPromises);
-    console.log('Image preloading completed');
   } catch (error) {
-    console.warn('Some images failed to preload:', error);
+    // Silently handle preload errors
   }
 };
 

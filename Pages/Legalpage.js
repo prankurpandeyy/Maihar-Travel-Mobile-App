@@ -166,7 +166,7 @@ const Legalpage = ({navigation}) => {
             <Text style={styles.sectionTitle}>6. Contact</Text>
             <Text style={styles.contactText}>
               If you have any concerns or questions, reach out at:
-              {'\n'}📧 pprankur@gmail.com
+              {'\n'}📧 kshitiz.gwl2k@gmail.com
             </Text>
           </View>
         </LegalAccordion>
@@ -237,7 +237,7 @@ const Legalpage = ({navigation}) => {
               <Text style={styles.footerTitle}>Need Help?</Text>
               <Text style={styles.footerSubtitle}>
                 For any questions or concerns about these policies, contact us
-                at pprankur@gmail.com
+                at kshitiz.gwl2k@gmail.com
               </Text>
             </View>
           </Card.Content>

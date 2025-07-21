@@ -12,60 +12,53 @@ import HotelDetailsSkeleton from './Skeleton/HotelDetailsSkeleton';
 
 import {useRoute} from '@react-navigation/native';
 import {useEffect, useState, useCallback} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {
-  Card,
-  Divider,
-  IconButton,
-  Paragraph,
-  Text,
-  Title,
-} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import PremiumGradient from './common/CustomGradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
-import {API_URL, PROJECT_ID} from '@env';
+import {PROJECT_ID, DATABASE_ID, COLLECTION_ID} from '@env';
 
-const {width} = Dimensions.get('window');
-console.log('🚀 ~ Detailsview ~ API_URL:', API_URL);
-
+// Remove unused width variable and clean up the component
 const Detailsview = () => {
-  const [hotelData, setHotelData] = useState([]);
-  console.log('🚀 ~ Detailsview ~ hotelData:', hotelData);
+  const [hotelData, setHotelData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const route = useRoute();
   const {hotelId} = route.params; // Access hotelId here
 
-  const fetchHotelById = useCallback(async hotelId => {
+  const fetchHotelById = useCallback(async fetchHotelId => {
     try {
-      const response = await fetch(API_URL + '/' + hotelId, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Appwrite-Project': PROJECT_ID,
-          // Use your API key if required
+      setIsLoading(true);
+
+      // Use the hotelId parameter passed to the function
+      const response = await fetch(
+        `https://cloud.appwrite.io/v1/databases/${DATABASE_ID}/collections/${COLLECTION_ID}/documents/${fetchHotelId}`,
+        {
+          headers: {
+            'X-Appwrite-Project': PROJECT_ID,
+            'Content-Type': 'application/json',
+          },
         },
-      });
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to fetch hotel data');
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      setIsLoading(true);
-      const resData = await response.json();
-      setHotelData(resData);
-      setIsLoading(false);
-      return hotelData;
+      const data = await response.json();
+      setHotelData(data);
     } catch (error) {
-      console.error('Error fetching hotel data:', error);
+      console.error('Error fetching hotel details:', error);
+    } finally {
+      setIsLoading(false);
     }
-  }, []);
+  }, []); // Remove hotelData from dependencies since it's not used in the function
 
   useEffect(() => {
-    fetchHotelById(hotelId);
+    if (hotelId) {
+      fetchHotelById(hotelId);
+    }
   }, [hotelId, fetchHotelById]);
-  // Usage
 
   function createGoogleMapsEmbedUrl(latLong) {
     const [lat, long] = latLong.split(',').map(coord => coord.trim());
@@ -78,6 +71,14 @@ const Detailsview = () => {
     <View style={styles.container}>
       {isLoading ? (
         <HotelDetailsSkeleton />
+      ) : !hotelData ? (
+        <View style={styles.errorContainer}>
+          <Icon name="alert-circle" size={48} color={COLORS.error} />
+          <Text style={styles.errorTitle}>Hotel Not Found</Text>
+          <Text style={styles.errorText}>
+            Unable to load hotel details. Please try again later.
+          </Text>
+        </View>
       ) : (
         <ScrollView style={styles.scrollView}>
           {/* Header Section */}
@@ -100,7 +101,9 @@ const Detailsview = () => {
                 style={styles.cardGradient}>
                 {/* Hotel Header */}
                 <View style={styles.hotelHeader}>
-                  <Text style={styles.hotelName}>{hotelData.HotelName}</Text>
+                  <Text style={styles.hotelName}>
+                    {hotelData?.HotelName || 'Hotel Name'}
+                  </Text>
                   <View style={styles.availableBadge}>
                     <Icon
                       name="check-circle"
@@ -115,7 +118,7 @@ const Detailsview = () => {
                 <View style={styles.locationContainer}>
                   <Icon name="map-marker" size={20} color={COLORS.primary} />
                   <Text style={styles.locationText}>
-                    {hotelData.HotelAddress}
+                    {hotelData?.HotelAddress || 'Address not available'}
                   </Text>
                 </View>
 
@@ -131,7 +134,8 @@ const Detailsview = () => {
                       color={COLORS.textWhite}
                     />
                     <Text style={styles.priceText}>
-                      ₹{hotelData.HotelRentMin} - ₹{hotelData.HotelRentMax}
+                      ₹{hotelData?.HotelRentMin || 0} - ₹
+                      {hotelData?.HotelRentMax || 0}
                     </Text>
                     <Text style={styles.perNightText}>per night</Text>
                   </PremiumGradient>
@@ -149,9 +153,10 @@ const Detailsview = () => {
                   <Text
                     style={styles.detailValue}
                     onPress={() =>
+                      hotelData?.HotelContact &&
                       Linking.openURL('tel:' + hotelData.HotelContact)
                     }>
-                    {hotelData.HotelContact}
+                    {hotelData?.HotelContact || 'Contact not available'}
                   </Text>
                 </View>
               </View>
@@ -162,7 +167,7 @@ const Detailsview = () => {
                 <View style={styles.detailContent}>
                   <Text style={styles.detailLabel}>Food</Text>
                   <Text style={styles.detailValue}>
-                    {hotelData.HotelFoodFacility}
+                    {hotelData?.HotelFoodFacility || 'Not specified'}
                   </Text>
                 </View>
               </View>
@@ -173,9 +178,9 @@ const Detailsview = () => {
                 <View style={styles.detailContent}>
                   <Text style={styles.detailLabel}>Room Type</Text>
                   <Text style={styles.detailValue}>
-                    {hotelData.HotelRoomType.toUpperCase() === 'BOTH'
+                    {hotelData?.HotelRoomType?.toUpperCase() === 'BOTH'
                       ? 'AC + NON-AC'
-                      : hotelData.HotelRoomType}
+                      : hotelData?.HotelRoomType || 'N/A'}
                   </Text>
                 </View>
               </View>
@@ -186,7 +191,7 @@ const Detailsview = () => {
                 <View style={styles.detailContent}>
                   <Text style={styles.detailLabel}>Parking</Text>
                   <Text style={styles.detailValue}>
-                    {hotelData.HotelParking}
+                    {hotelData?.HotelParking || 'Not specified'}
                   </Text>
                 </View>
               </View>
@@ -198,6 +203,7 @@ const Detailsview = () => {
               <TouchableOpacity
                 style={styles.mapButton}
                 onPress={() =>
+                  hotelData?.HotelLocation &&
                   Linking.openURL(
                     createGoogleMapsEmbedUrl(hotelData.HotelLocation),
                   )
@@ -217,7 +223,7 @@ const Detailsview = () => {
             <View style={styles.additionalCard}>
               <Text style={styles.sectionTitle}>Additional Information</Text>
               <Text style={styles.additionalText}>
-                {hotelData.HotelDetails}
+                {hotelData?.HotelDetails || 'No additional details available'}
               </Text>
             </View>
 
@@ -472,6 +478,29 @@ const styles = StyleSheet.create({
     fontWeight: TYPOGRAPHY.fontWeight.bold,
     color: COLORS.textWhite,
     marginLeft: SPACING.xs,
+  },
+
+  // Error state styles
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: SPACING['2xl'],
+    backgroundColor: COLORS.background,
+  },
+  errorTitle: {
+    fontSize: TYPOGRAPHY.fontSize['2xl'],
+    fontWeight: TYPOGRAPHY.fontWeight.bold,
+    color: COLORS.error,
+    marginTop: SPACING.lg,
+    marginBottom: SPACING.md,
+    textAlign: 'center',
+  },
+  errorText: {
+    fontSize: TYPOGRAPHY.fontSize.base,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    lineHeight: 24,
   },
 });
 
