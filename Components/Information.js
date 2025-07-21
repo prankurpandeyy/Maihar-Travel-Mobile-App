@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -22,7 +22,7 @@ import {
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ImageView from 'react-native-image-viewing';
-import {WebView} from 'react-native-webview';
+import YoutubePlayer from 'react-native-youtube-iframe';
 import PremiumGradient from './common/CustomGradient';
 import OptimizedImage from './common/OptimizedImage';
 import InformationSkeleton from './Skeleton/InformationSkeleton';
@@ -54,9 +54,15 @@ const responsiveFontSize = baseSize => {
   // Ensure we have a valid number, fallback to 16 if undefined
   const fontSize = typeof baseSize === 'number' ? baseSize : 16;
 
-  if (isSmallDevice) {return moderateScale(fontSize * 0.9);}
-  if (isMediumDevice) {return moderateScale(fontSize);}
-  if (isLargeDevice) {return moderateScale(fontSize * 1.1);}
+  if (isSmallDevice) {
+    return moderateScale(fontSize * 0.9);
+  }
+  if (isMediumDevice) {
+    return moderateScale(fontSize);
+  }
+  if (isLargeDevice) {
+    return moderateScale(fontSize * 1.1);
+  }
   return moderateScale(fontSize * 1.2); // Tablet
 };
 
@@ -218,7 +224,8 @@ const ImageGallery = ({images, title}) => {
 // Enhanced Video Gallery Component with YouTube Playlist
 const VideoGallery = ({playlistUrl, title}) => {
   const [isVideoModalVisible, setIsVideoModalVisible] = useState(false);
-  const [isWebViewLoading, setIsWebViewLoading] = useState(true);
+  const [isYouTubeReady, setIsYouTubeReady] = useState(false);
+  const [playing, setPlaying] = useState(false);
 
   // Extract playlist ID from URL
   const getPlaylistId = url => {
@@ -228,18 +235,27 @@ const VideoGallery = ({playlistUrl, title}) => {
 
   const playlistId = getPlaylistId(playlistUrl);
 
-  // YouTube embed URL for playlist
-  const embedUrl = `https://www.youtube.com/embed/videoseries?list=${playlistId}&autoplay=0&rel=0&showinfo=0&modestbranding=1`;
-
   const openVideoModal = () => {
     setIsVideoModalVisible(true);
-    setIsWebViewLoading(true);
+    setIsYouTubeReady(false);
+    setPlaying(true); // Auto-start playing when modal opens
   };
 
   const closeVideoModal = () => {
     setIsVideoModalVisible(false);
-    setIsWebViewLoading(true);
+    setPlaying(false);
+    setIsYouTubeReady(false);
   };
+
+  const onStateChange = useCallback(state => {
+    if (state === 'ended') {
+      setPlaying(false);
+    }
+  }, []);
+
+  const onReady = useCallback(() => {
+    setIsYouTubeReady(true);
+  }, []);
 
   return (
     <View style={styles.videoGalleryContainer}>
@@ -267,7 +283,9 @@ const VideoGallery = ({playlistUrl, title}) => {
               size={responsiveFontSize(16)}
               color="#FF0000"
             />
-            <Text style={styles.videoInfoText}>YouTube Playlist</Text>
+            <Text style={styles.videoInfoText}>
+              YouTube Playlist • Tap to play
+            </Text>
           </View>
         </Card.Content>
       </Card>
@@ -295,36 +313,50 @@ const VideoGallery = ({playlistUrl, title}) => {
 
             {/* Video Content */}
             <View style={styles.videoContainer}>
-              {isWebViewLoading && (
+              {!isYouTubeReady && (
                 <View style={styles.videoLoadingContainer}>
                   <ActivityIndicator size="large" color={COLORS.primary} />
                   <Text style={styles.videoLoadingText}>Loading videos...</Text>
                 </View>
               )}
 
-              <WebView
-                source={{uri: embedUrl}}
-                style={styles.webView}
-                allowsFullscreenVideo={true}
-                mediaPlaybackRequiresUserAction={false}
-                javaScriptEnabled={true}
-                domStorageEnabled={true}
-                startInLoadingState={true}
-                onLoadEnd={() => setIsWebViewLoading(false)}
-                onError={() => setIsWebViewLoading(false)}
+              <YoutubePlayer
+                height={isSmallDevice ? 200 : isTablet ? 300 : 250}
+                play={playing}
+                playList={[playlistId]}
+                playListType="playlist"
+                loop={false}
+                onChangeState={onStateChange}
+                onReady={onReady}
+                webViewStyle={styles.youtubeWebView}
+                webViewProps={{
+                  allowsFullscreenVideo: true,
+                  allowsInlineMediaPlayback: true,
+                  mediaPlaybackRequiresUserAction: false,
+                }}
               />
             </View>
 
             {/* Modal Footer */}
             <View style={styles.videoModalFooter}>
-              <Button
-                mode="outlined"
-                onPress={() => Linking.openURL(playlistUrl)}
-                icon="open-in-new"
-                style={styles.openYouTubeButton}
-                labelStyle={styles.openYouTubeButtonText}>
-                Open in YouTube
-              </Button>
+              <View style={styles.videoControls}>
+                <Button
+                  mode="contained"
+                  onPress={() => setPlaying(!playing)}
+                  icon={playing ? 'pause' : 'play'}
+                  style={styles.playPauseButton}
+                  labelStyle={styles.playPauseButtonText}>
+                  {playing ? 'Pause' : 'Play'}
+                </Button>
+                <Button
+                  mode="outlined"
+                  onPress={() => Linking.openURL(playlistUrl)}
+                  icon="open-in-new"
+                  style={styles.openYouTubeButton}
+                  labelStyle={styles.openYouTubeButtonText}>
+                  Open in YouTube
+                </Button>
+              </View>
             </View>
           </Surface>
         </Modal>
@@ -1042,9 +1074,9 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
     marginTop: moderateVerticalScale(SPACING.sm),
   },
-  webView: {
-    flex: 1,
+  youtubeWebView: {
     backgroundColor: COLORS.surface,
+    borderRadius: moderateScale(RADIUS.md),
   },
   videoModalFooter: {
     paddingHorizontal: moderateScale(SPACING.lg),
@@ -1052,8 +1084,23 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: COLORS.divider,
   },
+  videoControls: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: moderateScale(SPACING.md),
+  },
+  playPauseButton: {
+    backgroundColor: COLORS.primary,
+    flex: 1,
+  },
+  playPauseButtonText: {
+    color: COLORS.onPrimary,
+    fontSize: responsiveFontSize(14),
+  },
   openYouTubeButton: {
     borderColor: COLORS.primary,
+    flex: 1,
   },
   openYouTubeButtonText: {
     color: COLORS.primary,
