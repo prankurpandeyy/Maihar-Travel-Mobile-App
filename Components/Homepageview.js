@@ -5,6 +5,7 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {Text} from 'react-native-paper';
 import PremiumGradient from './common/CustomGradient';
@@ -23,14 +24,17 @@ function Homepageview({navigation}) {
       <View style={styles.overlay} />
 
       {/* Content */}
-      <View style={styles.content}>
+      <ScrollView
+        style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}>
         {/* Header Section */}
         <View style={styles.headerSection}>
           <View style={styles.imageContainer}>
-      <Image
-        style={styles.image}
-        source={require('../assets/matasharda.jpg')}
-      />
+            <Image
+              style={styles.image}
+              source={require('../assets/matasharda.jpg')}
+            />
             <View style={styles.imageOverlay} />
           </View>
 
@@ -48,7 +52,7 @@ function Homepageview({navigation}) {
         </View>
 
         {/* Action Buttons */}
-      <View style={styles.buttonContainer}>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={[styles.primaryButton, styles.hotelButton]}
             onPress={() => navigation.navigate('View')}
@@ -91,7 +95,18 @@ function Homepageview({navigation}) {
             <Text style={styles.featureText}>Temple Guide</Text>
           </View>
         </View>
-      </View>
+
+        {/* Subtle Legal Footer Link */}
+        <View style={styles.legalFooter}>
+          <TouchableOpacity
+            style={styles.legalLink}
+            onPress={() => navigation.navigate('Legal')}
+            activeOpacity={0.7}>
+            <Icon name="shield-outline" size={16} color={COLORS.textWhite} />
+            <Text style={styles.legalLinkText}>Privacy & Terms</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </PremiumGradient>
   );
 }
@@ -106,16 +121,18 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
   },
-  content: {
+  scrollContainer: {
     flex: 1,
-    justifyContent: 'space-between',
+  },
+  scrollContent: {
     paddingHorizontal: SPACING.xl,
     paddingVertical: SPACING['4xl'],
+    paddingBottom: SPACING['4xl'], // Normal bottom padding
   },
   headerSection: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: SPACING['3xl'],
   },
   imageContainer: {
     position: 'relative',
@@ -203,6 +220,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingHorizontal: SPACING.md,
+    marginBottom: SPACING['4xl'],
   },
   featurePill: {
     flexDirection: 'row',
@@ -218,6 +236,30 @@ const styles = StyleSheet.create({
     fontWeight: TYPOGRAPHY.fontWeight.medium,
     color: COLORS.text,
     marginLeft: SPACING.xs,
+  },
+
+  // Subtle Legal Footer Styles
+  legalFooter: {
+    marginTop: SPACING['3xl'],
+    alignItems: 'center',
+    paddingBottom: SPACING.md,
+  },
+  legalLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.md,
+    borderRadius: RADIUS.full,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  legalLinkText: {
+    fontSize: TYPOGRAPHY.fontSize.sm,
+    color: COLORS.textWhite,
+    marginLeft: SPACING.xs,
+    opacity: 0.9,
+    fontWeight: TYPOGRAPHY.fontWeight.medium,
   },
 });
 

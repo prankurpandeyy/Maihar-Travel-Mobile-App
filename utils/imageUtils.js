@@ -115,6 +115,13 @@ export const TEMPLE_IMAGES = {
       description: 'Different perspective of the sacred temple',
       tags: ['temple', 'alternate', 'perspective'],
     },
+    {
+      id: 'temple-caption-view',
+      local: require('../assets/caption.jpg'), // 33KB - New unique image
+      caption: 'Temple Caption View',
+      description: 'Scenic caption view of Sharda Mata Temple',
+      tags: ['temple', 'scenic', 'caption'],
+    },
   ],
 
   // Section-specific images - Optimized for contextual use

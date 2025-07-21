@@ -7,6 +7,7 @@ import Homepage from './Pages/Homepage';
 import Viewpage from './Pages/Viewpage';
 import Detailspage from './Pages/Detailspage';
 import Informationpage from './Pages/Informationpage';
+import Legalpage from './Pages/Legalpage';
 import {COLORS} from './constants/theme';
 
 const Stack = createNativeStackNavigator();
@@ -90,6 +91,13 @@ function App() {
             component={Informationpage}
             options={{
               title: 'Temple Information',
+            }}
+          />
+          <Stack.Screen
+            name="Legal"
+            component={Legalpage}
+            options={{
+              title: 'Legal & Privacy',
             }}
           />
         </Stack.Navigator>

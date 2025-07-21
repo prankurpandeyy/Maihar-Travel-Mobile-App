@@ -742,7 +742,8 @@ const styles = StyleSheet.create({
     marginBottom: moderateVerticalScale(SPACING.md),
   },
   galleryScrollContainer: {
-    paddingRight: moderateScale(SPACING.sm),
+    paddingRight: moderateScale(SPACING.xl), // Increased padding to fully show last image
+    paddingLeft: moderateScale(SPACING.lg), // Add left padding for consistency
   },
   galleryCard: {
     width: isSmallDevice

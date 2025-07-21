@@ -348,7 +348,7 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
                 style={styles.modalActionButton}>
                 Apply Filters
               </Button>
-            </View>
+    </View>
           </ScrollView>
         </Modal>
       </Portal>

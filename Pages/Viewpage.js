@@ -113,13 +113,13 @@ const Viewpage = ({navigation}) => {
         const queries = [Query.limit(50)]; // Max per request
         if (lastId) {
           queries.push(Query.cursorAfter(lastId));
-        }
+      }
 
-        const response = await databases.listDocuments(
-          databaseId,
-          collectionId,
-          queries,
-        );
+      const response = await databases.listDocuments(
+        databaseId,
+        collectionId,
+        queries,
+      );
 
         if (response.documents.length > 0) {
           // Deduplicate based on $id
@@ -384,11 +384,11 @@ const Viewpage = ({navigation}) => {
         {isLoading && allHotels.length === 0 ? (
           <HotelListingSkeleton />
         ) : (
-          <Viewpagecard
-            navigation={navigation}
+            <Viewpagecard
+              navigation={navigation}
             filteredHotelsByName={displayedHotels}
-            isLoading={isLoading}
-          />
+              isLoading={isLoading}
+            />
         )}
 
         {/* Load More Button (optional) */}
