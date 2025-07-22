@@ -240,7 +240,9 @@ const VideoGallery = ({playlistUrl, title}) => {
 
   // Fetch playlist videos using YouTube Data API
   const fetchPlaylistVideos = useCallback(async () => {
-    if (!playlistId || !YOUTUBE_API_KEY) {return;}
+    if (!playlistId || !YOUTUBE_API_KEY) {
+      return;
+    }
 
     setLoading(true);
     try {
@@ -472,31 +474,20 @@ const VideoGallery = ({playlistUrl, title}) => {
 
             {/* Modal Footer */}
             <View style={styles.videoModalFooter}>
-              <View style={styles.videoControls}>
-                <Button
-                  mode="contained"
-                  onPress={() => setPlaying(!playing)}
-                  icon={playing ? 'pause' : 'play'}
-                  style={styles.playPauseButton}
-                  labelStyle={styles.playPauseButtonText}
-                  disabled={!selectedVideo}>
-                  {playing ? 'Pause' : 'Play'}
-                </Button>
-                <Button
-                  mode="outlined"
-                  onPress={() =>
-                    Linking.openURL(
-                      selectedVideo
-                        ? `https://youtube.com/watch?v=${selectedVideo.id}`
-                        : playlistUrl,
-                    )
-                  }
-                  icon="open-in-new"
-                  style={styles.openYouTubeButton}
-                  labelStyle={styles.openYouTubeButtonText}>
-                  {selectedVideo ? 'Open Video' : 'Open Playlist'}
-                </Button>
-              </View>
+              <Button
+                mode="outlined"
+                onPress={() =>
+                  Linking.openURL(
+                    selectedVideo
+                      ? `https://youtube.com/watch?v=${selectedVideo.id}`
+                      : playlistUrl,
+                  )
+                }
+                icon="open-in-new"
+                style={styles.openYouTubeButtonFullWidth}
+                labelStyle={styles.openYouTubeButtonText}>
+                {selectedVideo ? 'Open Video' : 'Open Playlist'}
+              </Button>
             </View>
           </Surface>
         </Modal>
@@ -1314,23 +1305,9 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: COLORS.divider,
   },
-  videoControls: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: moderateScale(SPACING.md),
-  },
-  playPauseButton: {
-    backgroundColor: COLORS.primary,
-    flex: 1,
-  },
-  playPauseButtonText: {
-    color: COLORS.onPrimary,
-    fontSize: responsiveFontSize(14),
-  },
-  openYouTubeButton: {
+  openYouTubeButtonFullWidth: {
     borderColor: COLORS.primary,
-    flex: 1,
+    width: '100%',
   },
   openYouTubeButtonText: {
     color: COLORS.primary,
