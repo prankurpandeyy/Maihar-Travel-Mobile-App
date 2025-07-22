@@ -27,6 +27,7 @@ import PremiumGradient from './common/CustomGradient';
 import OptimizedImage from './common/OptimizedImage';
 import InformationSkeleton from './Skeleton/InformationSkeleton';
 import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
+import {YOUTUBE_API_KEY} from '@env';
 import {
   getGalleryImages,
   getTempleImage,
@@ -221,10 +222,12 @@ const ImageGallery = ({images, title}) => {
   );
 };
 
-// Enhanced Video Gallery Component with YouTube Playlist
+// Enhanced Video Gallery Component with YouTube Data API
 const VideoGallery = ({playlistUrl, title}) => {
   const [isVideoModalVisible, setIsVideoModalVisible] = useState(false);
-  const [isYouTubeReady, setIsYouTubeReady] = useState(false);
+  const [videos, setVideos] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [playing, setPlaying] = useState(false);
 
   // Extract playlist ID from URL
@@ -235,26 +238,68 @@ const VideoGallery = ({playlistUrl, title}) => {
 
   const playlistId = getPlaylistId(playlistUrl);
 
+  // Fetch playlist videos using YouTube Data API
+  const fetchPlaylistVideos = useCallback(async () => {
+    if (!playlistId || !YOUTUBE_API_KEY) {return;}
+
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=20&playlistId=${playlistId}&key=${YOUTUBE_API_KEY}`,
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.items) {
+        const videoList = data.items.map(item => ({
+          id: item.snippet.resourceId.videoId,
+          title: item.snippet.title,
+          description: item.snippet.description,
+          thumbnail:
+            item.snippet.thumbnails.medium?.url ||
+            item.snippet.thumbnails.default?.url,
+          publishedAt: item.snippet.publishedAt,
+        }));
+
+        setVideos(videoList);
+        if (videoList.length > 0) {
+          setSelectedVideo(videoList[0]); // Select first video by default
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching playlist videos:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [playlistId]);
+
+  useEffect(() => {
+    fetchPlaylistVideos();
+  }, [fetchPlaylistVideos]);
+
   const openVideoModal = () => {
     setIsVideoModalVisible(true);
-    setIsYouTubeReady(false);
-    setPlaying(true); // Auto-start playing when modal opens
+    setPlaying(false);
   };
 
   const closeVideoModal = () => {
     setIsVideoModalVisible(false);
     setPlaying(false);
-    setIsYouTubeReady(false);
+  };
+
+  const selectVideo = video => {
+    setSelectedVideo(video);
+    setPlaying(true);
   };
 
   const onStateChange = useCallback(state => {
     if (state === 'ended') {
       setPlaying(false);
     }
-  }, []);
-
-  const onReady = useCallback(() => {
-    setIsYouTubeReady(true);
   }, []);
 
   return (
@@ -265,14 +310,22 @@ const VideoGallery = ({playlistUrl, title}) => {
       <Card style={styles.videoCard} onPress={openVideoModal}>
         <View style={styles.videoThumbnailContainer}>
           <View style={styles.videoThumbnail}>
-            <Icon
-              name="play-circle"
-              size={moderateScale(60)}
-              color={COLORS.primary}
-            />
+            {loading ? (
+              <ActivityIndicator size="large" color={COLORS.primary} />
+            ) : (
+              <Icon
+                name="play-circle"
+                size={moderateScale(60)}
+                color={COLORS.primary}
+              />
+            )}
             <Text style={styles.videoTitle}>Temple Video Gallery</Text>
             <Text style={styles.videoSubtitle}>
-              Watch temple videos and virtual darshan
+              {loading
+                ? 'Loading videos...'
+                : videos.length > 0
+                ? `${videos.length} temple videos available`
+                : 'Watch temple videos and virtual darshan'}
             </Text>
           </View>
         </View>
@@ -284,7 +337,9 @@ const VideoGallery = ({playlistUrl, title}) => {
               color="#FF0000"
             />
             <Text style={styles.videoInfoText}>
-              YouTube Playlist • Tap to play
+              {loading
+                ? 'Loading...'
+                : `YouTube Playlist • ${videos.length} videos`}
             </Text>
           </View>
         </Card.Content>
@@ -313,28 +368,106 @@ const VideoGallery = ({playlistUrl, title}) => {
 
             {/* Video Content */}
             <View style={styles.videoContainer}>
-              {!isYouTubeReady && (
+              {loading ? (
                 <View style={styles.videoLoadingContainer}>
                   <ActivityIndicator size="large" color={COLORS.primary} />
                   <Text style={styles.videoLoadingText}>Loading videos...</Text>
                 </View>
-              )}
+              ) : videos.length === 0 ? (
+                <View style={styles.noVideosContainer}>
+                  <Icon
+                    name="video-off"
+                    size={moderateScale(48)}
+                    color={COLORS.textLight}
+                  />
+                  <Text style={styles.noVideosText}>
+                    No videos found in playlist
+                  </Text>
+                </View>
+              ) : (
+                <View style={styles.videoContentContainer}>
+                  {/* Current Video Player */}
+                  {selectedVideo && (
+                    <View style={styles.currentVideoSection}>
+                      <YoutubePlayer
+                        height={isSmallDevice ? 200 : isTablet ? 300 : 250}
+                        play={playing}
+                        videoId={selectedVideo.id}
+                        onChangeState={onStateChange}
+                        webViewStyle={styles.youtubeWebView}
+                        webViewProps={{
+                          allowsFullscreenVideo: true,
+                          allowsInlineMediaPlayback: true,
+                          mediaPlaybackRequiresUserAction: false,
+                        }}
+                      />
+                      <View style={styles.currentVideoInfo}>
+                        <Text
+                          style={styles.currentVideoTitle}
+                          numberOfLines={2}>
+                          {selectedVideo.title}
+                        </Text>
+                        <Text
+                          style={styles.currentVideoDescription}
+                          numberOfLines={3}>
+                          {selectedVideo.description}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
 
-              <YoutubePlayer
-                height={isSmallDevice ? 200 : isTablet ? 300 : 250}
-                play={playing}
-                playList={[playlistId]}
-                playListType="playlist"
-                loop={false}
-                onChangeState={onStateChange}
-                onReady={onReady}
-                webViewStyle={styles.youtubeWebView}
-                webViewProps={{
-                  allowsFullscreenVideo: true,
-                  allowsInlineMediaPlayback: true,
-                  mediaPlaybackRequiresUserAction: false,
-                }}
-              />
+                  {/* Video List */}
+                  <View style={styles.videoListSection}>
+                    <Text style={styles.videoListTitle}>
+                      Temple Videos ({videos.length})
+                    </Text>
+                    <ScrollView
+                      style={styles.videoList}
+                      showsVerticalScrollIndicator={false}>
+                      {videos.map((video, index) => (
+                        <TouchableOpacity
+                          key={video.id}
+                          style={[
+                            styles.videoItem,
+                            selectedVideo?.id === video.id &&
+                              styles.selectedVideoItem,
+                          ]}
+                          onPress={() => selectVideo(video)}>
+                          <Image
+                            source={{uri: video.thumbnail}}
+                            style={styles.videoThumbnailImage}
+                            resizeMode="cover"
+                          />
+                          <View style={styles.videoItemContent}>
+                            <Text
+                              style={styles.videoItemTitle}
+                              numberOfLines={2}>
+                              {video.title}
+                            </Text>
+                            <View style={styles.videoItemMeta}>
+                              <Icon
+                                name="play-circle"
+                                size={14}
+                                color={COLORS.primary}
+                              />
+                              <Text style={styles.videoItemIndex}>
+                                Video {index + 1}
+                              </Text>
+                            </View>
+                          </View>
+                          {selectedVideo?.id === video.id && (
+                            <Icon
+                              name="check-circle"
+                              size={20}
+                              color={COLORS.primary}
+                            />
+                          )}
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                  </View>
+                </View>
+              )}
             </View>
 
             {/* Modal Footer */}
@@ -345,16 +478,23 @@ const VideoGallery = ({playlistUrl, title}) => {
                   onPress={() => setPlaying(!playing)}
                   icon={playing ? 'pause' : 'play'}
                   style={styles.playPauseButton}
-                  labelStyle={styles.playPauseButtonText}>
+                  labelStyle={styles.playPauseButtonText}
+                  disabled={!selectedVideo}>
                   {playing ? 'Pause' : 'Play'}
                 </Button>
                 <Button
                   mode="outlined"
-                  onPress={() => Linking.openURL(playlistUrl)}
+                  onPress={() =>
+                    Linking.openURL(
+                      selectedVideo
+                        ? `https://youtube.com/watch?v=${selectedVideo.id}`
+                        : playlistUrl,
+                    )
+                  }
                   icon="open-in-new"
                   style={styles.openYouTubeButton}
                   labelStyle={styles.openYouTubeButtonText}>
-                  Open in YouTube
+                  {selectedVideo ? 'Open Video' : 'Open Playlist'}
                 </Button>
               </View>
             </View>
@@ -1077,6 +1217,96 @@ const styles = StyleSheet.create({
   youtubeWebView: {
     backgroundColor: COLORS.surface,
     borderRadius: moderateScale(RADIUS.md),
+  },
+  noVideosContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: moderateVerticalScale(SPACING.xl),
+  },
+  noVideosText: {
+    ...TYPOGRAPHY.body2,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body2.fontSize),
+    color: COLORS.textLight,
+    marginTop: moderateVerticalScale(SPACING.sm),
+    textAlign: 'center',
+  },
+  videoContentContainer: {
+    flex: 1,
+  },
+  currentVideoSection: {
+    marginBottom: moderateVerticalScale(SPACING.md),
+  },
+  currentVideoInfo: {
+    paddingHorizontal: moderateScale(SPACING.md),
+    paddingVertical: moderateVerticalScale(SPACING.sm),
+  },
+  currentVideoTitle: {
+    ...TYPOGRAPHY.heading5,
+    fontSize: responsiveFontSize(TYPOGRAPHY.heading5.fontSize),
+    color: COLORS.textPrimary,
+    marginBottom: moderateVerticalScale(SPACING.xs),
+  },
+  currentVideoDescription: {
+    ...TYPOGRAPHY.body2,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body2.fontSize),
+    color: COLORS.textSecondary,
+    lineHeight: responsiveFontSize(TYPOGRAPHY.body2.fontSize * 1.3),
+  },
+  videoListSection: {
+    flex: 1,
+    paddingHorizontal: moderateScale(SPACING.md),
+  },
+  videoListTitle: {
+    ...TYPOGRAPHY.heading5,
+    fontSize: responsiveFontSize(TYPOGRAPHY.heading5.fontSize),
+    color: COLORS.textPrimary,
+    marginBottom: moderateVerticalScale(SPACING.sm),
+  },
+  videoList: {
+    flex: 1,
+    maxHeight: isSmallDevice ? 200 : isTablet ? 300 : 250,
+  },
+  videoItem: {
+    flexDirection: 'row',
+    paddingVertical: moderateVerticalScale(SPACING.sm),
+    paddingHorizontal: moderateScale(SPACING.sm),
+    marginBottom: moderateVerticalScale(SPACING.xs),
+    borderRadius: moderateScale(RADIUS.md),
+    backgroundColor: COLORS.surface,
+    alignItems: 'center',
+  },
+  selectedVideoItem: {
+    backgroundColor: COLORS.primaryContainer,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+  },
+  videoThumbnailImage: {
+    width: moderateScale(80),
+    height: moderateVerticalScale(60),
+    borderRadius: moderateScale(RADIUS.sm),
+    marginRight: moderateScale(SPACING.sm),
+  },
+  videoItemContent: {
+    flex: 1,
+    marginRight: moderateScale(SPACING.sm),
+  },
+  videoItemTitle: {
+    ...TYPOGRAPHY.body2,
+    fontSize: responsiveFontSize(TYPOGRAPHY.body2.fontSize),
+    color: COLORS.textPrimary,
+    fontWeight: '500',
+    marginBottom: moderateVerticalScale(SPACING.xs),
+  },
+  videoItemMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  videoItemIndex: {
+    ...TYPOGRAPHY.caption,
+    fontSize: responsiveFontSize(TYPOGRAPHY.caption.fontSize),
+    color: COLORS.textSecondary,
+    marginLeft: moderateScale(SPACING.xs),
   },
   videoModalFooter: {
     paddingHorizontal: moderateScale(SPACING.lg),
