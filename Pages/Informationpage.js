@@ -14,7 +14,7 @@ const Informationpage = ({navigation}) => {
     <SafeAreaView>
       <ScrollView style={styles.container}>
         <Information navigation={navigation} />
-        <Text
+        {/* <Text
           style={styles.devInfo}
           onPress={() => {
             Linking.openURL(
@@ -24,7 +24,7 @@ const Informationpage = ({navigation}) => {
           <Text style={{fontWeight: 'bold', color: '#1D9BF0'}}>
             Designed & Developed by Kshitiz Agrawal IIT Indore
           </Text>
-        </Text>
+        </Text> */}
       </ScrollView>
     </SafeAreaView>
   );

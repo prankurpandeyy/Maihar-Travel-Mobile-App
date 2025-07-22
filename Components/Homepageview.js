@@ -33,7 +33,7 @@ function Homepageview({navigation}) {
           <View style={styles.imageContainer}>
             <Image
               style={styles.image}
-              source={require('../assets/matasharda.jpg')}
+              source={require('../assets/Home_Page_App_Logo.jpg')}
             />
             <View style={styles.imageOverlay} />
           </View>
@@ -87,8 +87,8 @@ function Homepageview({navigation}) {
             <Text style={styles.featureText}>Easy Navigation</Text>
           </View>
           <View style={styles.featurePill}>
-            <Icon name="phone" size={16} color={COLORS.primary} />
-            <Text style={styles.featureText}>Quick Booking</Text>
+            <Icon name="text" size={16} color={COLORS.primary} />
+            <Text style={styles.featureText}>Complete Guide</Text>
           </View>
           <View style={styles.featurePill}>
             <Icon name="information" size={16} color={COLORS.primary} />

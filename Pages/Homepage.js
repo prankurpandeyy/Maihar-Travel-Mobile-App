@@ -1,8 +1,4 @@
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import React from 'react';
 import Homepageview from '../Components/Homepageview';
 
@@ -19,7 +15,6 @@ const Homepage = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    paddingTop: 50,
     height: '100%',
   },
 });

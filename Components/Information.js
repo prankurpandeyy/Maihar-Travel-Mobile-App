@@ -925,9 +925,8 @@ const Information = ({navigation}) => {
               colors={[COLORS.primary, COLORS.primaryLight]}
               direction="horizontal"
               style={styles.exploreGradient}>
-              <Icon name="home-city" size={24} color={COLORS.textWhite} />
+              <Icon name="home-city" size={26} color={COLORS.textWhite} />
               <Text style={styles.exploreText}>Explore Nearby Hotels</Text>
-              <Icon name="chevron-right" size={24} color={COLORS.textWhite} />
             </PremiumGradient>
           </TouchableOpacity>
         </View>
