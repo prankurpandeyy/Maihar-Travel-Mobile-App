@@ -11,10 +11,14 @@ import {Text} from 'react-native-paper';
 import PremiumGradient from './common/CustomGradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
+import {useLanguage} from '../contexts/LanguageContext';
+import {getTranslatedText} from '../constants/translations';
 
 const {width, height} = Dimensions.get('window');
 
 function Homepageview({navigation}) {
+  const {language, toggleLanguage} = useLanguage();
+
   return (
     <PremiumGradient
       colors={[COLORS.gradientStart, COLORS.gradientEnd]}
@@ -39,14 +43,21 @@ function Homepageview({navigation}) {
           </View>
 
           <View style={styles.titleContainer}>
-            <Text style={styles.mainTitle}>MAIHAR DARSHAN</Text>
+            <Text style={styles.mainTitle}>
+              {getTranslatedText('MAIHAR DARSHAN', language)}
+            </Text>
             <Text style={styles.subtitle}>
-              Your Gateway to Sharda Mata Temple
+              {getTranslatedText(
+                'Your Gateway to Sharda Mata Temple',
+                language,
+              )}
             </Text>
             <View style={styles.divider} />
             <Text style={styles.description}>
-              Discover hotels, temple information, and everything you need for
-              your spiritual journey
+              {getTranslatedText(
+                'Discover hotels, temple information, and everything you need for your spiritual journey',
+                language,
+              )}
             </Text>
           </View>
         </View>
@@ -62,7 +73,9 @@ function Homepageview({navigation}) {
               direction="horizontal"
               style={styles.buttonGradient}>
               <Icon name="home-variant" size={24} color={COLORS.textWhite} />
-              <Text style={styles.buttonText}>TEMPLE INFO</Text>
+              <Text style={styles.buttonText}>
+                {getTranslatedText('TEMPLE INFO', language)}
+              </Text>
             </PremiumGradient>
           </TouchableOpacity>
 
@@ -75,12 +88,42 @@ function Homepageview({navigation}) {
               direction="horizontal"
               style={styles.buttonGradient}>
               <Icon name="home-city" size={24} color={COLORS.textWhite} />
-              <Text style={styles.buttonText}>EXPLORE HOTELS</Text>
+              <Text style={styles.buttonText}>
+                {getTranslatedText('EXPLORE HOTELS', language)}
+              </Text>
             </PremiumGradient>
           </TouchableOpacity>
         </View>
 
-
+        {/* Language Toggle Section */}
+        <View style={styles.languageToggleContainer}>
+          <TouchableOpacity
+            style={styles.languageToggle}
+            onPress={toggleLanguage}
+            activeOpacity={0.8}>
+            <View style={styles.languageOption}>
+              <Text
+                style={[
+                  styles.languageText,
+                  language === 'en' && styles.activeLanguage,
+                ]}>
+                English
+              </Text>
+            </View>
+            <View style={styles.languageDivider}>
+              <Text style={styles.dividerText}>|</Text>
+            </View>
+            <View style={styles.languageOption}>
+              <Text
+                style={[
+                  styles.languageText,
+                  language === 'hi' && styles.activeLanguage,
+                ]}>
+                हिंदी
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
 
         {/* Subtle Legal Footer Link */}
         <View style={styles.legalFooter}>
@@ -89,7 +132,9 @@ function Homepageview({navigation}) {
             onPress={() => navigation.navigate('Legal')}
             activeOpacity={0.7}>
             <Icon name="shield-outline" size={16} color={COLORS.textWhite} />
-            <Text style={styles.legalLinkText}>Privacy & Terms</Text>
+            <Text style={styles.legalLinkText}>
+              {getTranslatedText('Privacy & Terms', language)}
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -246,6 +291,46 @@ const styles = StyleSheet.create({
     marginLeft: SPACING.xs,
     opacity: 0.9,
     fontWeight: TYPOGRAPHY.fontWeight.medium,
+  },
+
+  // Language Toggle Styles
+  languageToggleContainer: {
+    marginTop: SPACING['2xl'],
+    marginBottom: SPACING.lg,
+    alignItems: 'center',
+  },
+  languageToggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md,
+    borderRadius: RADIUS.full,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    ...SHADOWS.sm,
+  },
+  languageOption: {
+    paddingHorizontal: SPACING.sm,
+  },
+  languageText: {
+    fontSize: TYPOGRAPHY.fontSize.md,
+    color: COLORS.textWhite,
+    fontWeight: TYPOGRAPHY.fontWeight.medium,
+    opacity: 0.7,
+  },
+  activeLanguage: {
+    opacity: 1,
+    fontWeight: TYPOGRAPHY.fontWeight.bold,
+  },
+  languageDivider: {
+    paddingHorizontal: SPACING.xs,
+  },
+  dividerText: {
+    fontSize: TYPOGRAPHY.fontSize.lg,
+    color: COLORS.textWhite,
+    opacity: 0.5,
+    fontWeight: TYPOGRAPHY.fontWeight.light,
   },
 });
 

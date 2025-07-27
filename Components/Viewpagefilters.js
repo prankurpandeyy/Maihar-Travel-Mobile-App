@@ -12,17 +12,28 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RangeSlider} from '@react-native-assets/slider';
 import {COLORS, TYPOGRAPHY, SPACING, RADIUS} from '../constants/theme';
+import {useLanguage} from '../contexts/LanguageContext';
+import {getTranslatedText} from '../constants/translations';
 
 const Viewpagefilters = ({filters, updateFilters, stats}) => {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const {language} = useLanguage();
 
   // Price range - using slider only (no predefined buttons)
 
   // Hotel type options
   const hotelTypes = [
-    {label: 'All Types', value: 'all', icon: 'home-variant'},
-    {label: 'AC Only', value: 'ac', icon: 'air-conditioner'},
-    {label: 'Non-AC', value: 'nonac', icon: 'fan'},
+    {
+      label: getTranslatedText('All Types', language),
+      value: 'all',
+      icon: 'home-variant',
+    },
+    {
+      label: getTranslatedText('AC Only', language),
+      value: 'ac',
+      icon: 'air-conditioner',
+    },
+    {label: getTranslatedText('Non-AC', language), value: 'nonac', icon: 'fan'},
   ];
 
   // Handle range slider change
@@ -89,17 +100,23 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
       <View style={styles.statsContainer}>
         <View style={styles.statItem}>
           <Text style={styles.statNumber}>{stats.total}</Text>
-          <Text style={styles.statLabel}>Total</Text>
+          <Text style={styles.statLabel}>
+            {getTranslatedText('Total', language)}
+          </Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
           <Text style={styles.statNumber}>{stats.available}</Text>
-          <Text style={styles.statLabel}>Available</Text>
+          <Text style={styles.statLabel}>
+            {getTranslatedText('Available', language)}
+          </Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
           <Text style={styles.statNumber}>{stats.filtered}</Text>
-          <Text style={styles.statLabel}>Filtered</Text>
+          <Text style={styles.statLabel}>
+            {getTranslatedText('Filtered', language)}
+          </Text>
         </View>
       </View>
 
@@ -109,7 +126,9 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <Icon name="filter-variant" size={20} color={COLORS.primary} />
-          <Text style={styles.title}>Filters</Text>
+          <Text style={styles.title}>
+            {getTranslatedText('Filters', language)}
+          </Text>
           {activeFiltersCount > 0 && (
             <View style={styles.filterBadge}>
               <Text style={styles.filterBadgeText}>{activeFiltersCount}</Text>
@@ -123,7 +142,7 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
               onPress={clearAllFilters}
               compact
               textColor={COLORS.error}>
-              Clear All
+              {getTranslatedText('Clear All', language)}
             </Button>
           )}
           <Button
@@ -131,7 +150,7 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
             onPress={() => setShowAdvancedFilters(true)}
             compact
             icon="tune">
-            Advanced
+            {getTranslatedText('Advanced', language)}
           </Button>
         </View>
       </View>
@@ -167,11 +186,15 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
           onDismiss={() => setShowAdvancedFilters(false)}
           contentContainerStyle={styles.modalContent}>
           <ScrollView style={styles.modalScrollView}>
-            <Text style={styles.modalTitle}>Advanced Filters</Text>
+            <Text style={styles.modalTitle}>
+              {getTranslatedText('Advanced Filters', language)}
+            </Text>
 
             {/* Price Range Filter - Slider Only */}
             <View style={styles.filterSection}>
-              <Text style={styles.filterSectionTitle}>Price Range</Text>
+              <Text style={styles.filterSectionTitle}>
+                {getTranslatedText('Price Range', language)}
+              </Text>
 
               <View style={styles.priceSliderContainer}>
                 <Text style={styles.priceRangeLabel}>
@@ -210,7 +233,7 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
                     onPress={resetPriceRange}
                     compact
                     style={styles.resetButton}>
-                    Reset to Full Range
+                    {getTranslatedText('Reset to Full Range', language)}
                   </Button>
                 )}
               </View>
@@ -218,7 +241,9 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
 
             {/* Hotel Type Filter */}
             <View style={styles.filterSection}>
-              <Text style={styles.filterSectionTitle}>Hotel Type</Text>
+              <Text style={styles.filterSectionTitle}>
+                {getTranslatedText('Hotel Type', language)}
+              </Text>
               <View style={styles.filterOptionsGrid}>
                 {hotelTypes.map(type => (
                   <Chip
@@ -244,7 +269,9 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
 
             {/* Food Availability */}
             <View style={styles.filterSection}>
-              <Text style={styles.filterSectionTitle}>Food Facility</Text>
+              <Text style={styles.filterSectionTitle}>
+                {getTranslatedText('Food Facility', language)}
+              </Text>
               <View style={styles.filterOptionsRow}>
                 <Chip
                   mode={filters.foodAvailable === 'all' ? 'flat' : 'outlined'}
@@ -253,7 +280,7 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
                     handleAdvancedFilterChange('foodAvailable', 'all')
                   }
                   icon="food-variant">
-                  All
+                  {getTranslatedText('All', language)}
                 </Chip>
                 <Chip
                   mode={filters.foodAvailable === 'yes' ? 'flat' : 'outlined'}
@@ -262,7 +289,7 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
                     handleAdvancedFilterChange('foodAvailable', 'yes')
                   }
                   icon="check">
-                  Available
+                  {getTranslatedText('Available', language)}
                 </Chip>
                 <Chip
                   mode={filters.foodAvailable === 'no' ? 'flat' : 'outlined'}
@@ -271,14 +298,16 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
                     handleAdvancedFilterChange('foodAvailable', 'no')
                   }
                   icon="close">
-                  Not Available
+                  {getTranslatedText('Not Available', language)}
                 </Chip>
               </View>
             </View>
 
             {/* Parking Availability */}
             <View style={styles.filterSection}>
-              <Text style={styles.filterSectionTitle}>Parking Facility</Text>
+              <Text style={styles.filterSectionTitle}>
+                {getTranslatedText('Parking Facility', language)}
+              </Text>
               <View style={styles.filterOptionsRow}>
                 <Chip
                   mode={
@@ -289,7 +318,7 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
                     handleAdvancedFilterChange('parkingAvailable', 'all')
                   }
                   icon="car">
-                  All
+                  {getTranslatedText('All', language)}
                 </Chip>
                 <Chip
                   mode={
@@ -300,7 +329,7 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
                     handleAdvancedFilterChange('parkingAvailable', 'yes')
                   }
                   icon="check">
-                  Available
+                  {getTranslatedText('Available', language)}
                 </Chip>
                 <Chip
                   mode={filters.parkingAvailable === 'no' ? 'flat' : 'outlined'}
@@ -309,14 +338,16 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
                     handleAdvancedFilterChange('parkingAvailable', 'no')
                   }
                   icon="close">
-                  Not Available
+                  {getTranslatedText('Not Available', language)}
                 </Chip>
               </View>
             </View>
 
             {/* Show Flagged Hotels */}
             <View style={styles.filterSection}>
-              <Text style={styles.filterSectionTitle}>Other Options</Text>
+              <Text style={styles.filterSectionTitle}>
+                {getTranslatedText('Other Options', language)}
+              </Text>
               <View style={styles.filterOptionsRow}>
                 <Chip
                   mode={filters.showFlagged ? 'flat' : 'outlined'}
@@ -328,7 +359,7 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
                     )
                   }
                   icon={filters.showFlagged ? 'eye' : 'eye-off'}>
-                  Show Flagged Hotels
+                  {getTranslatedText('Show Flagged Hotels', language)}
                 </Chip>
               </View>
             </View>
@@ -339,13 +370,13 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
                 mode="outlined"
                 onPress={clearAllFilters}
                 style={styles.modalActionButton}>
-                Clear All
+                {getTranslatedText('Clear All', language)}
               </Button>
               <Button
                 mode="contained"
                 onPress={() => setShowAdvancedFilters(false)}
                 style={styles.modalActionButton}>
-                Apply Filters
+                {getTranslatedText('Apply Filters', language)}
               </Button>
             </View>
           </ScrollView>

@@ -4,8 +4,12 @@ import PremiumGradient from './common/CustomGradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {HotelListSkeleton} from './Skeleton/HotelCardSkeleton';
 import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
+import {useLanguage} from '../contexts/LanguageContext';
+import {getTranslatedText} from '../constants/translations';
 
 const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
+  const {language} = useLanguage();
+
   return (
     <View style={styles.container}>
       {isLoading ? (
@@ -18,7 +22,9 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
               style={styles.flaggedCard}>
               <View style={styles.flaggedBadge}>
                 <Icon name="alert-circle" size={16} color={COLORS.error} />
-                <Text style={styles.flaggedBadgeText}>FLAGGED</Text>
+                <Text style={styles.flaggedBadgeText}>
+                  {getTranslatedText('FLAGGED', language)}
+                </Text>
               </View>
 
               <View style={styles.cardContent}>
@@ -28,14 +34,13 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
                 </View>
 
                 <Text style={styles.flaggedText}>
-                  This hotel has been flagged by authorities. Contact admin for
-                  more information.
+                  {getTranslatedText('This hotel has been flagged by authorities. Contact admin for more information.', language)}
                 </Text>
 
                 <View style={styles.warningFooter}>
                   <Icon name="information" size={14} color={COLORS.error} />
                   <Text style={styles.warningText}>
-                    Not available for booking
+                    {getTranslatedText('Not available for booking', language)}
                   </Text>
                 </View>
               </View>
@@ -67,12 +72,14 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
                     <Text style={styles.priceText}>
                       ₹{hotel.HotelRentMin} - ₹{hotel.HotelRentMax}
                     </Text>
-                    <Text style={styles.perNightText}>per night</Text>
+                    <Text style={styles.perNightText}>
+                      {getTranslatedText('per night', language)}
+                    </Text>
                   </View>
 
                   <View style={styles.cardFooter}>
                     <Text style={styles.viewDetailsText}>
-                      Tap to view details
+                      {getTranslatedText('Tap to view details', language)}
                     </Text>
                     <Icon
                       name="chevron-right"
@@ -86,11 +93,13 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
           ),
         )
       ) : (
-        <View style={styles.noResultsContainer}>
+        <View style={styles.emptyState}>
           <Icon name="hotel" size={48} color={COLORS.textSecondary} />
-          <Text style={styles.noHotelsText}>No hotels found</Text>
-          <Text style={styles.noHotelsSubtext}>
-            Try adjusting your filters or search criteria
+          <Text style={styles.emptyTitle}>
+            {getTranslatedText('No hotels found', language)}
+          </Text>
+          <Text style={styles.emptySubtitle}>
+            {getTranslatedText('Try adjusting your search or filters', language)}
           </Text>
         </View>
       )}
@@ -212,19 +221,19 @@ const styles = StyleSheet.create({
   },
 
   // Empty State
-  noResultsContainer: {
+  emptyState: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: SPACING['4xl'],
   },
-  noHotelsText: {
+  emptyTitle: {
     fontSize: TYPOGRAPHY.fontSize.lg,
     fontWeight: TYPOGRAPHY.fontWeight.medium,
     color: COLORS.textSecondary,
     textAlign: 'center',
     marginTop: SPACING.md,
   },
-  noHotelsSubtext: {
+  emptySubtitle: {
     fontSize: TYPOGRAPHY.fontSize.sm,
     color: COLORS.textLight,
     textAlign: 'center',

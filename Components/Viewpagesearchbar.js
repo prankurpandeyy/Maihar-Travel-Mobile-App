@@ -4,9 +4,12 @@ import {StyleSheet, View} from 'react-native';
 import PremiumGradient from './common/CustomGradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
+import {useLanguage} from '../contexts/LanguageContext';
+import {getTranslatedText} from '../constants/translations';
 
 const Viewpagesearchbar = ({searchQuery, setSearchQuery}) => {
   const [localSearch, setLocalSearch] = useState(searchQuery);
+  const {language} = useLanguage();
 
   // Debounce search input for better performance
   useEffect(() => {
@@ -39,16 +42,24 @@ const Viewpagesearchbar = ({searchQuery, setSearchQuery}) => {
       <View style={styles.content}>
         <View style={styles.headerContainer}>
           <Icon name="home-city" size={28} color={COLORS.textWhite} />
-          <Text style={styles.headerText}>DISCOVER HOTELS</Text>
+          <Text style={styles.headerText}>
+            {getTranslatedText('DISCOVER HOTELS', language)}
+          </Text>
         </View>
 
         <Text style={styles.subHeaderText}>
-          Find the perfect stay near Sharda Mata Temple
+          {getTranslatedText(
+            'Find the perfect stay near Sharda Mata Temple',
+            language,
+          )}
         </Text>
 
         <View style={styles.searchContainer}>
           <Searchbar
-            placeholder="Search hotels by name or area..."
+            placeholder={getTranslatedText(
+              'Search hotels by name or location...',
+              language,
+            )}
             value={localSearch}
             onChangeText={handleSearchChange}
             onClearIconPress={clearSearch}
@@ -65,7 +76,11 @@ const Viewpagesearchbar = ({searchQuery, setSearchQuery}) => {
           {localSearch.length === 0 && (
             <View style={styles.searchHints}>
               <Text style={styles.hintText}>
-                💡 Try searching by hotel name or location
+                💡{' '}
+                {getTranslatedText(
+                  'Try searching by hotel name or location',
+                  language,
+                )}
               </Text>
             </View>
           )}
