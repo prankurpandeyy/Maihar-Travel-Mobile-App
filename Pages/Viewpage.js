@@ -40,6 +40,9 @@ const Viewpage = ({navigation}) => {
   // Filter states
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
+    priceRange: 'all', // 'all' or 'custom' - simplified to slider only
+    customPriceMin: 0, // Always track range values
+    customPriceMax: 2000, // Always track range values
     hotelType: 'all', // 'all', 'ac', 'nonac', 'both'
     foodAvailable: 'all', // 'all', 'yes', 'no'
     parkingAvailable: 'all', // 'all', 'yes', 'no'
@@ -181,6 +184,20 @@ const Viewpage = ({navigation}) => {
     }
   }, [loadAllHotels]);
 
+  // Helper function to check if hotel falls within price range - Simplified
+  const isHotelInPriceRange = (hotel, customMin, customMax) => {
+    const hotelMinPrice = parseInt(hotel.HotelRentMin, 10) || 0;
+    const hotelMaxPrice = parseInt(hotel.HotelRentMax, 10) || 0;
+
+    // If hotel doesn't have valid price data, exclude it from price filtering
+    if (hotelMinPrice === 0 && hotelMaxPrice === 0) {
+      return customMin === 0 && customMax === 2000; // Only show if full range selected
+    }
+
+    // Hotel is in range if any part of its price range overlaps with selected range
+    return hotelMaxPrice >= customMin && hotelMinPrice <= customMax;
+  };
+
   // Smart filtering with debouncing
   const filteredHotels = useMemo(() => {
     let result = [...allHotels];
@@ -195,7 +212,16 @@ const Viewpage = ({navigation}) => {
       );
     }
 
-    // Price range filter removed - no longer filtering by price
+    // Apply price range filter (always use slider values)
+    if (filters.customPriceMin > 0 || filters.customPriceMax < 2000) {
+      result = result.filter(hotel =>
+        isHotelInPriceRange(
+          hotel,
+          filters.customPriceMin,
+          filters.customPriceMax,
+        ),
+      );
+    }
 
     // Apply hotel type filter
     if (filters.hotelType !== 'all') {

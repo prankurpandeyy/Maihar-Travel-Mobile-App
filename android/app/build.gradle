@@ -97,12 +97,12 @@ android {
         versionName "1.0"
     }
     signingConfigs {
-        release {
+            release {
             storeFile file('mandir-darshan-release-key.keystore')
             storePassword 'mandirdarshan2025'
             keyAlias 'mandir-darshan-key'
             keyPassword 'mandirdarshan2025'
-        }
+            }
     }
     buildTypes {
         debug {

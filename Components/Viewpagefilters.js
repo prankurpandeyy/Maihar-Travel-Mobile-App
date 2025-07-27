@@ -10,12 +10,13 @@ import {
   Divider,
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
+import {RangeSlider} from '@react-native-assets/slider';
+import {COLORS, TYPOGRAPHY, SPACING, RADIUS} from '../constants/theme';
 
 const Viewpagefilters = ({filters, updateFilters, stats}) => {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
-  // Price range options removed - no longer filtering by price
+  // Price range - using slider only (no predefined buttons)
 
   // Hotel type options
   const hotelTypes = [
@@ -24,12 +25,23 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
     {label: 'Non-AC', value: 'nonac', icon: 'fan'},
   ];
 
-  // Sort options (price-based sorting removed)
-  const sortOptions = [
-    {label: 'Name A-Z', value: 'name', icon: 'sort-alphabetical-ascending'},
-  ];
+  // Handle range slider change
+  const handleRangeSliderChange = range => {
+    updateFilters({
+      priceRange: range[0] === 0 && range[1] === 2000 ? 'all' : 'custom',
+      customPriceMin: range[0],
+      customPriceMax: range[1],
+    });
+  };
 
-  // Price range handler removed
+  // Reset price range to full range
+  const resetPriceRange = () => {
+    updateFilters({
+      priceRange: 'all',
+      customPriceMin: 0,
+      customPriceMax: 2000,
+    });
+  };
 
   const handleAdvancedFilterChange = (key, value) => {
     updateFilters({[key]: value});
@@ -37,6 +49,9 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
 
   const clearAllFilters = () => {
     updateFilters({
+      priceRange: 'all',
+      customPriceMin: 0,
+      customPriceMax: 2000,
       hotelType: 'all',
       foodAvailable: 'all',
       parkingAvailable: 'all',
@@ -47,12 +62,22 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
 
   const getActiveFiltersCount = () => {
     let count = 0;
-    // Price range filter removed from count
-    if (filters.hotelType !== 'all') count++;
-    if (filters.foodAvailable !== 'all') count++;
-    if (filters.parkingAvailable !== 'all') count++;
-    if (filters.showFlagged) count++;
-    // Price-based sorting removed, so sortBy will always be 'name'
+    // Price range filter
+    if (filters.priceRange !== 'all') {
+      count++;
+    }
+    if (filters.hotelType !== 'all') {
+      count++;
+    }
+    if (filters.foodAvailable !== 'all') {
+      count++;
+    }
+    if (filters.parkingAvailable !== 'all') {
+      count++;
+    }
+    if (filters.showFlagged) {
+      count++;
+    }
     return count;
   };
 
@@ -111,16 +136,27 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
         </View>
       </View>
 
-      {/* Quick Hotel Type Filter */}
-      {filters.hotelType !== 'all' && (
+      {/* Quick Active Filters */}
+      {(filters.priceRange !== 'all' || filters.hotelType !== 'all') && (
         <View style={styles.quickFiltersRow}>
-          <Chip
-            mode="flat"
-            icon={hotelTypes.find(t => t.value === filters.hotelType)?.icon}
-            onPress={() => handleAdvancedFilterChange('hotelType', 'all')}
-            style={styles.activeFilterChip}>
-            {hotelTypes.find(t => t.value === filters.hotelType)?.label}
-          </Chip>
+          {filters.priceRange !== 'all' && (
+            <Chip
+              mode="flat"
+              icon="currency-inr"
+              onPress={resetPriceRange}
+              style={styles.activeFilterChip}>
+              ₹{filters.customPriceMin || 0} - ₹{filters.customPriceMax || 2000}
+            </Chip>
+          )}
+          {filters.hotelType !== 'all' && (
+            <Chip
+              mode="flat"
+              icon={hotelTypes.find(t => t.value === filters.hotelType)?.icon}
+              onPress={() => handleAdvancedFilterChange('hotelType', 'all')}
+              style={styles.activeFilterChip}>
+              {hotelTypes.find(t => t.value === filters.hotelType)?.label}
+            </Chip>
+          )}
         </View>
       )}
 
@@ -132,6 +168,53 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
           contentContainerStyle={styles.modalContent}>
           <ScrollView style={styles.modalScrollView}>
             <Text style={styles.modalTitle}>Advanced Filters</Text>
+
+            {/* Price Range Filter - Slider Only */}
+            <View style={styles.filterSection}>
+              <Text style={styles.filterSectionTitle}>Price Range</Text>
+
+              <View style={styles.priceSliderContainer}>
+                <Text style={styles.priceRangeLabel}>
+                  ₹{filters.customPriceMin || 0} - ₹
+                  {filters.customPriceMax || 2000}
+                </Text>
+
+                <RangeSlider
+                  range={[
+                    filters.customPriceMin || 0,
+                    filters.customPriceMax || 2000,
+                  ]}
+                  minimumValue={0}
+                  maximumValue={2000}
+                  step={50}
+                  onValueChange={handleRangeSliderChange}
+                  trackHeight={6}
+                  thumbSize={20}
+                  inboundColor={COLORS.primary}
+                  outboundColor={COLORS.border}
+                  thumbTintColor={COLORS.primary}
+                  trackStyle={styles.sliderTrack}
+                  thumbStyle={styles.sliderThumb}
+                  containerStyle={styles.sliderContainer}
+                />
+
+                <View style={styles.rangeLabels}>
+                  <Text style={styles.rangeLabel}>₹0</Text>
+                  <Text style={styles.rangeLabel}>₹2000</Text>
+                </View>
+
+                {(filters.customPriceMin > 0 ||
+                  filters.customPriceMax < 2000) && (
+                  <Button
+                    mode="outlined"
+                    onPress={resetPriceRange}
+                    compact
+                    style={styles.resetButton}>
+                    Reset to Full Range
+                  </Button>
+                )}
+              </View>
+            </View>
 
             {/* Hotel Type Filter */}
             <View style={styles.filterSection}>
@@ -230,8 +313,6 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
                 </Chip>
               </View>
             </View>
-
-            {/* Sort Options removed - only "Name A-Z" available, no need for selection */}
 
             {/* Show Flagged Hotels */}
             <View style={styles.filterSection}>
@@ -353,41 +434,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  // Chips
-  chipsContainer: {
-    paddingHorizontal: SPACING.lg,
-    paddingBottom: SPACING.sm,
-  },
-  chip: {
-    marginRight: SPACING.sm,
-    marginBottom: SPACING.xs,
-  },
-  selectedChip: {
-    backgroundColor: COLORS.primary,
-  },
-  unselectedChip: {
-    backgroundColor: COLORS.surface,
-    borderColor: COLORS.border,
-  },
-  chipText: {
-    fontSize: 14,
-  },
-  selectedChipText: {
-    color: COLORS.textWhite,
-  },
-  unselectedChipText: {
-    color: COLORS.textPrimary,
-  },
-
   // Quick Filters
   quickFiltersRow: {
     flexDirection: 'row',
     paddingHorizontal: SPACING.lg,
     gap: SPACING.sm,
     flexWrap: 'wrap',
-  },
-  quickFilterChip: {
-    borderColor: COLORS.border,
   },
   activeFilterChip: {
     backgroundColor: COLORS.secondary + '20',
@@ -445,6 +497,51 @@ const styles = StyleSheet.create({
   },
   modalActionButton: {
     flex: 1,
+  },
+
+  // Price Slider Styles - Simplified
+  priceSliderContainer: {
+    marginTop: SPACING.md,
+    padding: SPACING.lg,
+    backgroundColor: COLORS.surfaceVariant,
+    borderRadius: RADIUS.lg,
+  },
+  priceRangeLabel: {
+    ...TYPOGRAPHY.heading4,
+    fontWeight: 'bold',
+    color: COLORS.primary,
+    textAlign: 'center',
+    marginBottom: SPACING.lg,
+  },
+  sliderContainer: {
+    height: 40,
+    marginVertical: SPACING.sm,
+  },
+  sliderTrack: {
+    borderRadius: 3,
+  },
+  sliderThumb: {
+    borderWidth: 2,
+    borderColor: COLORS.surface,
+    shadowColor: COLORS.shadow,
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  rangeLabels: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: SPACING.xs,
+  },
+  rangeLabel: {
+    ...TYPOGRAPHY.caption,
+    color: COLORS.textSecondary,
+    fontWeight: '500',
+  },
+  resetButton: {
+    marginTop: SPACING.md,
+    alignSelf: 'center',
   },
 });
 
