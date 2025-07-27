@@ -909,14 +909,14 @@ const Information = ({navigation}) => {
             </Card.Content>
           </Card>
 
-          <Button
+          {/* <Button
             mode="contained"
             onPress={() => Linking.openURL('https://www.bookmeriride.com/')}
             style={styles.bookingButton}
             contentStyle={styles.bookingButtonContent}
             icon="ticket">
             Book Ropeway Tickets
-          </Button>
+          </Button> */}
         </CustomAccordion>
 
         {/* Contact & Emergency */}

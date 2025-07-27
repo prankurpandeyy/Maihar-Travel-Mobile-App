@@ -50,10 +50,10 @@ export const createImageSource = (source, type = IMAGE_TYPES.LOCAL) => {
  * Define all temple-related images with fallbacks
  */
 export const TEMPLE_IMAGES = {
-  // Main hero image - Using highest quality main temple view
+  // Main hero image - Using panoramic drone view for stunning first impression
   hero: {
-    main: require('../assets/Mandir_Day_View.jpeg'), // New high quality main view
-    fallback: require('../assets/Mandir_Evening_View.jpeg'), // New evening view backup
+    main: require('../assets/Mandir_Roof_Mountain_Drone_View.jpeg'), // Panoramic drone view
+    fallback: require('../assets/Mandir_Day_View.jpeg'), // Day view backup
   },
 
   // Gallery images - Real temple photos optimized for mobile
@@ -99,7 +99,7 @@ export const TEMPLE_IMAGES = {
     },
     {
       id: 'temple-with-devotees',
-      local: require('../assets/Mandir_Day_View_With People.jpeg'),
+      local: require('../assets/Mandir_Day_View_With_People.jpeg'),
       caption: 'Temple with Devotees',
       description: 'Temple bustling with devotees during peak visiting hours',
       tags: ['temple', 'devotees', 'crowd'],
