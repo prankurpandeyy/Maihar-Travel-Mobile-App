@@ -56,9 +56,6 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
                   <View style={styles.hotelHeader}>
                     <Icon name="home-city" size={20} color={COLORS.primary} />
                     <Text style={styles.hotelName}>{hotel.HotelName}</Text>
-                    <View style={styles.availableBadge}>
-                      <Text style={styles.availableText}>Available</Text>
-                    </View>
                   </View>
 
                   <View style={styles.priceContainer}>
@@ -133,17 +130,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: SPACING.sm,
   },
-  availableBadge: {
-    backgroundColor: COLORS.success,
-    paddingHorizontal: SPACING.sm,
-    paddingVertical: SPACING.xs,
-    borderRadius: RADIUS.full,
-  },
-  availableText: {
-    fontSize: TYPOGRAPHY.fontSize.xs,
-    fontWeight: TYPOGRAPHY.fontWeight.medium,
-    color: COLORS.textWhite,
-  },
+
   priceContainer: {
     flexDirection: 'row',
     alignItems: 'center',

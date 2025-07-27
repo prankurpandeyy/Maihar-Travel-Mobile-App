@@ -74,12 +74,6 @@ const HotelCardSkeleton = () => (
         borderRadius={RADIUS.sm}
         style={styles.hotelName}
       />
-      <SkeletonLoader
-        width={70}
-        height={20}
-        borderRadius={RADIUS.full}
-        style={styles.availableBadge}
-      />
     </View>
 
     <View style={styles.priceSection}>
@@ -216,9 +210,6 @@ const styles = StyleSheet.create({
   hotelName: {
     flex: 1,
     marginRight: SPACING.md,
-  },
-  availableBadge: {
-    marginLeft: 'auto',
   },
 
   // Price Section

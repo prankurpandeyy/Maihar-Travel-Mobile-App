@@ -104,14 +104,6 @@ const Detailsview = () => {
                   <Text style={styles.hotelName}>
                     {hotelData?.HotelName || 'Hotel Name'}
                   </Text>
-                  <View style={styles.availableBadge}>
-                    <Icon
-                      name="check-circle"
-                      size={16}
-                      color={COLORS.success}
-                    />
-                    <Text style={styles.availableText}>Available</Text>
-                  </View>
                 </View>
 
                 {/* Location */}
@@ -310,20 +302,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: SPACING.md,
   },
-  availableBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.surface,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    borderRadius: RADIUS.full,
-    ...SHADOWS.sm,
-  },
-  availableText: {
-    ...TYPOGRAPHY.caption,
-    color: COLORS.success,
-    marginLeft: SPACING.xs,
-  },
+
   locationContainer: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -33,13 +33,13 @@ function Homepageview({navigation}) {
           <View style={styles.imageContainer}>
             <Image
               style={styles.image}
-              source={require('../assets/Home_Page_App_Logo.jpg')}
+              source={require('../assets/Maihar_Darshan_Logo.jpg')}
             />
             <View style={styles.imageOverlay} />
           </View>
 
           <View style={styles.titleContainer}>
-            <Text style={styles.mainTitle}>MANDIR DARSHAN</Text>
+            <Text style={styles.mainTitle}>MAIHAR DARSHAN</Text>
             <Text style={styles.subtitle}>
               Your Gateway to Sharda Mata Temple
             </Text>
@@ -54,19 +54,6 @@ function Homepageview({navigation}) {
         {/* Action Buttons */}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={[styles.primaryButton, styles.hotelButton]}
-            onPress={() => navigation.navigate('View')}
-            activeOpacity={0.8}>
-            <PremiumGradient
-              colors={[COLORS.secondary, COLORS.secondaryLight]}
-              direction="horizontal"
-              style={styles.buttonGradient}>
-              <Icon name="home-city" size={24} color={COLORS.textWhite} />
-              <Text style={styles.buttonText}>EXPLORE HOTELS</Text>
-            </PremiumGradient>
-          </TouchableOpacity>
-
-          <TouchableOpacity
             style={[styles.primaryButton, styles.templeButton]}
             onPress={() => navigation.navigate('Information')}
             activeOpacity={0.8}>
@@ -78,23 +65,22 @@ function Homepageview({navigation}) {
               <Text style={styles.buttonText}>TEMPLE INFO</Text>
             </PremiumGradient>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.primaryButton, styles.hotelButton]}
+            onPress={() => navigation.navigate('View')}
+            activeOpacity={0.8}>
+            <PremiumGradient
+              colors={[COLORS.secondary, COLORS.secondaryLight]}
+              direction="horizontal"
+              style={styles.buttonGradient}>
+              <Icon name="home-city" size={24} color={COLORS.textWhite} />
+              <Text style={styles.buttonText}>EXPLORE HOTELS</Text>
+            </PremiumGradient>
+          </TouchableOpacity>
         </View>
 
-        {/* Feature Pills */}
-        <View style={styles.featureContainer}>
-          <View style={styles.featurePill}>
-            <Icon name="map-marker" size={16} color={COLORS.primary} />
-            <Text style={styles.featureText}>Easy Navigation</Text>
-          </View>
-          <View style={styles.featurePill}>
-            <Icon name="text" size={16} color={COLORS.primary} />
-            <Text style={styles.featureText}>Complete Guide</Text>
-          </View>
-          <View style={styles.featurePill}>
-            <Icon name="information" size={16} color={COLORS.primary} />
-            <Text style={styles.featureText}>Temple Guide</Text>
-          </View>
-        </View>
+
 
         {/* Subtle Legal Footer Link */}
         <View style={styles.legalFooter}>

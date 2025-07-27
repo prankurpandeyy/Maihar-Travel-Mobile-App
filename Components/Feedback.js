@@ -16,43 +16,11 @@ const Feedback = () => {
   const contactMethods = [
     {
       icon: 'shield',
-      title: 'Emergency Police',
-      subtitle: 'MP Police Dial: 100',
+      title: 'Emergency Support',
+      subtitle: 'Dial: 100',
       type: 'phone',
       value: '100',
       color: COLORS.error,
-    },
-    {
-      icon: 'shield-account',
-      title: 'Maihar Police Station',
-      subtitle: '07674232047',
-      type: 'phone',
-      value: '07674232047',
-      color: COLORS.primary,
-    },
-    {
-      icon: 'phone',
-      title: 'General Support',
-      subtitle: 'Call Us: 111-223-3445',
-      type: 'phone',
-      value: '111-223-3445',
-      color: COLORS.secondary,
-    },
-    {
-      icon: 'email',
-      title: 'Feedback',
-      subtitle: 'feedback@example.com',
-      type: 'email',
-      value: 'feedback@example.com',
-      color: COLORS.info,
-    },
-    {
-      icon: 'email-outline',
-      title: 'Grievance',
-      subtitle: 'grievance@example.com',
-      type: 'email',
-      value: 'grievance@example.com',
-      color: COLORS.warning,
     },
   ];
 

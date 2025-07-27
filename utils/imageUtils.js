@@ -12,7 +12,7 @@ export const IMAGE_TYPES = {
 
 // Default placeholder images
 export const PLACEHOLDER_IMAGES = {
-  temple: require('../assets/matasharda.jpg'),
+  temple: require('../assets/Mata_Sharda_Image.jpeg'),
   loading: null, // Will use skeleton loader
   error: null, // Will use error icon
 };
@@ -52,97 +52,139 @@ export const createImageSource = (source, type = IMAGE_TYPES.LOCAL) => {
 export const TEMPLE_IMAGES = {
   // Main hero image - Using highest quality main temple view
   hero: {
-    main: require('../assets/maa-sharda-temple (1).jpg'), // 89KB - Best quality main view
-    fallback: require('../assets/maa-sharda-temple.jpg'), // 68KB - Backup main view
+    main: require('../assets/Mandir_Day_View.jpeg'), // New high quality main view
+    fallback: require('../assets/Mandir_Evening_View.jpeg'), // New evening view backup
   },
 
   // Gallery images - Real temple photos optimized for mobile
   gallery: [
     {
-      id: 'main-temple',
-      local: require('../assets/maa-sharda-temple.jpg'), // 68KB
-      caption: 'Maa Sharda Temple',
-      description:
-        'Beautiful view of Sharda Mata Temple perched on Trikut Hills',
-      tags: ['temple', 'main-view', 'architecture'],
-    },
-    {
-      id: 'temple-entrance',
-      local: require('../assets/entrance-of-sharda-temple.jpg'), // 55KB
-      caption: 'Temple Entrance',
-      description: 'Sacred entrance to Sharda Mata Temple',
-      tags: ['entrance', 'gateway', 'sacred'],
-    },
-    {
-      id: 'ropeway',
-      local: require('../assets/the-ropeway.jpg'), // 26KB
-      caption: 'Ropeway Service',
-      description: 'Modern ropeway connecting base to temple premises',
-      tags: ['ropeway', 'transport', 'scenic'],
-    },
-    {
-      id: 'temple-view',
-      local: require('../assets/the-temple.jpg'), // 27KB
-      caption: 'Temple View',
-      description: 'Majestic view of the temple complex',
-      tags: ['temple', 'architecture', 'view'],
-    },
-    {
       id: 'panoramic-view',
-      local: require('../assets/way-back-from-sharda.jpg'), // 44KB
-      caption: 'Return Journey View',
-      description: 'Breathtaking view during return journey from temple',
-      tags: ['panoramic', 'landscape', 'journey'],
+      local: require('../assets/Mandir_Roof_Mountain_Drone_View.jpeg'),
+      caption: 'Panoramic Temple View',
+      description:
+        'Breathtaking aerial drone view of Sharda Mata Temple and surrounding Trikut Hills',
+      tags: ['panoramic', 'aerial', 'mountains'],
     },
     {
-      id: 'maihar-area',
-      local: require('../assets/maihar.jpg'), // 23KB
-      caption: 'Maihar Region',
-      description: 'Beautiful Maihar area surrounding the temple',
-      tags: ['maihar', 'area', 'landscape'],
+      id: 'main-temple-day',
+      local: require('../assets/Mandir_Day_View.jpeg'),
+      caption: 'Temple Day View',
+      description:
+        'Beautiful daytime view of Sharda Mata Temple showcasing the architectural grandeur',
+      tags: ['temple', 'daytime', 'architecture'],
     },
     {
-      id: 'temple-gallery',
-      local: require('../assets/sharda_mata_images.jpg'), // 333KB - High quality composite
-      caption: 'Temple Gallery',
-      description: 'Comprehensive view of Sharda Mata Temple collection',
-      tags: ['gallery', 'collection', 'detailed'],
+      id: 'temple-evening',
+      local: require('../assets/Mandir_Evening_View.jpeg'),
+      caption: 'Temple Evening View',
+      description:
+        'Serene evening view of the temple as the sun sets over Maihar',
+      tags: ['temple', 'evening', 'sunset'],
     },
     {
-      id: 'temple-alternate',
-      local: require('../assets/maa-sharda-temple-front.jpg'), // 34KB
-      caption: 'Temple Alternate View',
-      description: 'Different perspective of the sacred temple',
-      tags: ['temple', 'alternate', 'perspective'],
+      id: 'temple-night',
+      local: require('../assets/Mandir_At_Night_From_Front.jpeg'),
+      caption: 'Temple Illuminated at Night',
+      description:
+        'Magnificent night view showing the temple beautifully illuminated',
+      tags: ['temple', 'night', 'illuminated'],
     },
     {
-      id: 'temple-caption-view',
-      local: require('../assets/caption.jpg'), // 33KB - New unique image
-      caption: 'Temple Caption View',
-      description: 'Scenic caption view of Sharda Mata Temple',
-      tags: ['temple', 'scenic', 'caption'],
+      id: 'temple-night-top',
+      local: require('../assets/Mandir_Night_View_From_Top.jpeg'),
+      caption: 'Night View from Summit',
+      description: 'Spectacular night view of the temple complex from the top',
+      tags: ['temple', 'night', 'summit'],
+    },
+    {
+      id: 'temple-with-devotees',
+      local: require('../assets/Mandir_Day_View_With People.jpeg'),
+      caption: 'Temple with Devotees',
+      description: 'Temple bustling with devotees during peak visiting hours',
+      tags: ['temple', 'devotees', 'crowd'],
+    },
+    {
+      id: 'mata-sharda-deity',
+      local: require('../assets/Mata_Sharda_Image.jpeg'),
+      caption: 'Sacred Mata Sharda Deity',
+      description:
+        'Divine image of Mata Sharda, the presiding deity of the temple',
+      tags: ['deity', 'sacred', 'mata-sharda'],
+    },
+    {
+      id: 'temple-main-gate',
+      local: require('../assets/Maindir_Main_Gate.jpeg'),
+      caption: 'Temple Main Entrance',
+      description: 'Grand main gate entrance to the Sharda Mata Temple complex',
+      tags: ['entrance', 'gate', 'architecture'],
+    },
+    {
+      id: 'temple-side-day',
+      local: require('../assets/Mandir_side_View_at_day.jpeg'),
+      caption: 'Temple Side View',
+      description:
+        'Beautiful side perspective of the temple during bright daylight',
+      tags: ['temple', 'side-view', 'daytime'],
+    },
+    {
+      id: 'temple-side-alternate',
+      local: require('../assets/Mandir_Side_View.jpeg'),
+      caption: 'Temple Side Perspective',
+      description: 'Alternative side view showcasing the temple architecture',
+      tags: ['temple', 'side-view', 'architecture'],
+    },
+    {
+      id: 'temple-empty-view',
+      local: require('../assets/Mandir_View_empty.jpeg'),
+      caption: 'Peaceful Temple View',
+      description: 'Serene view of the temple complex during quiet hours',
+      tags: ['temple', 'peaceful', 'quiet'],
+    },
+    {
+      id: 'ropeway-top-view',
+      local: require('../assets/Ropway_from_Top_View.jpg'),
+      caption: 'Ropeway Aerial View',
+      description:
+        'Aerial view of the modern ropeway system connecting to the temple',
+      tags: ['ropeway', 'aerial', 'transport'],
+    },
+    {
+      id: 'ropeway-center-view',
+      local: require('../assets/Ropway_View_From_Center.jpg'),
+      caption: 'Ropeway Journey View',
+      description:
+        'Scenic view from the ropeway offering panoramic mountain vistas',
+      tags: ['ropeway', 'journey', 'scenic'],
+    },
+    {
+      id: 'aalha-talab',
+      local: require('../assets/aalha_talab.jpg'),
+      caption: 'Aalha Talab',
+      description: 'Sacred Aalha Talab (pond) located near the temple complex',
+      tags: ['pond', 'sacred', 'water'],
     },
   ],
 
   // Section-specific images - Optimized for contextual use
   sections: {
     ropeway: {
-      local: require('../assets/the-ropeway.jpg'), // 26KB - Perfect for ropeway section
+      local: require('../assets/Ropway_View_From_Center.jpg'),
       caption: 'Modern Ropeway System',
       description: 'Convenient cable car service to temple',
     },
     stairs: {
-      local: require('../assets/entrance-of-sharda-temple.jpg'), // 55KB - Shows entrance/pathway
+      local: require('../assets/Maindir_Main_Gate.jpeg'),
       caption: 'Temple Pathway',
       description: 'Sacred pathway leading to the temple',
     },
     facilities: {
-      local: require('../assets/maihar.jpg'), // 23KB - Shows area facilities
+      local: require('../assets/Mandir_Side_View.jpeg'),
       caption: 'Temple Facilities',
-      description: 'Facilities and amenities in Maihar area',
+      description: 'Facilities and amenities around temple',
     },
     premises: {
-      local: require('../assets/maa-sharda-temple.jpg'), // 68KB - Shows temple complex
+      local: require('../assets/Mandir_View_empty.jpeg'),
       caption: 'Temple Complex',
       description: 'Complete temple premises and surroundings',
     },

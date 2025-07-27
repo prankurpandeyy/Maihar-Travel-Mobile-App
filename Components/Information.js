@@ -553,16 +553,21 @@ const Information = ({navigation}) => {
   // Temple Data
   const templeTimings = [
     ['Daily', 'Temple Opening', '05:00 AM'],
-    ['Daily', 'Morning Darshan', '05:00 AM - 08:00 AM'],
-    ['Daily', 'Evening Darshan', '04:00 PM - 09:00 PM'],
-    ['Daily', 'Temple Closing', '09:00 PM'],
+    ['Daily', 'Morning Aarti', '05:00 AM'],
+    ['Daily', 'Afternoon Aarti', '01:00 PM'],
+    ['Daily', 'Evening Aarti', '07:00 PM'],
+    ['Daily', 'Temple Closing', '07:00 PM'],
   ];
 
   const ropewayTimings = [
-    ['Daily', 'Ropeway Opening', '05:00 AM'],
-    ['Daily', 'Morning Service', '05:00 AM - 08:00 AM'],
-    ['Daily', 'Evening Service', '04:00 PM - 09:00 PM'],
-    ['Daily', 'Ropeway Closing', '09:00 PM'],
+    ['Daily', 'Ropeway Opening', '06:00 AM'],
+    ['Daily', 'Morning Service', '06:00 AM - 07:00 PM'],
+    [
+      'Note',
+      'Suspension Info',
+      'Subject to suspension only during natural calamities or maintenance',
+    ],
+    ['Daily', 'Ropeway Closing', '07:00 PM'],
   ];
 
   const facilities = [
@@ -579,20 +584,22 @@ const Information = ({navigation}) => {
       mode: 'Train',
       icon: 'train',
       description:
-        'Maihar Railway Station (MYR) - Well connected to major cities',
+        'Maihar is situated on the Manikpur–Katni railway route and is well-connected across India. Special trains are scheduled with additional stoppages during peak seasons like Navratri.',
       color: COLORS.primary,
-    },
-    {
-      mode: 'Bus',
-      icon: 'bus',
-      description: 'Regular bus services from Satna, Katni, and nearby cities',
-      color: COLORS.secondary,
     },
     {
       mode: 'Flight',
       icon: 'airplane',
-      description: 'Nearest airports: Khajuraho (106 km), Jabalpur (145 km)',
+      description:
+        'Maihar is accessible via Rewa Airport (60 km via NH30), Jabalpur Airport (200 km via NH30), and Satna Airport (50 km via NH30). Nearest airports: Khajuraho (106 km), Jabalpur (145 km)',
       color: COLORS.accent,
+    },
+    {
+      mode: 'Car',
+      icon: 'car',
+      description:
+        'Maihar is easily reachable via National Highway 30 (NH30) with excellent road connectivity.',
+      color: COLORS.secondary,
     },
   ];
 
@@ -639,7 +646,7 @@ const Information = ({navigation}) => {
             <Card.Content>
               <Text style={styles.historyText}>
                 🏛️ Maihar Devi Temple, dedicated to Goddess Sharda (Saraswati),
-                is perched atop the Trikut Hills in Satna district, Madhya
+                is perched atop the Trikut Hills in Maihar district, Madhya
                 Pradesh. This ancient temple requires a climb of 1,063 steps or
                 a scenic ropeway ride.
               </Text>
@@ -746,6 +753,48 @@ const Information = ({navigation}) => {
                   {'\n'}• Scenic aerial view of Trikut Hills{'\n'}• After
                   ropeway: Additional 50 steps to temple{'\n'}• Suitable for
                   elderly and differently-abled pilgrims
+                </Text>
+              </View>
+
+              <Divider style={styles.facilityDivider} />
+
+              <View style={styles.facilityDetail}>
+                <View style={styles.facilityDetailHeader}>
+                  <Icon name="van-passenger" size={20} color={COLORS.accent} />
+                  <Text style={styles.facilityDetailTitle}>Van Service</Text>
+                </View>
+
+                <Text style={styles.facilityDetailText}>
+                  •{' '}
+                  <Text style={styles.boldText}>
+                    Operated by Mata Sharda Prabandhak Samiti
+                  </Text>{' '}
+                  for ₹500{'\n'}• Vans transport devotees from temple base to
+                  Shaktital{'\n'}• After van service:{' '}
+                  <Text style={styles.boldText}>160-step climb</Text> remaining
+                  to reach temple{'\n'}• Convenient option for those who prefer
+                  shorter climb
+                </Text>
+              </View>
+
+              <Divider style={styles.facilityDivider} />
+
+              <View style={styles.facilityDetail}>
+                <View style={styles.facilityDetailHeader}>
+                  <Icon name="cash" size={20} color={COLORS.warning} />
+                  <Text style={styles.facilityDetailTitle}>
+                    Toll Collection
+                  </Text>
+                </View>
+
+                <Text style={styles.facilityDetailText}>
+                  •{' '}
+                  <Text style={styles.boldText}>
+                    Upon entering Mata Sharda Mandir premises
+                  </Text>
+                  , a toll is collected at Bandha Barrier{'\n'}• Charges vary
+                  based on vehicle type{'\n'}• Payment required before
+                  proceeding to temple area
                 </Text>
               </View>
 
@@ -875,22 +924,10 @@ const Information = ({navigation}) => {
           <View style={styles.contactContainer}>
             {[
               {
-                title: 'Emergency Police',
+                title: 'Emergency Support',
                 number: '100',
                 icon: 'shield-alert',
                 color: COLORS.error,
-              },
-              {
-                title: 'Maihar Police Station',
-                number: '07674232047',
-                icon: 'shield-account',
-                color: COLORS.primary,
-              },
-              {
-                title: 'Admin Mata Sharda Temple',
-                number: '+917400506920',
-                icon: 'information',
-                color: COLORS.info,
               },
             ].map((contact, index) => (
               <TouchableOpacity

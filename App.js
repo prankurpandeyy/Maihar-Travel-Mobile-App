@@ -68,7 +68,7 @@ function App() {
             name="Home"
             component={Homepage}
             options={{
-              title: 'Mandir Darshan',
+              title: 'Maihar Darshan',
               headerShown: false,
             }}
           />
