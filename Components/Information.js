@@ -560,8 +560,7 @@ const Information = ({navigation}) => {
   ];
 
   const ropewayTimings = [
-    ['Daily', 'Ropeway Opening', '06:00 AM'],
-    ['Daily', 'Morning Service', '06:00 AM - 07:00 PM'],
+    ['Daily', 'Ropeway Opening', '06:00'],
     [
       'Note',
       'Suspension Info',
