@@ -96,7 +96,7 @@ function Homepageview({navigation}) {
         </View>
 
         {/* Language Toggle Section */}
-        <View style={styles.languageToggleContainer}>
+        {/* <View style={styles.languageToggleContainer}>
           <TouchableOpacity
             style={styles.languageToggle}
             onPress={toggleLanguage}
@@ -123,7 +123,7 @@ function Homepageview({navigation}) {
               </Text>
             </View>
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         {/* Subtle Legal Footer Link */}
         <View style={styles.legalFooter}>
