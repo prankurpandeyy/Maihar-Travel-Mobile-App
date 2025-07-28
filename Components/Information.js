@@ -649,11 +649,23 @@ const Information = ({navigation}) => {
                 Pradesh. This ancient temple requires a climb of 1,063 steps or
                 a scenic ropeway ride.
               </Text>
+
               <Text style={styles.historyText}>
                 ✨ The temple is associated with Sringeri Mutt and houses
                 shrines of Lord Bala Ganapathi, Lord Muruga, and Acharya Sri
                 Sankara. It's renowned for hosting three daily pujas and the
                 grand 10-day Navarathri festival.
+              </Text>
+
+              <Text style={styles.historyText}>
+                🚩 Alha and Udal, legendary warriors of 12th-century Mahoba,
+                were devout followers of Sharda Mata. After many battles, Alha
+                discovered the goddess’s idol atop Trikuta Hill in Maihar and
+                became her ardent devotee. It’s believed Goddess Sharda granted
+                him immortality for his devotion. Even today, locals believe
+                Alha still visits the temple at dawn. A spot called Alha Chouki,
+                2 km from the temple, marks where he meditated. This legend
+                binds Maihar’s spiritual heritage with valor and devotion.
               </Text>
             </Card.Content>
           </Card>
