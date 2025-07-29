@@ -677,7 +677,7 @@ const Information = ({navigation}) => {
         </CustomAccordion>
 
         {/* How to Reach */}
-        <CustomAccordion title="How to Reach Temple" icon="map-marker-path">
+        <CustomAccordion title="How to Reach Maihar" icon="map-marker-path">
           <View style={styles.transportContainer}>
             {transportOptions.map((transport, index) => (
               <View key={index} style={styles.transportCard}>
@@ -732,11 +732,19 @@ const Information = ({navigation}) => {
                   <Text style={styles.facilityDetailTitle}>Temple Stairs</Text>
                 </View>
 
-                <SectionImage
-                  source={getTempleImage('stairs')}
-                  caption="1,063 stone steps with rest points and railings"
-                  style={{marginBottom: SPACING.md}}
-                />
+                <TouchableOpacity
+                  onPress={() =>
+                    Linking.openURL(
+                      'https://maps.app.goo.gl/inowXgLQ15Deqdxb6?g_st=aw',
+                    )
+                  }
+                  activeOpacity={0.8}>
+                  <SectionImage
+                    source={getTempleImage('stairs')}
+                    caption="Tap this image to view the live location on the map"
+                    style={{marginBottom: SPACING.md}}
+                  />
+                </TouchableOpacity>
 
                 <Text style={styles.facilityDetailText}>
                   • <Text style={styles.boldText}>1,063 steps</Text> to reach
@@ -760,10 +768,11 @@ const Information = ({navigation}) => {
 
                 <Text style={styles.facilityDetailText}>
                   • Modern ropeway system available{'\n'}•{' '}
-                  <Text style={styles.boldText}>Journey time: 3-4 minutes</Text>
-                  {'\n'}• Scenic aerial view of Trikut Hills{'\n'}• After
-                  ropeway: Additional 50 steps to temple{'\n'}• Suitable for
-                  elderly and differently-abled pilgrims
+                  <Text style={styles.boldText}>
+                    Ropway Runs from 6AM to 7PM{' '}
+                  </Text>
+                  {'\n'}expect during the time of thunderstorm,high winds or
+                  maintinace{'\n'}
                 </Text>
               </View>
 
@@ -784,7 +793,19 @@ const Information = ({navigation}) => {
                   Shaktital{'\n'}• After van service:{' '}
                   <Text style={styles.boldText}>160-step climb</Text> remaining
                   to reach temple{'\n'}• Convenient option for those who prefer
-                  shorter climb
+                  shorter climb {'\n'}•{' '}
+                  <Text
+                    style={[
+                      styles.boldText,
+                      {color: 'blue', textDecorationLine: 'underline'},
+                    ]}
+                    onPress={() =>
+                      Linking.openURL(
+                        'https://maps.app.goo.gl/Bx7FLjPzDC4M9eG99?g_st=aw',
+                      )
+                    }>
+                    Tap here to view the live location on the map
+                  </Text>
                 </Text>
               </View>
 
@@ -898,7 +919,7 @@ const Information = ({navigation}) => {
         </CustomAccordion>
 
         {/* Ropeway Services */}
-        <CustomAccordion title="Ropeway Services" icon="gondola">
+        {/* <CustomAccordion title="Ropeway Services" icon="gondola">
           <SectionImage
             source={getTempleImage('ropeway')}
             caption="Modern Ropeway System - Scenic 3-4 minute journey"
@@ -918,9 +939,9 @@ const Information = ({navigation}) => {
                 temple. Book tickets online or offline at the Ropeway Center.
               </Text>
             </Card.Content>
-          </Card>
+          </Card> */}
 
-          {/* <Button
+        {/* <Button
             mode="contained"
             onPress={() => Linking.openURL('https://www.bookmeriride.com/')}
             style={styles.bookingButton}
@@ -928,7 +949,7 @@ const Information = ({navigation}) => {
             icon="ticket">
             Book Ropeway Tickets
           </Button> */}
-        </CustomAccordion>
+        {/* </CustomAccordion> */}
 
         {/* Contact & Emergency */}
         <CustomAccordion title="Contact & Emergency" icon="phone-alert">

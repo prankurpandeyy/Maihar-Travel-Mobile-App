@@ -62,7 +62,7 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
     updateFilters({
       priceRange: 'all',
       customPriceMin: 0,
-      customPriceMax: 2000,
+      customPriceMax: 5000,
       hotelType: 'all',
       foodAvailable: 'all',
       parkingAvailable: 'all',
@@ -199,16 +199,16 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
               <View style={styles.priceSliderContainer}>
                 <Text style={styles.priceRangeLabel}>
                   ₹{filters.customPriceMin || 0} - ₹
-                  {filters.customPriceMax || 2000}
+                  {filters.customPriceMax || 5000}
                 </Text>
 
                 <RangeSlider
                   range={[
                     filters.customPriceMin || 0,
-                    filters.customPriceMax || 2000,
+                    filters.customPriceMax || 5000,
                   ]}
                   minimumValue={0}
-                  maximumValue={2000}
+                  maximumValue={5000}
                   step={50}
                   onValueChange={handleRangeSliderChange}
                   trackHeight={6}
@@ -223,11 +223,11 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
 
                 <View style={styles.rangeLabels}>
                   <Text style={styles.rangeLabel}>₹0</Text>
-                  <Text style={styles.rangeLabel}>₹2000</Text>
+                  <Text style={styles.rangeLabel}>₹5000</Text>
                 </View>
 
-                {(filters.customPriceMin > 0 ||
-                  filters.customPriceMax < 2000) && (
+                {/* {(filters.customPriceMin > 0 ||
+                  filters.customPriceMax < 5000) && (
                   <Button
                     mode="outlined"
                     onPress={resetPriceRange}
@@ -235,7 +235,7 @@ const Viewpagefilters = ({filters, updateFilters, stats}) => {
                     style={styles.resetButton}>
                     {getTranslatedText('Reset to Full Range', language)}
                   </Button>
-                )}
+                )} */}
               </View>
             </View>
 
