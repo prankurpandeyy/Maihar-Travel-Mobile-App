@@ -88,9 +88,9 @@ android {
         }
     }
 
-    namespace "com.mandir_darshan"
+    namespace "com.maihar_darshan"
     defaultConfig {
-        applicationId "com.mandir_darshan"
+        applicationId "com.maihar_darshan"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

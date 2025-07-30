@@ -1,4 +1,4 @@
-package com.mandir_darshan
+package com.maihar_darshan
 
 import android.app.Application
 import com.facebook.react.PackageList
