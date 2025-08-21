@@ -115,7 +115,7 @@ const Legalpage = ({navigation}) => {
 
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>1. Information We Collect</Text>
-            <Text style={styles.sectionText}>
+            {/* <Text style={styles.sectionText}>
               We do not collect, store, or share any personal information from
               our users.
               {'\n\n'}The app:
@@ -123,26 +123,56 @@ const Legalpage = ({navigation}) => {
               {'\n'}• Does not access device location
               {'\n'}• Does not request any personal identifiers (email, phone,
               etc.)
+              
+            </Text> */}
+            <Text style={styles.sectionText}>
+              We do not collect, store, or share any personal information such
+              as name, email, or phone number from our users.
+              {'\n\n'}However, for basic functionality, the app may collect
+              non-personal technical identifiers such as device ID or
+              advertising ID. These are standard identifiers used to ensure the
+              app functions correctly across devices.
+              {'\n\n'}The app:
+              {'\n'}• Does not require user sign-in
+              {'\n'}• Does not access device location
+              {'\n'}• Does not request any sensitive personal identifiers
             </Text>
           </View>
 
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>2. How We Use Data</Text>
-            <Text style={styles.sectionText}>
+            {/* <Text style={styles.sectionText}>
               We use Appwrite as a backend service solely to fetch and display
               publicly available hotel listing data. No data is personalized or
               linked to users.
+            </Text> */}
+            <Text style={styles.sectionText}>
+              We use Appwrite as a backend service solely to fetch and display
+              publicly available hotel listing data. Device identifiers, if
+              collected, are used only for technical and operational purposes
+              (such as preventing abuse and ensuring service reliability). No
+              data is personalized or linked to individual users.
             </Text>
           </View>
 
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>3. Third-Party Services</Text>
-            <Text style={styles.sectionText}>
+            {/* <Text style={styles.sectionText}>
               The app uses:
               {'\n\n'}• Appwrite – backend-as-a-service for fetching listing
               content
               {'\n\n'}Appwrite does not collect user-identifiable data on our
               behalf.
+            </Text> */}
+            <Text style={styles.sectionText}>
+              The app uses:
+              {'\n\n'}• Appwrite – backend-as-a-service for fetching listing
+              content
+              {'\n\n'}• YouTube API – to display official YouTube videos and
+              galleries
+              {'\n\n'}These services may process limited technical data as part
+              of their normal operation but do not collect personal information
+              on our behalf.
             </Text>
           </View>
 
@@ -157,8 +187,11 @@ const Legalpage = ({navigation}) => {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>5. Data Security</Text>
             <Text style={styles.sectionText}>
-              As no personal data is collected, stored, or transmitted, there
-              are no known vectors of personal data leakage or risk.
+              {/* As no personal data is collected, stored, or transmitted, there
+              are no known vectors of personal data leakage or risk. */}
+              Any technical identifiers collected are handled securely. Since no
+              personal data is stored or transmitted, the risk of sensitive data
+              leakage is minimal.
             </Text>
           </View>
 
