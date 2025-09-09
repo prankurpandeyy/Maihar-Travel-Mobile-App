@@ -7,6 +7,10 @@ export const translations = {
     'Hotel Details': 'होटल विवरण',
     'Temple Information': 'मंदिर की जानकारी',
     'Legal & Privacy': 'कानूनी और गोपनीयता',
+    'Transport Services': 'परिवहन सेवाएं',
+    'Events & Festivals': 'कार्यक्रम और त्योहार',
+    'Travel Guide': 'यात्रा गाइड',
+    'Contact & Support': 'संपर्क और सहायता',
   },
 
   // Homepage
@@ -17,6 +21,10 @@ export const translations = {
       'होटल, मंदिर की जानकारी और अपनी आध्यात्मिक यात्रा के लिए आवश्यक सब कुछ खोजें',
     'TEMPLE INFO': 'मंदिर की जानकारी',
     'EXPLORE HOTELS': 'होटल खोजें',
+    'TRANSPORT SERVICES': 'परिवहन सेवाएं',
+    'EVENTS & FESTIVALS': 'कार्यक्रम और त्योहार',
+    'TRAVEL GUIDE': 'यात्रा गाइड',
+    'CONTACT & SUPPORT': 'संपर्क और सहायता',
     'Privacy & Terms': 'गोपनीयता और नियम',
   },
 
@@ -153,6 +161,36 @@ export const translations = {
     Acceptance: 'स्वीकृति',
     Modification: 'संशोधन',
     Termination: 'समाप्ति',
+  },
+
+  // New Pages
+  transport: {
+    'Transport Services': 'परिवहन सेवाएं',
+    'Transportation options to reach Maihar':
+      'मैहर पहुंचने के लिए परिवहन विकल्प',
+    'Transport information will be available here':
+      'परिवहन की जानकारी यहां उपलब्ध होगी',
+  },
+  events: {
+    'Events & Festivals': 'कार्यक्रम और त्योहार',
+    'Upcoming events and festivals at Maihar':
+      'मैहर में आगामी कार्यक्रम और त्योहार',
+    'Events and festival information will be available here':
+      'कार्यक्रम और त्योहार की जानकारी यहां उपलब्ध होगी',
+  },
+  guide: {
+    'Travel Guide': 'यात्रा गाइड',
+    'Complete travel guide for Maihar visit':
+      'मैहर यात्रा के लिए पूर्ण यात्रा गाइड',
+    'Travel guide information will be available here':
+      'यात्रा गाइड की जानकारी यहां उपलब्ध होगी',
+  },
+  contact: {
+    'Contact & Support': 'संपर्क और सहायता',
+    'Get in touch with us for support and inquiries':
+      'सहायता और पूछताछ के लिए हमसे संपर्क करें',
+    'Contact information and support details will be available here':
+      'संपर्क जानकारी और सहायता विवरण यहां उपलब्ध होंगे',
   },
 
   // Common UI Elements

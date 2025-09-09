@@ -44,55 +44,137 @@ function Homepageview({navigation}) {
 
           <View style={styles.titleContainer}>
             <Text style={styles.mainTitle}>
-              {getTranslatedText('MAIHAR DARSHAN', language)}
+              {/* {getTranslatedText('MAIHAR DARSHAN', language)} */}
+              {getTranslatedText(' मैहर दर्शन', language)}
             </Text>
             <Text style={styles.subtitle}>
-              {getTranslatedText(
+              {/* {getTranslatedText(
                 'Your Gateway to Sharda Mata Temple',
+                language,
+              )} */}
+              {getTranslatedText(
+                'शारदा माता मंदिर में आपका स्वागत है',
                 language,
               )}
             </Text>
             <View style={styles.divider} />
             <Text style={styles.description}>
-              {getTranslatedText(
+              {/* {getTranslatedText(
                 'Discover hotels, temple information, and everything you need for your spiritual journey',
+                language,
+              )} */}
+              {getTranslatedText(
+                'होटल, मंदिर की जानकारी और अपनी आध्यात्मिक यात्रा के लिए आवश्यक सभी चीजें खोजें',
                 language,
               )}
             </Text>
           </View>
         </View>
 
-        {/* Action Buttons */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[styles.primaryButton, styles.templeButton]}
-            onPress={() => navigation.navigate('Information')}
-            activeOpacity={0.8}>
-            <PremiumGradient
-              colors={[COLORS.accent, COLORS.accentLight]}
-              direction="horizontal"
-              style={styles.buttonGradient}>
-              <Icon name="home-variant" size={24} color={COLORS.textWhite} />
-              <Text style={styles.buttonText}>
-                {getTranslatedText('TEMPLE INFO', language)}
-              </Text>
-            </PremiumGradient>
-          </TouchableOpacity>
+        {/* Action Buttons Grid */}
+        <View style={styles.buttonGridContainer}>
+          {/* Row 1 */}
+          <View style={styles.buttonRow}>
+            <TouchableOpacity
+              style={[styles.gridButton, styles.templeButton]}
+              onPress={() => navigation.navigate('Information')}
+              activeOpacity={0.8}>
+              <PremiumGradient
+                colors={[COLORS.accent, COLORS.accentLight]}
+                direction="horizontal"
+                style={styles.buttonGradient}>
+                <Icon name="home-variant" size={20} color={COLORS.textWhite} />
+                <Text style={styles.gridButtonText}>
+                  {getTranslatedText('मंदिर की जानकारी', language)}
+                </Text>
+              </PremiumGradient>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.primaryButton, styles.hotelButton]}
-            onPress={() => navigation.navigate('View')}
-            activeOpacity={0.8}>
-            <PremiumGradient
-              colors={[COLORS.secondary, COLORS.secondaryLight]}
-              direction="horizontal"
-              style={styles.buttonGradient}>
-              <Icon name="home-city" size={24} color={COLORS.textWhite} />
-              <Text style={styles.buttonText}>
-                {getTranslatedText('EXPLORE HOTELS', language)}
-              </Text>
-            </PremiumGradient>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.gridButton, styles.hotelButton]}
+              onPress={() => navigation.navigate('View')}
+              activeOpacity={0.8}>
+              <PremiumGradient
+                colors={[COLORS.secondary, COLORS.secondaryLight]}
+                direction="horizontal"
+                style={styles.buttonGradient}>
+                <Icon name="home-city" size={20} color={COLORS.textWhite} />
+                <Text style={styles.gridButtonText}>
+                  {getTranslatedText('होटल खोजें', language)}
+                </Text>
+              </PremiumGradient>
+            </TouchableOpacity>
+          </View>
+
+          {/* Row 2 */}
+          <View style={styles.buttonRow}>
+            <TouchableOpacity
+              style={[styles.gridButton, styles.transportButton]}
+              onPress={() => navigation.navigate('Transport')}
+              activeOpacity={0.8}>
+              <PremiumGradient
+                colors={[COLORS.success, '#2ECC71']}
+                direction="horizontal"
+                style={styles.buttonGradient}>
+                <Icon name="bus" size={20} color={COLORS.textWhite} />
+                <Text style={styles.gridButtonText}>
+                  {getTranslatedText('परिवहन सेवाएं', language)}
+                </Text>
+              </PremiumGradient>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.gridButton, styles.eventsButton]}
+              onPress={() => navigation.navigate('Events')}
+              activeOpacity={0.8}>
+              <PremiumGradient
+                colors={[COLORS.warning, '#F1C40F']}
+                direction="horizontal"
+                style={styles.buttonGradient}>
+                <Icon name="calendar-star" size={20} color={COLORS.textWhite} />
+                <Text style={styles.gridButtonText}>
+                  {getTranslatedText('कार्यक्रम और त्योहार', language)}
+                </Text>
+              </PremiumGradient>
+            </TouchableOpacity>
+          </View>
+
+          {/* Row 3 */}
+          <View style={styles.buttonRow}>
+            <TouchableOpacity
+              style={[styles.gridButton, styles.guideButton]}
+              onPress={() => navigation.navigate('Guide')}
+              activeOpacity={0.8}>
+              <PremiumGradient
+                colors={[COLORS.info, '#5DADE2']}
+                direction="horizontal"
+                style={styles.buttonGradient}>
+                <Icon
+                  name="map-marker-path"
+                  size={20}
+                  color={COLORS.textWhite}
+                />
+                <Text style={styles.gridButtonText}>
+                  {getTranslatedText('यात्रा गाइड', language)}
+                </Text>
+              </PremiumGradient>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.gridButton, styles.contactButton]}
+              onPress={() => navigation.navigate('Contact')}
+              activeOpacity={0.8}>
+              <PremiumGradient
+                colors={[COLORS.error, '#E67E22']}
+                direction="horizontal"
+                style={styles.buttonGradient}>
+                <Icon name="phone" size={20} color={COLORS.textWhite} />
+                <Text style={styles.gridButtonText}>
+                  {getTranslatedText('संपर्क और सहायता', language)}
+                </Text>
+              </PremiumGradient>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Language Toggle Section */}
@@ -217,35 +299,59 @@ const styles = StyleSheet.create({
     lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.base,
     paddingHorizontal: SPACING.md,
   },
-  buttonContainer: {
+  // Grid Button Styles
+  buttonGridContainer: {
     paddingHorizontal: SPACING.md,
     marginBottom: SPACING.xl,
   },
-  primaryButton: {
-    marginBottom: SPACING.lg,
-    borderRadius: RADIUS.xl,
-    overflow: 'hidden',
-    ...SHADOWS.md,
-  },
-  buttonGradient: {
+  buttonRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: SPACING.lg,
-    paddingHorizontal: SPACING.xl,
-  },
-  buttonText: {
-    fontSize: TYPOGRAPHY.fontSize.lg,
-    fontWeight: TYPOGRAPHY.fontWeight.bold,
-    color: COLORS.textWhite,
-    marginLeft: SPACING.sm,
-    letterSpacing: 0.5,
-  },
-  hotelButton: {
+    justifyContent: 'space-between',
     marginBottom: SPACING.md,
   },
+  gridButton: {
+    flex: 1,
+    marginHorizontal: SPACING.xs,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+    ...SHADOWS.md,
+    minHeight: 80,
+  },
+  buttonGradient: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.sm,
+    flex: 1,
+  },
+  gridButtonText: {
+    fontSize: TYPOGRAPHY.fontSize.sm,
+    fontWeight: TYPOGRAPHY.fontWeight.bold,
+    color: COLORS.textWhite,
+    textAlign: 'center',
+    marginTop: SPACING.xs,
+    letterSpacing: 0.3,
+    lineHeight: TYPOGRAPHY.lineHeight.tight * TYPOGRAPHY.fontSize.sm,
+  },
+  // Button specific styles
   templeButton: {
-    marginBottom: SPACING.xl,
+    // Purple gradient already defined in component
+  },
+  hotelButton: {
+    // Orange gradient already defined in component
+  },
+  transportButton: {
+    // Green gradient already defined in component
+  },
+  eventsButton: {
+    // Yellow gradient already defined in component
+  },
+  guideButton: {
+    // Blue gradient already defined in component
+  },
+  contactButton: {
+    // Red gradient already defined in component
   },
   featureContainer: {
     flexDirection: 'row',

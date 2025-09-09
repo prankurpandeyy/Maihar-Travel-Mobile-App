@@ -8,6 +8,10 @@ import Viewpage from './Pages/Viewpage';
 import Detailspage from './Pages/Detailspage';
 import Informationpage from './Pages/Informationpage';
 import Legalpage from './Pages/Legalpage';
+import Transportpage from './Pages/Transportpage';
+import Eventspage from './Pages/Eventspage';
+import Guidepage from './Pages/Guidepage';
+import Contactpage from './Pages/Contactpage';
 import {COLORS} from './constants/theme';
 import {LanguageProvider, useLanguage} from './contexts/LanguageContext';
 import {getTranslatedText} from './constants/translations';
@@ -105,6 +109,34 @@ const AppNavigator = () => {
           component={Legalpage}
           options={{
             title: getTranslatedText('Legal & Privacy', language),
+          }}
+        />
+        <Stack.Screen
+          name="Transport"
+          component={Transportpage}
+          options={{
+            title: getTranslatedText('Transport Services', language),
+          }}
+        />
+        <Stack.Screen
+          name="Events"
+          component={Eventspage}
+          options={{
+            title: getTranslatedText('Events & Festivals', language),
+          }}
+        />
+        <Stack.Screen
+          name="Guide"
+          component={Guidepage}
+          options={{
+            title: getTranslatedText('Travel Guide', language),
+          }}
+        />
+        <Stack.Screen
+          name="Contact"
+          component={Contactpage}
+          options={{
+            title: getTranslatedText('Contact & Support', language),
           }}
         />
       </Stack.Navigator>

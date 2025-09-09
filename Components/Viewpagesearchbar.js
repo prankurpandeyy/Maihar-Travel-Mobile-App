@@ -42,14 +42,21 @@ const Viewpagesearchbar = ({searchQuery, setSearchQuery}) => {
       <View style={styles.content}>
         <View style={styles.headerContainer}>
           <Icon name="home-city" size={28} color={COLORS.textWhite} />
-          <Text style={styles.headerText}>
+          {/* <Text style={styles.headerText}>
             {getTranslatedText('DISCOVER HOTELS', language)}
+          </Text> */}
+          <Text style={styles.headerText}>
+            {getTranslatedText('होटल खोजें', language)}
           </Text>
         </View>
 
         <Text style={styles.subHeaderText}>
-          {getTranslatedText(
+          {/* {getTranslatedText(
             'Find the perfect stay near Sharda Mata Temple',
+            language,
+          )} */}
+          {getTranslatedText(
+            'शारदा माता मंदिर के पास परफेक्ट होटल खोजें',
             language,
           )}
         </Text>
@@ -57,7 +64,7 @@ const Viewpagesearchbar = ({searchQuery, setSearchQuery}) => {
         <View style={styles.searchContainer}>
           <Searchbar
             placeholder={getTranslatedText(
-              'Search hotels by name or location...',
+              'नाम या स्थान के आधार पर होटल खोजें...',
               language,
             )}
             value={localSearch}
@@ -77,10 +84,11 @@ const Viewpagesearchbar = ({searchQuery, setSearchQuery}) => {
             <View style={styles.searchHints}>
               <Text style={styles.hintText}>
                 💡{' '}
-                {getTranslatedText(
+                {/* {getTranslatedText(
                   'Try searching by hotel name or location',
                   language,
-                )}
+                )} */}
+                'होटल के नाम या स्थान से खोजने का प्रयास करें'
               </Text>
             </View>
           )}

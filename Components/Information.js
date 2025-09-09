@@ -519,9 +519,9 @@ const HeroImage = () => (
       resizeMode="cover"
     />
     <Card.Content style={styles.heroImageOverlay}>
-      <Text style={styles.heroImageTitle}>Sharda Mata Temple</Text>
+      <Text style={styles.heroImageTitle}>शारदा माता मंदिर</Text>
       <Text style={styles.heroImageSubtitle}>
-        Sacred Journey to Trikut Hills
+        त्रिकूट पर्वत की पवित्र यात्रा
       </Text>
     </Card.Content>
   </Card>
@@ -551,53 +551,102 @@ const Information = ({navigation}) => {
   }, []);
 
   // Temple Data
+  // const templeTimings = [
+  //   ['Daily', 'Temple Opening', '05:00 AM'],
+  //   ['Daily', 'Morning Aarti', '05:00 AM'],
+  //   ['Daily', 'Afternoon Aarti', '01:00 PM'],
+  //   ['Daily', 'Evening Aarti', '07:00 PM'],
+  //   ['Daily', 'Temple Closing', '07:00 PM'],
+  // ];
   const templeTimings = [
-    ['Daily', 'Temple Opening', '05:00 AM'],
-    ['Daily', 'Morning Aarti', '05:00 AM'],
-    ['Daily', 'Afternoon Aarti', '01:00 PM'],
-    ['Daily', 'Evening Aarti', '07:00 PM'],
-    ['Daily', 'Temple Closing', '07:00 PM'],
+    ['प्रतिदिन', 'मंदिर खुलने का समय', '05:00 AM'],
+    ['प्रतिदिन', 'प्रातः आरती', '05:00 AM'],
+    ['प्रतिदिन', 'दोपहर आरती', '01:00 PM'],
+    ['प्रतिदिन', 'संध्या आरती', '07:00 PM'],
+    ['प्रतिदिन', 'मंदिर बंद होने का समय', '07:00 PM'],
   ];
 
+  // const ropewayTimings = [
+  //   ['Daily', 'Ropeway Opening', '06:00'],
+  //   [
+  //     'Note',
+  //     'Suspension Info',
+  //     'Subject to suspension only during natural calamities or maintenance',
+  //   ],
+  //   ['Daily', 'Ropeway Closing', '07:00 PM'],
+  // ];
+
+  // const facilities = [
+  //   {icon: 'food', name: 'Free Meals', color: COLORS.success},
+  //   {icon: 'car', name: 'Parking', color: COLORS.primary},
+  //   {icon: 'account-group', name: 'Rest Rooms', color: COLORS.secondary},
+  //   {icon: 'water', name: 'Drinking Water', color: COLORS.info},
+  //   {icon: 'hospital', name: 'Medical Aid', color: COLORS.error},
+  //   {icon: 'shopping', name: 'Prasad Shop', color: COLORS.warning},
+  // ];
+
+  // const transportOptions = [
+  //   {
+  //     mode: 'Train',
+  //     icon: 'train',
+  //     description:
+  //       'Maihar is situated on the Manikpur–Katni railway route and is well-connected across India. Special trains are scheduled with additional stoppages during peak seasons like Navratri.',
+  //     color: COLORS.primary,
+  //   },
+  //   {
+  //     mode: 'Flight',
+  //     icon: 'airplane',
+  //     description:
+  //       'Maihar is accessible via Rewa Airport (60 km via NH30), Jabalpur Airport (200 km via NH30), and Satna Airport (50 km via NH30). Nearest airports: Khajuraho (106 km), Jabalpur (145 km)',
+  //     color: COLORS.accent,
+  //   },
+  //   {
+  //     mode: 'Car',
+  //     icon: 'car',
+  //     description:
+  //       'Maihar is easily reachable via National Highway 30 (NH30) with excellent road connectivity.',
+  //     color: COLORS.secondary,
+  //   },
+  // ];
   const ropewayTimings = [
-    ['Daily', 'Ropeway Opening', '06:00'],
+    ['प्रतिदिन', 'रोपवे खुलने का समय', '06:00 AM'],
     [
-      'Note',
-      'Suspension Info',
-      'Subject to suspension only during natural calamities or maintenance',
+      'नोट',
+      'निलंबन सूचना',
+      'प्राकृतिक आपदा या रखरखाव के दौरान ही रोपवे संचालन निलंबित रहेगा',
     ],
-    ['Daily', 'Ropeway Closing', '07:00 PM'],
+    ['प्रतिदिन', 'रोपवे बंद होने का समय', '07:00 PM'],
   ];
 
   const facilities = [
-    {icon: 'food', name: 'Free Meals', color: COLORS.success},
-    {icon: 'car', name: 'Parking', color: COLORS.primary},
-    {icon: 'account-group', name: 'Rest Rooms', color: COLORS.secondary},
-    {icon: 'water', name: 'Drinking Water', color: COLORS.info},
-    {icon: 'hospital', name: 'Medical Aid', color: COLORS.error},
-    {icon: 'shopping', name: 'Prasad Shop', color: COLORS.warning},
+    {icon: 'food', name: 'निःशुल्क भोजन', color: COLORS.success},
+    {icon: 'car', name: 'पार्किंग', color: COLORS.primary},
+    {icon: 'account-group', name: 'विश्राम कक्ष', color: COLORS.secondary},
+    {icon: 'water', name: 'पीने का पानी', color: COLORS.info},
+    {icon: 'hospital', name: 'चिकित्सा सहायता', color: COLORS.error},
+    {icon: 'shopping', name: 'प्रसाद की दुकान', color: COLORS.warning},
   ];
 
   const transportOptions = [
     {
-      mode: 'Train',
+      mode: 'ट्रेन',
       icon: 'train',
       description:
-        'Maihar is situated on the Manikpur–Katni railway route and is well-connected across India. Special trains are scheduled with additional stoppages during peak seasons like Navratri.',
+        'मैहर मणिकपुर–कटनी रेलवे मार्ग पर स्थित है और पूरे भारत से अच्छी तरह जुड़ा हुआ है। विशेष ट्रेनों का संचालन नवरात्रि जैसे प्रमुख अवसरों पर अतिरिक्त ठहराव के साथ किया जाता है।',
       color: COLORS.primary,
     },
     {
-      mode: 'Flight',
+      mode: 'उड़ान',
       icon: 'airplane',
       description:
-        'Maihar is accessible via Rewa Airport (60 km via NH30), Jabalpur Airport (200 km via NH30), and Satna Airport (50 km via NH30). Nearest airports: Khajuraho (106 km), Jabalpur (145 km)',
+        'मैहर रीवा हवाई अड्डे (60 किमी, NH30 मार्ग से), जबलपुर हवाई अड्डे (200 किमी, NH30 मार्ग से) और सतना हवाई अड्डे (50 किमी, NH30 मार्ग से) से पहुँचा जा सकता है। निकटतम हवाई अड्डे: खजुराहो (106 किमी), जबलपुर (145 किमी)।',
       color: COLORS.accent,
     },
     {
-      mode: 'Car',
+      mode: 'कार',
       icon: 'car',
       description:
-        'Maihar is easily reachable via National Highway 30 (NH30) with excellent road connectivity.',
+        'मैहर राष्ट्रीय राजमार्ग 30 (NH30) के माध्यम से आसानी से पहुँचा जा सकता है और सड़क संपर्क उत्कृष्ट है।',
       color: COLORS.secondary,
     },
   ];
@@ -615,10 +664,14 @@ const Information = ({navigation}) => {
         style={styles.header}>
         <View style={styles.headerContent}>
           <Icon name="home-city-outline" size={32} color={COLORS.textWhite} />
-          <Text style={styles.headerTitle}>TEMPLE INFORMATION</Text>
+          {/* <Text style={styles.headerTitle}>TEMPLE INFORMATION</Text> */}
+          <Text style={styles.headerTitle}>मंदिर की जानकारी</Text>
         </View>
-        <Text style={styles.headerSubtitle}>
+        {/* <Text style={styles.headerSubtitle}>
           Complete guide to Sharda Mata Temple
+        </Text> */}
+        <Text style={styles.headerSubtitle}>
+          शारदा माता मंदिर की पूरी जानकारी
         </Text>
       </PremiumGradient>
 
@@ -628,56 +681,59 @@ const Information = ({navigation}) => {
         <HeroImage />
 
         {/* Temple Gallery */}
-        <ImageGallery images={galleryImages} title="📸 Temple Gallery" />
+        <ImageGallery images={galleryImages} title="📸 मंदिर गैलरी" />
 
         {/* Video Gallery */}
         <VideoGallery
           playlistUrl="https://www.youtube.com/playlist?list=PLWj4lcD42iGp1pyXUv3nvaxa7l2xW-dpm"
-          title="🎥 Temple Videos"
+          title="🎥 मंदिर वीडियो"
         />
 
         {/* History Section */}
         <CustomAccordion
-          title="Temple History & Significance"
+          title="मंदिर का इतिहास और महत्व"
           icon="book-open-variant"
           isFirst={true}>
           <Card style={styles.historyCard} elevation={1}>
             <Card.Content>
               <Text style={styles.historyText}>
-                🏛️ Maihar Devi Temple, dedicated to Goddess Sharda (Saraswati),
-                is perched atop the Trikut Hills in Maihar district, Madhya
-                Pradesh. This ancient temple requires a climb of 1,063 steps or
-                a scenic ropeway ride.
+                🏛️ मध्य प्रदेश के मैहर ज़िले में त्रिकूट पर्वत की चोटी पर
+                विराजमान माँ शारदा (सरस्वती) का प्रसिद्ध मैहर देवी मंदिर
+                श्रद्धालुओं की आस्था का केंद्र है। इस प्राचीन धाम तक पहुँचने के
+                लिए 1,063 पावन सीढ़ियों का आरोहण करना होता है अथवा रोपवे की
+                सुंदर यात्रा द्वारा भी पहुँचा जा सकता है।
               </Text>
 
               <Text style={styles.historyText}>
-                ✨ The temple is associated with Sringeri Mutt and houses
-                shrines of Lord Bala Ganapathi, Lord Muruga, and Acharya Sri
-                Sankara. It's renowned for hosting three daily pujas and the
-                grand 10-day Navarathri festival.
+                ✨ यह पावन मंदिर श्रींगेरी मठ से सम्बद्ध है और यहाँ भगवान बाल
+                गणपति, भगवान मुरुगन तथा आचार्य श्री शंकराचार्य की प्रतिमाएँ
+                विराजमान हैं। प्रतिदिन तीन मंगलमयी पूजाएँ संपन्न होती हैं और
+                विशेष रूप से 10 दिवसीय भव्य नवरात्रि महोत्सव का आयोजन श्रद्धा और
+                उत्साह से किया जाता है|
               </Text>
 
               <Text style={styles.historyText}>
-                🚩 Alha and Udal, legendary warriors of 12th-century Mahoba,
-                were devout followers of Sharda Mata. After many battles, Alha
-                discovered the goddess’s idol atop Trikuta Hill in Maihar and
-                became her ardent devotee. It’s believed Goddess Sharda granted
-                him immortality for his devotion. Even today, locals believe
-                Alha still visits the temple at dawn. A spot called Alha Chouki,
-                2 km from the temple, marks where he meditated. This legend
-                binds Maihar’s spiritual heritage with valor and devotion.
+                🚩 महोबा के 12वीं शताब्दी के वीर योद्धा आल्हा और ऊदल माँ शारदा
+                के परम भक्त माने जाते हैं। अनेक युद्धों के पश्चात आल्हा ने मैहर
+                की त्रिकूट पर्वत चोटी पर माँ शारदा की प्रतिमा का साक्षात्कार
+                किया और आजीवन उनके अनन्य उपासक बने। ऐसा विश्वास है कि माता शारदा
+                ने उनकी अटूट श्रद्धा से प्रसन्न होकर उन्हें अमरत्व का आशीर्वाद
+                प्रदान किया। आज भी जनश्रुति है कि आल्हा प्रातःकाल मंदिर में
+                दर्शन करने आते हैं। मंदिर से लगभग 2 किमी दूर स्थित आल्हा चौकी वह
+                पावन स्थल है जहाँ वे तपस्या किया करते थे। यह गाथा मैहर की
+                आध्यात्मिक विरासत को शौर्य और भक्ति से जोड़ती है।
               </Text>
             </Card.Content>
           </Card>
 
           <InfoTable
-            headers={['Day', 'Darshan Session', 'Timing']}
+            headers={['दिन', 'दर्शन अवधि', 'दर्शन समय']}
             data={templeTimings}
           />
         </CustomAccordion>
 
         {/* How to Reach */}
-        <CustomAccordion title="How to Reach Maihar" icon="map-marker-path">
+        <CustomAccordion title="मैहर कैसे पहुँचें" icon="map-marker-path">
           <View style={styles.transportContainer}>
             {transportOptions.map((transport, index) => (
               <View key={index} style={styles.transportCard}>
@@ -704,7 +760,9 @@ const Information = ({navigation}) => {
         </CustomAccordion>
 
         {/* Temple Facilities */}
-        <CustomAccordion title="Temple Facilities" icon="star-circle">
+        <CustomAccordion
+          title="मंदिर की सुविधाएं"
+          icon="star-circle">
           {/* Basic Facilities Grid */}
           <View style={styles.facilitiesGrid}>
             {facilities.map((facility, index) => (
@@ -741,18 +799,25 @@ const Information = ({navigation}) => {
                   activeOpacity={0.8}>
                   <SectionImage
                     source={getTempleImage('stairs')}
-                    caption="Tap this image to view the live location on the map"
+                    // caption="Tap this image to view the live location on the map"
+                    caption="इस चित्र पर टैप करें और नक्शे पर लाइव लोकेशन देखें"
                     style={{marginBottom: SPACING.md}}
                   />
                 </TouchableOpacity>
 
                 <Text style={styles.facilityDetailText}>
-                  • <Text style={styles.boldText}>1,063 steps</Text> to reach
+                  {/* • <Text style={styles.boldText}>1,063 steps</Text> to reach
                   the main temple from the base{'\n'}• Well-maintained stone
                   steps with railings{'\n'}• Rest points available every 200-300
                   steps
                   {'\n'}• Average climbing time: 45-60 minutes{'\n'}• Early
                   morning climb recommended (cooler temperature)
+                </Text> */}
+                  • <Text style={styles.boldText}>1,063 सीढ़ियाँ</Text> आधार से
+                  मुख्य मंदिर तक{'\n'}• रेलिंग सहित अच्छी तरह से बनी पत्थर की
+                  सीढ़ियाँ{'\n'}• हर 200-300 सीढ़ियों पर विश्राम स्थल उपलब्ध
+                  {'\n'}• औसत चढ़ाई समय: 45-60 मिनट{'\n'}• सुबह-सुबह चढ़ाई करने
+                  की सलाह (ठंडा मौसम)
                 </Text>
               </View>
 
@@ -761,18 +826,25 @@ const Information = ({navigation}) => {
               <View style={styles.facilityDetail}>
                 <View style={styles.facilityDetailHeader}>
                   <Icon name="gondola" size={20} color={COLORS.secondary} />
-                  <Text style={styles.facilityDetailTitle}>
+                  {/* <Text style={styles.facilityDetailTitle}>
                     Ropeway Alternative
-                  </Text>
+                  </Text> */}
+                  <Text style={styles.facilityDetailTitle}>रोपवे </Text>
                 </View>
 
                 <Text style={styles.facilityDetailText}>
-                  • Modern ropeway system available{'\n'}•{' '}
+                  {/* • Modern ropeway system available{'\n'}•{' '}
                   <Text style={styles.boldText}>
                     Ropway Runs from 6AM to 7PM{' '}
                   </Text>
                   {'\n'}expect during the time of thunderstorm,high winds or
-                  maintinace{'\n'}
+                  maintinace{'\n'} */}
+                  • आधुनिक रोपवे की सुविधा उपलब्ध{'\n'}•{' '}
+                  <Text style={styles.boldText}>
+                    रोपवे सुबह 6 बजे से शाम 7 बजे तक चलता है
+                  </Text>
+                  {'\n'}• केवल आंधी-तूफ़ान, तेज़ हवा या रखरखाव के समय बंद रहता
+                  है|
                 </Text>
               </View>
 
@@ -781,11 +853,11 @@ const Information = ({navigation}) => {
               <View style={styles.facilityDetail}>
                 <View style={styles.facilityDetailHeader}>
                   <Icon name="van-passenger" size={20} color={COLORS.accent} />
-                  <Text style={styles.facilityDetailTitle}>Van Service</Text>
+                  <Text style={styles.facilityDetailTitle}>वैन सेवा</Text>
                 </View>
 
                 <Text style={styles.facilityDetailText}>
-                  •{' '}
+                  {/* •{' '}
                   <Text style={styles.boldText}>
                     Operated by Mata Sharda Prabandhak Samiti
                   </Text>{' '}
@@ -807,26 +879,46 @@ const Information = ({navigation}) => {
                     Tap here to view the live location on the map
                   </Text>
                 </Text>
+              </View> */}
+                  •{' '}
+                  <Text style={styles.boldText}>
+                    माँ शारदा प्रबंधक समिति द्वारा संचालित
+                  </Text>{' '}
+                  – शुल्क ₹500{'\n'}• वैन सेवा से भक्त मंदिर आधार से शक्ति ताल
+                  तक पहुँच सकते हैं{'\n'}• वैन के बाद{' '}
+                  <Text style={styles.boldText}>160 सीढ़ियाँ</Text> शेष रहती हैं
+                  {'\n'}• उन भक्तों के लिए सुविधाजनक जो कम चढ़ाई पसंद करते हैं
+                  {'\n'}•{' '}
+                  <Text
+                    style={[
+                      styles.boldText,
+                      {color: 'blue', textDecorationLine: 'underline'},
+                    ]}
+                    onPress={() =>
+                      Linking.openURL(
+                        'https://maps.app.goo.gl/Bx7FLjPzDC4M9eG99?g_st=aw',
+                      )
+                    }>
+                    यहाँ टैप करें और नक्शे पर लाइव लोकेशन देखें
+                  </Text>
+                </Text>
               </View>
-
               <Divider style={styles.facilityDivider} />
 
               <View style={styles.facilityDetail}>
                 <View style={styles.facilityDetailHeader}>
                   <Icon name="cash" size={20} color={COLORS.warning} />
-                  <Text style={styles.facilityDetailTitle}>
-                    Toll Collection
-                  </Text>
+                  <Text style={styles.facilityDetailTitle}>टोल संग्रह</Text>
                 </View>
 
                 <Text style={styles.facilityDetailText}>
                   •{' '}
                   <Text style={styles.boldText}>
-                    Upon entering Mata Sharda Mandir premises
-                  </Text>
-                  , a toll is collected at Bandha Barrier{'\n'}• Charges vary
-                  based on vehicle type{'\n'}• Payment required before
-                  proceeding to temple area
+                    माँ शारदा मंदिर परिसर में प्रवेश करते ही
+                  </Text>{' '}
+                  बंधा बैरियर पर टोल लिया जाता है{'\n'}• वाहन के प्रकार के
+                  अनुसार शुल्क अलग-अलग होता है{'\n'}• मंदिर क्षेत्र में आगे जाने
+                  से पहले भुगतान आवश्यक है
                 </Text>
               </View>
 
@@ -835,17 +927,15 @@ const Information = ({navigation}) => {
               <View style={styles.facilityDetail}>
                 <View style={styles.facilityDetailHeader}>
                   <Icon name="food" size={20} color={COLORS.success} />
-                  <Text style={styles.facilityDetailTitle}>
-                    Annakoot Prasad
-                  </Text>
+                  <Text style={styles.facilityDetailTitle}>अन्नकूट प्रसाद</Text>
                 </View>
 
                 <Text style={styles.facilityDetailText}>
-                  • <Text style={styles.boldText}>Free meals</Text> for all
-                  devotees{'\n'}• Timing: 12:00 PM to 3:00 PM daily{'\n'}•
-                  Simple vegetarian food (rice, dal, sabzi, roti){'\n'}• Tokens
-                  required - available at counter{'\n'}• First-come,
-                  first-served basis
+                  • सभी भक्तों के लिए{' '}
+                  <Text style={styles.boldText}>निःशुल्क भोजन</Text>
+                  {'\n'}• समय: दोपहर 12:00 से 3:00 बजे तक प्रतिदिन{'\n'}• साधारण
+                  शाकाहारी भोजन (चावल, दाल, सब्ज़ी, रोटी){'\n'}• टोकन आवश्यक –
+                  काउंटर पर उपलब्ध{'\n'}• पहले आओ पहले पाओ के आधार पर
                 </Text>
               </View>
 
@@ -855,16 +945,15 @@ const Information = ({navigation}) => {
                 <View style={styles.facilityDetailHeader}>
                   <Icon name="car" size={20} color={COLORS.info} />
                   <Text style={styles.facilityDetailTitle}>
-                    Parking & Transport
+                    पार्किंग एवं परिवहन
                   </Text>
                 </View>
 
                 <Text style={styles.facilityDetailText}>
-                  • Large parking area at temple base{'\n'}•{' '}
-                  <Text style={styles.boldText}>₹20-50</Text> parking fee for
-                  cars{'\n'}• Auto-rickshaw and taxi services available{'\n'}•
-                  Local bus connectivity from Maihar station{'\n'}• Bicycle
-                  parking also available
+                  • मंदिर आधार पर बड़ा पार्किंग क्षेत्र{'\n'}• कारों के लिए{' '}
+                  <Text style={styles.boldText}>₹20-50</Text> पार्किंग शुल्क
+                  {'\n'}• ऑटो-रिक्शा और टैक्सी सेवाएँ उपलब्ध{'\n'}• मैहर स्टेशन
+                  से स्थानीय बस सेवा{'\n'}• साइकिल पार्किंग भी उपलब्ध
                 </Text>
               </View>
 
@@ -873,15 +962,14 @@ const Information = ({navigation}) => {
               <View style={styles.facilityDetail}>
                 <View style={styles.facilityDetailHeader}>
                   <Icon name="account-group" size={20} color={COLORS.accent} />
-                  <Text style={styles.facilityDetailTitle}>Amenities</Text>
+                  <Text style={styles.facilityDetailTitle}>सुविधाएँ</Text>
                 </View>
 
                 <Text style={styles.facilityDetailText}>
-                  • Clean restrooms at base and midway points{'\n'}• Drinking
-                  water stations throughout the route{'\n'}• Small shops for
-                  prasad and religious items{'\n'}• Cloakroom facility for
-                  luggage storage{'\n'}• First aid center with basic medical
-                  supplies
+                  • आधार और मार्ग के बीच साफ-सुथरे शौचालय{'\n'}• पूरे मार्ग पर
+                  पीने के पानी की व्यवस्था{'\n'}• प्रसाद व धार्मिक वस्तुओं की
+                  छोटी दुकानें{'\n'}• सामान रखने हेतु क्लोक रूम{'\n'}• प्राथमिक
+                  उपचार केंद्र व दवाइयों की व्यवस्था
                 </Text>
               </View>
 
@@ -891,27 +979,34 @@ const Information = ({navigation}) => {
                 <View style={styles.facilityDetailHeader}>
                   <Icon name="shopping" size={20} color={COLORS.warning} />
                   <Text style={styles.facilityDetailTitle}>
-                    Prasad & Shopping
+                    प्रसाद एवं खरीदारी
                   </Text>
                 </View>
 
                 <Text style={styles.facilityDetailText}>
-                  • Official prasad counter inside temple{'\n'}• Coconut,
-                  sweets, and flower offerings{'\n'}• Religious books and
-                  souvenirs{'\n'}• <Text style={styles.boldText}>Avoid</Text>{' '}
-                  purchasing from unauthorized vendors{'\n'}• Fixed price list
-                  displayed at counters
+                  • मंदिर परिसर में अधिकृत प्रसाद काउंटर{'\n'}• नारियल, मिठाई
+                  एवं पुष्प अर्पण सामग्री{'\n'}• धार्मिक पुस्तकें व स्मृति चिन्ह
+                  {'\n'}•{' '}
+                  <Text style={styles.boldText}>
+                    अनधिकृत विक्रेताओं से खरीदारी न करें
+                  </Text>
+                  {'\n'}• सभी काउंटरों पर मूल्य सूची प्रदर्शित है
                 </Text>
               </View>
 
               <View style={styles.facilitiesNote}>
                 <Icon name="lightbulb" size={20} color={COLORS.primary} />
                 <Text style={styles.facilitiesNoteText}>
-                  <Text style={styles.boldText}>Pro Tips:</Text> {'\n'}• Carry
-                  water bottle and wear comfortable shoes{'\n'}• Start early
-                  morning for cooler weather{'\n'}• Keep ropeway ticket as
-                  backup option{'\n'}• Respect temple dress code and photography
-                  rules
+                  <Text style={styles.boldText}>विशेष सुझाव::</Text> • पानी की
+                  बोतल साथ रखें{'\n'}• सुबह जल्दी यात्रा प्रारंभ करें (ठंडा
+                  मौसम){'\n'}• रोपवे टिकट बैकअप के रूप में रखें{'\n'}• मंदिर के
+                  वस्त्र नियम और फोटोग्राफी नियमों का पालन करें {'\n'} •
+                  सीढ़ियाँ दो भागों में विभाजित हैं: बाईं ओर चढ़ने के लिए और दाईं
+                  ओर उतरने के लिए। कृपया इस नियम का पालन करें; उल्लंघन पर भारी
+                  जुर्माना लगाया जाएगा {'\n'}•किसी भी प्रकार की अफवाह न फैलाये
+                  और न ही किसी अफवाह पर विश्वास करे मंदिर समिति द्वारा लिए गए
+                  निर्णय ही सर्वमान्य होते है {'\n'}• मंदिर पूरी तरह से प्रशासन
+                  की निगरानी में रहता है और कार्य करता है|
                 </Text>
               </View>
             </Card.Content>
@@ -952,7 +1047,7 @@ const Information = ({navigation}) => {
         {/* </CustomAccordion> */}
 
         {/* Contact & Emergency */}
-        <CustomAccordion title="Contact & Emergency" icon="phone-alert">
+        <CustomAccordion title="संपर्क एवं सहायता" icon="phone-alert">
           <View style={styles.contactContainer}>
             {[
               {
@@ -995,7 +1090,7 @@ const Information = ({navigation}) => {
               direction="horizontal"
               style={styles.exploreGradient}>
               <Icon name="home-city" size={26} color={COLORS.textWhite} />
-              <Text style={styles.exploreText}>Explore Nearby Hotels</Text>
+              <Text style={styles.exploreText}>आस-पास के होटल देखें</Text>
             </PremiumGradient>
           </TouchableOpacity>
         </View>
