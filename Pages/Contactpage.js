@@ -69,7 +69,8 @@ const Contactpage = ({navigation}) => {
                 key={index}
                 style={styles.contactCard}
                 onPress={() => Linking.openURL(`tel:${contact.number}`)}
-                activeOpacity={0.8}>
+                activeOpacity={0.8}
+                hitSlop={{top: 8, bottom: 8, left: 8, right: 8}}>
                 <View
                   style={[
                     styles.contactIcon,
@@ -153,7 +154,8 @@ const Contactpage = ({navigation}) => {
               <TouchableOpacity
                 style={styles.supportButton}
                 onPress={() => navigation.navigate('Information')}
-                activeOpacity={0.8}>
+                activeOpacity={0.8}
+                hitSlop={{top: 8, bottom: 8, left: 8, right: 8}}>
                 <Text style={styles.supportButtonText}>
                   मंदिर की जानकारी देखें
                 </Text>

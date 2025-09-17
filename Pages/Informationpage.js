@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import Information from '../Components/Information';
+import {COLORS} from '../constants/theme';
 
 const Informationpage = ({navigation}) => {
   return (
@@ -31,7 +32,7 @@ const Informationpage = ({navigation}) => {
 };
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#F8F9FA',
+    backgroundColor: COLORS.background,
     height: '100%',
   },
 

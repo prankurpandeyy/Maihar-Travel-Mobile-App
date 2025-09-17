@@ -77,6 +77,7 @@ const Viewpagesearchbar = ({searchQuery, setSearchQuery}) => {
             mode="bar"
             elevation={2}
             loading={localSearch !== searchQuery && localSearch.length > 0}
+            testID="hotel-search"
           />
 
           {/* Search hints */}

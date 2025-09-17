@@ -60,6 +60,8 @@ const AppNavigator = () => {
         barStyle="light-content"
         backgroundColor={COLORS.primary}
         translucent={false}
+        animated
+        showHideTransition="fade"
       />
       <Stack.Navigator
         screenOptions={{

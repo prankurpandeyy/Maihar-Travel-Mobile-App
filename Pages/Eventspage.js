@@ -99,7 +99,8 @@ const Eventspage = ({navigation}) => {
                   )
                 }
                 activeOpacity={0.8}
-                style={styles.mapLink}>
+                style={styles.mapLink}
+                hitSlop={{top: 8, bottom: 8, left: 8, right: 8}}>
                 <Text style={styles.mapLinkText}>
                   यहाँ टैप करें और नक्शे पर लाइव लोकेशन देखें
                 </Text>

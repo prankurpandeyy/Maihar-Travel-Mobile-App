@@ -19,7 +19,8 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
           hotel.isHotelFlagged ? (
             <TouchableOpacity
               key={`flagged-${hotel.$id}-${index}`}
-              style={styles.flaggedCard}>
+              style={styles.flaggedCard}
+              hitSlop={{top: 8, bottom: 8, left: 8, right: 8}}>
               <View style={styles.flaggedBadge}>
                 <Icon name="alert-circle" size={16} color={COLORS.error} />
                 <Text style={styles.flaggedBadgeText}>
@@ -34,7 +35,10 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
                 </View>
 
                 <Text style={styles.flaggedText}>
-                  {getTranslatedText('This hotel has been flagged by authorities. Contact admin for more information.', language)}
+                  {getTranslatedText(
+                    'This hotel has been flagged by authorities. Contact admin for more information.',
+                    language,
+                  )}
                 </Text>
 
                 <View style={styles.warningFooter}>
@@ -52,7 +56,8 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
                 navigation.navigate('Details', {hotelId: hotel.$id})
               }
               style={styles.card}
-              activeOpacity={0.7}>
+              activeOpacity={0.7}
+              hitSlop={{top: 8, bottom: 8, left: 8, right: 8}}>
               <PremiumGradient
                 colors={[COLORS.surface, COLORS.surfaceVariant]}
                 direction="diagonal"
@@ -99,7 +104,10 @@ const Viewpagecard = ({navigation, filteredHotelsByName, isLoading}) => {
             {getTranslatedText('No hotels found', language)}
           </Text>
           <Text style={styles.emptySubtitle}>
-            {getTranslatedText('Try adjusting your search or filters', language)}
+            {getTranslatedText(
+              'Try adjusting your search or filters',
+              language,
+            )}
           </Text>
         </View>
       )}
