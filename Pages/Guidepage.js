@@ -1,14 +1,54 @@
-import {View, Text, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Image as RNImage,
+} from 'react-native';
 import React from 'react';
 import {Card, Divider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PremiumGradient from '../Components/common/CustomGradient';
 import OptimizedImage from '../Components/common/OptimizedImage';
+import ImageViewing from 'react-native-image-viewing';
 import {COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS} from '../constants/theme';
 import {useLanguage} from '../contexts/LanguageContext';
 
 const Guidepage = ({navigation}) => {
   useLanguage();
+  const [isGalleryVisible, setIsGalleryVisible] = React.useState(false);
+  const [galleryImages, setGalleryImages] = React.useState([]);
+  const [galleryIndex, setGalleryIndex] = React.useState(0);
+
+  // Normalize any image (require/module or { uri }) to { uri } for ImageViewing
+  const toViewingSource = React.useCallback(img => {
+    try {
+      if (!img) {
+        return null;
+      }
+      if (typeof img === 'number') {
+        const resolved = RNImage.resolveAssetSource(img);
+        return resolved?.uri ? {uri: resolved.uri} : null;
+      }
+      if (img.uri) {
+        return {uri: img.uri};
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }, []);
+
+  const normalizeGallery = React.useCallback(
+    images => {
+      if (!Array.isArray(images)) {
+        return [];
+      }
+      return images.map(toViewingSource).filter(Boolean);
+    },
+    [toViewingSource],
+  );
 
   // Nearby places sourced from assets. Add/edit description later.
   const nearbyPlaces = [
@@ -60,6 +100,21 @@ const Guidepage = ({navigation}) => {
       description:
         'गोलामठ मंदिर मैहर (मध्यप्रदेश) में स्थित एक प्राचीन शिव मंदिर है। इसे 10वीं–11वीं शताब्दी में कलचुरी वंश ने बनवाया था। मंदिर पूरी तरह पत्थरों से निर्मित है और नागर शैली की वास्तुकला का उत्तम उदाहरण है। इसमें गर्भगृह, अन्तराल और मुखमंडप हैं तथा प्रवेश द्वार के सामने नंदी की प्रतिमा है।\n\nस्थानीय मान्यता है कि यह मंदिर एक ही रात में बन गया था। यहाँ महाशिवरात्रि पर विशाल मेला और विशेष पूजा-अर्चना होती है। शिवलिंग को सजाने और बेलपत्र, फूल-मालाएँ चढ़ाने की परंपरा है। यह मंदिर मैहर रेलवे स्टेशन से लगभग 2 किमी की दूरी पर, देवीजी रोड स्थित बड़ा अखाड़ा के सामने है।',
       image: require('../assets/golamath-mandir-front.jpg'),
+      gallery: [
+        require('../assets/golamath-mandir-front.jpg'),
+        require('../assets/golamath-mandir-side.jpg'),
+      ],
+    },
+    {
+      key: 'mukundpur_tiger_safari',
+      name: 'मुकुंदपुर व्हाइट टाइगर सफारी और चिड़ियाघर',
+      description:
+        'महाराजा मार्तण्ड सिंह जूदेव व्हाइट टाइगर सफारी और चिड़ियाघर रीवा संभाग के मैहर जिले के मुकुंदपुर में स्थित है। यह मैहर से रीवा रोड पर लगभग 40 किलोमीटर की दूरी पर है।\n\nचिड़ियाघर का मुख्य आकर्षण व्हाइट टाइगर सफारी है, जहाँ लोग पवित्र माने जाने वाले सफेद बाघों को देखने का अवसर पाते हैं। सफेद बाघ के अलावा यहाँ लगभग 40 विभिन्न संकटग्रस्त प्रजातियाँ और 60 से अधिक असंकटग्रस्त प्रजातियाँ भी संरक्षित की गई हैं।',
+      image: require('../assets/mukundpur-tiger-safari-gate.jpg'),
+      gallery: [
+        require('../assets/mukundpur-tiger-safari-gate.jpg'),
+        require('../assets/white-tiger.webp'),
+      ],
     },
     {
       key: 'aalha_talab',
@@ -119,10 +174,36 @@ const Guidepage = ({navigation}) => {
                       {place.description}
                     </Text>
                   ) : null}
+                  {place.gallery && place.gallery.length > 0 ? (
+                    <View style={styles.galleryRow}>
+                      {place.gallery.map((img, idx) => (
+                        <View
+                          key={`${place.key}-thumb-${idx}`}
+                          style={styles.galleryThumbWrap}>
+                          <OptimizedImage
+                            source={img}
+                            style={styles.galleryThumb}
+                            resizeMode="cover"
+                            onPress={() => {
+                              setGalleryImages(normalizeGallery(place.gallery));
+                              setGalleryIndex(idx);
+                              setIsGalleryVisible(true);
+                            }}
+                          />
+                        </View>
+                      ))}
+                    </View>
+                  ) : null}
                 </View>
               ))}
             </Card.Content>
           </Card>
+          <ImageViewing
+            images={galleryImages}
+            imageIndex={galleryIndex}
+            visible={isGalleryVisible}
+            onRequestClose={() => setIsGalleryVisible(false)}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -227,6 +308,23 @@ const styles = StyleSheet.create({
     ...TYPOGRAPHY.body2,
     color: COLORS.textPrimary,
     lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.base,
+  },
+  galleryRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: SPACING.sm,
+    marginTop: SPACING.sm,
+  },
+  galleryThumbWrap: {
+    width: '31%',
+    borderRadius: RADIUS.md,
+    overflow: 'hidden',
+    backgroundColor: COLORS.surfaceVariant,
+    ...SHADOWS.sm,
+  },
+  galleryThumb: {
+    width: '100%',
+    height: 90,
   },
   culturalCard: {
     borderRadius: RADIUS.lg,
