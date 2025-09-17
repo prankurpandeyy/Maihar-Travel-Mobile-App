@@ -118,7 +118,7 @@ function Homepageview({navigation}) {
                 style={styles.buttonGradient}>
                 <Icon name="bus" size={20} color={COLORS.textWhite} />
                 <Text style={styles.gridButtonText}>
-                  {getTranslatedText('परिवहन सेवाएं', language)}
+                  {getTranslatedText('मैहर कैसे पहुंचे ', language)}
                 </Text>
               </PremiumGradient>
             </TouchableOpacity>
@@ -133,7 +133,7 @@ function Homepageview({navigation}) {
                 style={styles.buttonGradient}>
                 <Icon name="calendar-star" size={20} color={COLORS.textWhite} />
                 <Text style={styles.gridButtonText}>
-                  {getTranslatedText('कार्यक्रम और त्योहार', language)}
+                  {getTranslatedText(' मंदिर  कैसे पहुंचे ', language)}
                 </Text>
               </PremiumGradient>
             </TouchableOpacity>
@@ -155,7 +155,7 @@ function Homepageview({navigation}) {
                   color={COLORS.textWhite}
                 />
                 <Text style={styles.gridButtonText}>
-                  {getTranslatedText('यात्रा गाइड', language)}
+                  {getTranslatedText(' अन्य स्थान ', language)}
                 </Text>
               </PremiumGradient>
             </TouchableOpacity>
