@@ -733,7 +733,7 @@ const Information = ({navigation}) => {
         </CustomAccordion>
 
         {/* How to Reach */}
-        <CustomAccordion title="मैहर कैसे पहुँचें" icon="map-marker-path">
+        {/* <CustomAccordion title="मैहर कैसे पहुँचें" icon="map-marker-path">
           <View style={styles.transportContainer}>
             {transportOptions.map((transport, index) => (
               <View key={index} style={styles.transportCard}>
@@ -757,12 +757,10 @@ const Information = ({navigation}) => {
               </View>
             ))}
           </View>
-        </CustomAccordion>
+        </CustomAccordion> */}
 
         {/* Temple Facilities */}
-        <CustomAccordion
-          title="मंदिर की सुविधाएं"
-          icon="star-circle">
+        <CustomAccordion title="मंदिर की सुविधाएं" icon="star-circle">
           {/* Basic Facilities Grid */}
           <View style={styles.facilitiesGrid}>
             {facilities.map((facility, index) => (
